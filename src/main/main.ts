@@ -12,6 +12,8 @@ import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import Store from 'electron-store';
+import fs from 'fs';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
@@ -24,6 +26,35 @@ class AppUpdater {
 }
 
 let mainWindow: BrowserWindow | null = null;
+
+const store = new Store<{ modResourcesPath: string }>();
+const sendModResourcesData = () => {
+  const modResourcesPath = store.get('modResourcesPath');
+  if (modResourcesPath && fs.existsSync(modResourcesPath)) {
+    const files = fs.readdirSync(modResourcesPath);
+    mainWindow?.webContents.send('mod-resources-data', files);
+  } else {
+    mainWindow?.webContents.send('mod-resources-list', []);
+  }
+};
+
+ipcMain.handle('set-mod-resources-path', (_event, modResourcesPath: string) => {
+  store.set('modResourcesPath', modResourcesPath);
+  sendModResourcesData();
+  return true;
+});
+
+ipcMain.handle('get-mod-resources-path', () => {
+  return store.get('modResourcesPath');
+});
+
+ipcMain.handle('get-mod-resources-data', () => {
+  const modResourcesPath = store.get('modResourcesPath');
+  if (modResourcesPath && fs.existsSync(modResourcesPath)) {
+    return fs.readdirSync(modResourcesPath);
+  }
+  return [];
+});
 
 ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
@@ -82,6 +113,10 @@ const createWindow = async () => {
   });
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
+
+  mainWindow.webContents.on('did-finish-load', () => {
+    sendModResourcesData();
+  });
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
