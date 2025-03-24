@@ -15,7 +15,13 @@ import log from 'electron-log';
 import Store from 'electron-store';
 import fs from 'fs';
 import MenuBuilder from './menu';
-import { resolveHtmlPath } from './util';
+import { combineObjects, resolveHtmlPath } from './util';
+import { TCharacter } from '../types/characterType';
+import { Tmod } from '../types/modType';
+import { TMetadata } from '../types/metadataType';
+
+const METADATA_VERSION = 1;
+const METADATA_FILENAME = 'metadata.json';
 
 class AppUpdater {
   constructor() {
@@ -27,20 +33,67 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-const store = new Store<{ modResourcesPath: string }>();
-const sendModResourcesData = () => {
-  const modResourcesPath = store.get('modResourcesPath');
-  if (modResourcesPath && fs.existsSync(modResourcesPath)) {
-    const files = fs.readdirSync(modResourcesPath);
-    mainWindow?.webContents.send('mod-resources-data', files);
-  } else {
-    mainWindow?.webContents.send('mod-resources-list', []);
+const updateAllModMetadata = async (modResourcesPath: string): Promise<TMetadata[]> => {
+  try {
+    const files = await fs.promises.readdir(modResourcesPath);
+    const modFolders = await Promise.all(
+      files.map(async (file) => {
+        const filePath = path.join(modResourcesPath, file);
+        return (await fs.promises.stat(filePath)).isDirectory() ? file : null;
+      })
+    );
+    
+    const validModFolders = modFolders.filter(Boolean) as string[];
+    return Promise.all(
+      validModFolders.map(mod => updateModMetadata(modResourcesPath, mod))
+    );
+  } catch (error) {
+    console.error('Error updating mod metadata:', error);
+    return [];
   }
 };
 
+const updateModMetadata = async (
+  modResourcesPath: string,
+  mod: string
+): Promise<TMetadata> => {
+  const modPath = path.join(modResourcesPath, mod);
+  const modMetadataPath = path.join(modPath, METADATA_FILENAME);
+  
+  const defaultMetadata: TMetadata = {
+    character: 'Unknown', 
+    description: '',
+    name: mod,
+    modType: 'Unknown',
+    image: '',
+    sourceUrl: '',
+    active: false,
+    metadataVersion: METADATA_VERSION,
+  };
+
+  try {
+    await fs.promises.access(modMetadataPath);
+    const rawData = await fs.promises.readFile(modMetadataPath, 'utf-8');
+    const currentMetadata = JSON.parse(rawData);
+
+    if (currentMetadata.metadataVersion === METADATA_VERSION) {
+      return currentMetadata;
+    }
+
+    const newMetadata = combineObjects(currentMetadata, defaultMetadata);
+    await fs.promises.writeFile(modMetadataPath, JSON.stringify(newMetadata, null, 2));
+    return newMetadata;
+  } catch (error) {
+    // File doesn't exist or other error
+    await fs.promises.writeFile(modMetadataPath, JSON.stringify(defaultMetadata, null, 2));
+    return defaultMetadata;
+  }
+};
+
+const store = new Store<{ modResourcesPath: string }>();
+
 ipcMain.handle('set-mod-resources-path', (_event, modResourcesPath: string) => {
   store.set('modResourcesPath', modResourcesPath);
-  sendModResourcesData();
   return true;
 });
 
@@ -48,10 +101,10 @@ ipcMain.handle('get-mod-resources-path', () => {
   return store.get('modResourcesPath');
 });
 
-ipcMain.handle('get-mod-resources-data', () => {
+ipcMain.handle('fetch-mod-resources-metadata', async () => {
   const modResourcesPath = store.get('modResourcesPath');
-  if (modResourcesPath && fs.existsSync(modResourcesPath)) {
-    return fs.readdirSync(modResourcesPath);
+  if (modResourcesPath) {
+    return await updateAllModMetadata(modResourcesPath);
   }
   return [];
 });
@@ -113,10 +166,6 @@ const createWindow = async () => {
   });
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
-
-  mainWindow.webContents.on('did-finish-load', () => {
-    sendModResourcesData();
-  });
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
