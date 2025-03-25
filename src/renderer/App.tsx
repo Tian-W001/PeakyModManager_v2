@@ -3,39 +3,27 @@ import BottomBar from './components/BottomBar/BottomBar';
 import CardGrid from './components/CardGrid/CardGrid';
 import LeftMenu from './components/LeftMenu/LeftMenu';
 import wallpaper from '../assets/zzz_wallpaper.png';
-import { useEffect, useMemo, useState } from 'react';
+import { use, useEffect, useMemo, useState } from 'react';
 import { TMetadata } from '../types/metadataType';
+import { useAppDispatch, useAppSelector } from './redux/hooks';
+import { fetchModResourcesPath, fetchModResourcesMetadata } from './redux/slices/modResourcesSlice';
 
 export default function App() {
 
-  const [modResourcesPath, setModResourcesPath] = useState("");
-  const [metadataList, setMetadataList] = useState<TMetadata[]>([]);
-
-
-  const [loading, setLoading] = useState(true);
-  
+  const dispatch = useAppDispatch();
+  const { modResourcesPath, metadataList, loading } = useAppSelector((state) => state.modResources);
 
   useEffect(() => {
-    //window.electron.setModResourcesPath("C:\\Users\\Tian\\Desktop\\testModResources");
-    window.electron.getModResourcesPath().then((path: string) => {
-      setModResourcesPath(path);
-      console.log("path:", path);
-    });
-  }, []);
+    dispatch(fetchModResourcesPath());
+  }, [dispatch]);
 
   useEffect(() => {
-    const fetchMetadata = async () => {
-      const newMetadataList = await window.electron.fetchModResourcesMetadata();
-      setMetadataList(newMetadataList);
-      console.log("metadataList:", newMetadataList);
-      setLoading(false);
-    };
-
-    fetchMetadata();
-  }, [modResourcesPath]);
+    if (modResourcesPath) {
+      dispatch(fetchModResourcesMetadata());
+    }
+  }, [dispatch, modResourcesPath]);
 
   const groupedMetadataList = useMemo(() => {
-    //Group by modType
     const groupedMetadataList = metadataList.reduce((acc, metadata) => {
       if (!acc[metadata.modType]) {
         acc[metadata.modType] = [];
@@ -43,6 +31,7 @@ export default function App() {
       acc[metadata.modType].push(metadata);
       return acc;
     }, {} as Record<string, TMetadata[]>);
+    
     console.log("groupedMetadataList:", groupedMetadataList);
     return groupedMetadataList;
   }, [metadataList]);
