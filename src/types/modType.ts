@@ -1,2 +1,2 @@
 
-export type Tmod = "Unknown" | "Environment" | "Skin" | "UI" | "Other";
+export type Tmod = "Unknown" | "Characters" | "NPCs" | "Environment" | "UI" | "Misc" | "Script/Tools";
