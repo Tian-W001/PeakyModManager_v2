@@ -61,10 +61,10 @@ const updateModMetadata = async (
   const modMetadataPath = path.join(modPath, METADATA_FILENAME);
   
   const defaultMetadata: TMetadata = {
+    modType: 'Unknown',
     character: 'Unknown', 
     description: '',
     name: mod,
-    modType: 'Unknown',
     image: '',
     sourceUrl: '',
     active: false,
