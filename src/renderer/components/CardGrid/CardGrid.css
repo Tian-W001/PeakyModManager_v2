@@ -1,7 +1,12 @@
 .CardGridContainer {
     flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 300px);
+    grid-gap: 1em;
+    padding: 1em;
+    box-sizing: border-box;
+
+    justify-content: start;
+    align-items: start;
     background-color: rgba(144, 238, 144, 0.526);
 }

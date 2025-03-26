@@ -1,10 +1,17 @@
 import React from 'react';
 import './CardGrid.css';
+import { useAppSelector } from '../../redux/hooks';
+import { selectModMetadataList } from '../../redux/selectors/modResourcesSelectors';
+import { ModCard } from '../ModCard/ModCard';
 
 function CardGrid() {
+  const metadataList = useAppSelector(selectModMetadataList);
+
   return (
     <div className="CardGridContainer">
-      <h1>Card Grid</h1>
+      {metadataList.map((metadata) => (
+        <ModCard key={metadata.name} modName={metadata.name} />
+      ))}
     </div>
   );
 }

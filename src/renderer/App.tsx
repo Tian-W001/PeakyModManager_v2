@@ -7,11 +7,12 @@ import { use, useEffect, useMemo, useState } from 'react';
 import { TMetadata } from '../types/metadataType';
 import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { fetchModResourcesPath, fetchModResourcesMetadata } from './redux/slices/modResourcesSlice';
+import { selectModResources } from './redux/selectors/modResourcesSelectors';
 
 export default function App() {
 
   const dispatch = useAppDispatch();
-  const { modResourcesPath, metadataList, loading } = useAppSelector((state) => state.modResources);
+  const { modResourcesPath, metadataList, loading } = useAppSelector(selectModResources);
 
   useEffect(() => {
     dispatch(fetchModResourcesPath());
