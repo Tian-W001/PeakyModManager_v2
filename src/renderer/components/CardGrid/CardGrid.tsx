@@ -8,11 +8,14 @@ function CardGrid() {
   const metadataList = useAppSelector(selectModMetadataList);
 
   return (
-    <div className="CardGridContainer">
-      {metadataList.map((metadata) => (
-        <ModCard key={metadata.name} modName={metadata.name} />
-      ))}
-    </div>
+    <>
+      {console.log('CardGrid rendererd')}
+      <div className="CardGridContainer">
+        {metadataList.map((metadata) => (
+          <ModCard key={metadata.name} modName={metadata.name} />
+        ))}
+      </div>
+    </>
   );
 }
 

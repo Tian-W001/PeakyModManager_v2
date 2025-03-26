@@ -38,37 +38,40 @@ function ButtonGroup({
 
 function BottomBar() {
   return (
-    <div className="BottomBarContainer">
-      <ButtonGroup>
-        <Button
-          title="Settings"
-          onClick={() => {
-            console.log('Settings');
-          }}
-        />
-      </ButtonGroup>
-      
-      <ButtonGroup>
-        <Button
-          title="Launcher"
-          onClick={() => {
-            console.log('Launcher');
-          }}
-        />
-        <Button
-          title="Game"
-          onClick={() => {
-            console.log('Game');
-          }}
-        />
-        <Button
-          title="Apply"
-          onClick={() => {
-            console.log('Apply');
-          }}
-        />
-      </ButtonGroup>
-    </div>
+    <>
+      {console.log('BottomBar rendererd')}
+      <div className="BottomBarContainer">
+        <ButtonGroup>
+          <Button
+            title="Settings"
+            onClick={() => {
+              console.log('Settings');
+            }}
+          />
+        </ButtonGroup>
+        
+        <ButtonGroup>
+          <Button
+            title="Launcher"
+            onClick={() => {
+              console.log('Launcher');
+            }}
+          />
+          <Button
+            title="Game"
+            onClick={() => {
+              console.log('Game');
+            }}
+          />
+          <Button
+            title="Apply"
+            onClick={() => {
+              console.log('Apply');
+            }}
+          />
+        </ButtonGroup>
+      </div>
+    </>
   );
 }
 

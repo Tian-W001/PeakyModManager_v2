@@ -3,9 +3,12 @@ import './LeftMenu.css';
 
 function LeftMenu() {
   return (
-    <div className="LeftMenuContainer">
-      <h1>Menu</h1>
-    </div>
+    <>
+      {console.log('BottomBar rendererd')}
+      <div className="LeftMenuContainer">
+        <h1>Menu</h1>
+      </div>
+    </>
   );
 }
 
