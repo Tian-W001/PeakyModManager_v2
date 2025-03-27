@@ -11,9 +11,14 @@ function CardGrid() {
     <>
       {console.log('CardGrid rendererd')}
       <div className="CardGridContainer">
+
         {metadataList.map((metadata) => (
           <ModCard key={metadata.name} modName={metadata.name} />
         ))}
+        <ModCard modName="New Mod 1" /> 
+        <ModCard modName="New Mod 2" />
+        <ModCard modName="New Mod 3" />
+
       </div>
     </>
   );
