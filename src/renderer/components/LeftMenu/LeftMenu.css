@@ -1,7 +1,8 @@
 .LeftMenuContainer {
-    width: 30%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #d74e4ea5;
+  min-width: 300px;
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #d74e4ea5;
 }

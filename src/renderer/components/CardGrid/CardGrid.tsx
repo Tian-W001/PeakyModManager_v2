@@ -1,11 +1,22 @@
 import React from 'react';
 import './CardGrid.css';
 import { useAppSelector } from '../../redux/hooks';
-import { selectModMetadataList } from '../../redux/selectors/modResourcesSelectors';
+import { selectModMetadataList } from '../../redux/modResources/modResourcesSlice';
 import { ModCard } from '../ModCard/ModCard';
+import { ModEditModal } from '../ModEditModal/ModEditModal';
 
 function CardGrid() {
   const metadataList = useAppSelector(selectModMetadataList);
+
+  
+
+  const toggleApplyMod = (modName: string) => {
+    console.log('toggleApplyMod:', modName);
+  };
+
+  const openEditModModal = (modName: string) => {
+    console.log('openEditModModal:', modName);
+  };
 
   return (
     <>
@@ -15,11 +26,9 @@ function CardGrid() {
         {metadataList.map((metadata) => (
           <ModCard key={metadata.name} modName={metadata.name} />
         ))}
-        <ModCard modName="New Mod 1" /> 
-        <ModCard modName="New Mod 2" />
-        <ModCard modName="New Mod 3" />
 
       </div>
+      <ModEditModal />
     </>
   );
 }

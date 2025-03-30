@@ -6,8 +6,8 @@ import wallpaper from '../assets/zzz_wallpaper.png';
 import { use, useEffect, useMemo, useState } from 'react';
 import { TMetadata } from '../types/metadataType';
 import { useAppDispatch, useAppSelector } from './redux/hooks';
-import { fetchModResourcesPath, fetchModResourcesMetadata } from './redux/slices/modResourcesSlice';
-import { selectModResources } from './redux/selectors/modResourcesSelectors';
+import { fetchModResourcesPath, fetchModResourcesMetadata } from './redux/modResources/modResourcesSlice';
+import { selectModResources } from './redux/modResources/modResourcesSlice';
 
 export default function App() {
 

@@ -1,6 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
 import { TMetadata } from "../../../types/metadataType";
+
+import { createSelector } from "reselect";
+import { RootState } from "../store";
+import { Tmod } from "../../../types/modType";
+import { useMemo } from "react";
 
 interface ModResourcesState {
   modResourcesPath: string;
@@ -51,3 +55,27 @@ export const modResourcesSlice = createSlice({
 });
 
 export default modResourcesSlice.reducer;
+
+
+export const selectModResources = (state: RootState) => state.modResources;
+export const selectModResourcesPath = (state: RootState) => state.modResources.modResourcesPath;
+export const selectModResourcesLoading = (state: RootState) => state.modResources.loading;
+export const selectModMetadataList = (state: RootState) => state.modResources.metadataList;
+
+export const selectModMetadataListByType = (modType: Tmod | null | undefined) => 
+  useMemo(() => 
+    createSelector(
+      [selectModMetadataList], 
+      (metadataList) => metadataList.filter((metadata) => metadata.modType === modType)
+    ),
+    []
+  );
+
+export const selectModMetadataByName = (modName: string | null | undefined) => 
+  useMemo(() => 
+    createSelector(
+      [selectModMetadataList],
+      (metadataList) => metadataList.find((metadata) => metadata.name === modName)
+    ), 
+    []
+  );
