@@ -1,4 +1,4 @@
-import React from "react";
+import React, { CSSProperties, StyleHTMLAttributes, useEffect, useState } from "react";
 import Modal from "react-modal";
 
 import "./ModEditModal.css";
@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectModEditModalModMetadata } from "../../redux/modEditModal/modEditModalSlice";
 import { selectModEditModalIsOpen, selectModEditModalModName } from "../../redux/modEditModal/modEditModalSlice";
 import { closeModEditModal } from "../../redux/modEditModal/modEditModalSlice";
-
+import { updateMod } from "../../redux/modResources/modResourcesSlice";
 
 Modal.setAppElement('#root');
 
@@ -16,13 +16,31 @@ export const ModEditModal = () => {
   const isOpen = useAppSelector(selectModEditModalIsOpen);
   const modName = useAppSelector(selectModEditModalModName);
   const modData = useAppSelector(selectModEditModalModMetadata);
-  console.log("ModEditModal: modData:", modData);
+  
+  const [desc, setDesc] = useState(modData?.description || "");
+
+  console.log("ModEditModal Rendered");
+
+  useEffect(() => {
+    setDesc(modData?.description || "");
+  }, [modData]);
 
   const onRequestClose = () => {
     dispatch(closeModEditModal());
   };
 
-  console.log("ModEditModal: modName:", modName);
+  const handleSave = () => {
+    console.log("Save mod with new desc:", desc);
+    if (!modName || !modData) return;
+
+    dispatch(updateMod({
+      modName, newMetadata: {
+        ...modData,
+        description: desc
+      }
+    }));
+  };
+
 
   return (
     <Modal
@@ -33,12 +51,16 @@ export const ModEditModal = () => {
       shouldCloseOnOverlayClick={false}
     >
       {modData && (
-        <>
-          <div>{modData.name}</div>
-          <div>{modData.description}</div>
-          <div>{modData.character}</div>
-        </>
+        <div className="EditableTextBox">
+          <span>Description:</span>
+          <textarea
+            id="description"
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
+          />
+        </div>
       )}
+      <button onClick={handleSave}>Save</button>
       <button onClick={onRequestClose}>Close</button>
     </Modal>
   );

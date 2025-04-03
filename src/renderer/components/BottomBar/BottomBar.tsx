@@ -1,17 +1,19 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import './BottomBar.css';
 import clsx from 'clsx';
+import { useAppDispatch } from '../../redux/hooks';
+import { fetchModResourcesMetadata } from '../../redux/modResources/modResourcesSlice';
+import { electron } from 'process';
 
 
-interface ButtonProps extends React.ComponentProps<'button'> {
-  title: string;
-}
-function Button({ className = '', title, ...props }: ButtonProps) {
+interface ButtonProps extends React.ComponentProps<'button'> {}
+
+function Button({ title, className, ...props }: ButtonProps) {
   const baseClassName = 'Button';
   const classNames = clsx(baseClassName, className);
 
   return (
-    <button className={classNames.trim()} {...props}>
+    <button className={classNames} {...props}>
       {title}
     </button>
   );
@@ -37,6 +39,21 @@ function ButtonGroup({
 
 
 function BottomBar() {
+  const dispatch = useAppDispatch();
+
+  const refreshMods = useCallback(() => {
+    dispatch(fetchModResourcesMetadata());
+  }, []);
+
+  const openModLauncher = useCallback(async () => {
+    const error = await window.electron.openModLauncher();
+    if (error) {
+      console.log(error);
+    }
+  }, []);
+
+
+
   return (
     <>
       {console.log('BottomBar rendererd')}
@@ -48,13 +65,21 @@ function BottomBar() {
               console.log('Settings');
             }}
           />
+          <Button
+            title="Refresh"
+            onClick={() => {
+              console.log("Refresh");
+              refreshMods();
+            }}
+          />
         </ButtonGroup>
         
         <ButtonGroup>
           <Button
             title="Launcher"
-            onClick={() => {
+            onClick={async () => {
               console.log('Launcher');
+              await openModLauncher();
             }}
           />
           <Button

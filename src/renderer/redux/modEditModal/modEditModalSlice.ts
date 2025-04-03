@@ -1,14 +1,15 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { selectModMetadataList } from "../modResources/modResourcesSlice";
+import { TMetadata } from "../../../types/metadataType";
 
 
 const initialState: {modName: string | null} = {
   modName : null,
 };
 
-const modalSlice = createSlice({
+export const modalSlice = createSlice({
   name: "modEditModal",
   initialState,
   reducers: {
@@ -19,6 +20,12 @@ const modalSlice = createSlice({
       state.modName = null;
     },
   },
+  // extraReducers: (builder) => {
+  //   builder
+  //     .addCase(updateMod.fulfilled, (state, action) => {
+  //       state.modName = null; // Close modal
+  //     });
+  // },
 });
 
 export const { openModEditModal, closeModEditModal } = modalSlice.actions;
@@ -35,5 +42,5 @@ export const selectModEditModalIsOpen =
 
 export const selectModEditModalModMetadata = createSelector(
   [selectModMetadataList, selectModEditModalModName], 
-  (metadataList, modName) => metadataList.find((metadata) => metadata.name === modName)
+  (metadataList, modName) => modName ? metadataList[modName] : undefined
 );

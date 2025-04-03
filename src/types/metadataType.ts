@@ -5,7 +5,6 @@ export type TMetadata = {
   modType: Tmod,
   character: TCharacter, 
   description: string,
-  name: string,
   image: string,
   sourceUrl: string,
   active: boolean,

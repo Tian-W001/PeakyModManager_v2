@@ -19,8 +19,9 @@ import { combineObjects, resolveHtmlPath } from './util';
 import { TCharacter } from '../types/characterType';
 import { Tmod } from '../types/modType';
 import { TMetadata } from '../types/metadataType';
+import { execFile } from 'child_process';
 
-const METADATA_VERSION = 1;
+const METADATA_VERSION = 2;
 const METADATA_FILENAME = 'metadata.json';
 
 class AppUpdater {
@@ -33,7 +34,7 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-const updateAllModMetadata = async (modResourcesPath: string): Promise<TMetadata[]> => {
+const updateAllModMetadata = async (modResourcesPath: string): Promise<Record<string, TMetadata>> => {
   try {
     const files = await fs.promises.readdir(modResourcesPath);
     const modFolders = await Promise.all(
@@ -44,19 +45,19 @@ const updateAllModMetadata = async (modResourcesPath: string): Promise<TMetadata
     );
     
     const validModFolders = modFolders.filter(Boolean) as string[];
-    return Promise.all(
-      validModFolders.map(mod => updateModMetadata(modResourcesPath, mod))
+
+    const metadataEntries = await Promise.all(
+      validModFolders.map(async mod => [mod, await updateModMetadata(modResourcesPath, mod)])
     );
+    return Object.fromEntries(metadataEntries);
+
   } catch (error) {
     console.error('Error updating mod metadata:', error);
-    return [];
+    return {};
   }
 };
 
-const updateModMetadata = async (
-  modResourcesPath: string,
-  mod: string
-): Promise<TMetadata> => {
+const updateModMetadata = async (modResourcesPath: string, mod: string): Promise<TMetadata> => {
   const modPath = path.join(modResourcesPath, mod);
   const modMetadataPath = path.join(modPath, METADATA_FILENAME);
   
@@ -64,7 +65,6 @@ const updateModMetadata = async (
     modType: 'Unknown',
     character: 'Unknown', 
     description: '',
-    name: mod,
     image: '',
     sourceUrl: '',
     active: false,
@@ -107,6 +107,33 @@ ipcMain.handle('fetch-mod-resources-metadata', async () => {
     return await updateAllModMetadata(modResourcesPath);
   }
   return [];
+});
+
+ipcMain.handle('update-mod-metadata', async (_event, modName: string, newMetadata: TMetadata) => {
+  const modResourcesPath = store.get('modResourcesPath');
+  if (!modResourcesPath) return false;
+  try {
+    const modPath = path.join(modResourcesPath, modName);
+    await fs.promises.writeFile(
+      path.join(modPath, METADATA_FILENAME),
+      JSON.stringify(newMetadata, null, 2)
+    );
+    return true;
+  } catch (error) {
+    console.log(`Failed to update mod ${modName}: ${error}`);
+    return false;
+  }
+});
+
+ipcMain.handle('open-mod-launcher', () => {
+  const path = 'F:/ZZMI/Resources/Bin/XXMI Launcher.exe';
+  execFile(path, (error) => {
+    if (error) {
+      console.error('Failed to start EXE:', error);
+      return error;
+    }
+  });
+  return;
 });
 
 ipcMain.on('ipc-example', async (event, arg) => {
