@@ -2,12 +2,12 @@ import './App.css';
 import BottomBar from './components/BottomBar/BottomBar';
 import CardGrid from './components/CardGrid/CardGrid';
 import LeftMenu from './components/LeftMenu/LeftMenu';
-import wallpaper from '../assets/zzz_wallpaper.png';
 import { useEffect } from 'react';
-import { TMetadata } from '../types/metadataType';
+
 import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { fetchModResourcesPath, fetchModResourcesMetadata } from './redux/modResources/modResourcesSlice';
-import { selectModResources } from './redux/modResources/modResourcesSlice';
+
+import wallpaper from '../assets/zzz_wallpaper.png';
 
 export default function App() {
 

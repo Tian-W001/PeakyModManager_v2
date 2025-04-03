@@ -7,6 +7,8 @@ import { selectModEditModalModMetadata } from "../../redux/modEditModal/modEditM
 import { selectModEditModalIsOpen, selectModEditModalModName } from "../../redux/modEditModal/modEditModalSlice";
 import { closeModEditModal } from "../../redux/modEditModal/modEditModalSlice";
 import { updateMod } from "../../redux/modResources/modResourcesSlice";
+import ExitButton from "../ExitButton/ExitButton";
+
 
 Modal.setAppElement('#root');
 
@@ -47,21 +49,25 @@ export const ModEditModal = () => {
       isOpen={isOpen}
       onRequestClose={onRequestClose}
       overlayClassName="ModEditModalOverlay"
-      className="ModEditModal"
+      className="ModEditModalContainer"
       shouldCloseOnOverlayClick={false}
     >
-      {modData && (
-        <div className="EditableTextBox">
-          <span>Description:</span>
-          <textarea
-            id="description"
-            value={desc}
-            onChange={(e) => setDesc(e.target.value)}
-          />
-        </div>
-      )}
-      <button onClick={handleSave}>Save</button>
-      <button onClick={onRequestClose}>Close</button>
+      <ExitButton onClick={onRequestClose}/>
+      <div className="ModEditModal shape">
+        
+        {modData && (
+          <div className="EditableTextBox">
+            <span>Description:</span>
+            <textarea
+              id="description"
+              value={desc}
+              onChange={(e) => setDesc(e.target.value)}
+            />
+          </div>
+        )}
+        <button onClick={handleSave}>Save</button>
+      </div>
+      
     </Modal>
   );
 };

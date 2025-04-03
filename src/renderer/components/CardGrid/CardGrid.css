@@ -11,5 +11,6 @@
     gap: 1em;
     overflow-y: scroll;
     scroll-behavior: smooth;
+    scrollbar-width: none;
     background-color: rgba(156, 144, 238, 0.526);
 }
