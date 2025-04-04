@@ -1,7 +1,7 @@
 import React, { CSSProperties, StyleHTMLAttributes, useEffect, useState } from "react";
 import Modal from "react-modal";
 
-import "./ModEditModal.css";
+import "../../App.css";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectModEditModalModMetadata } from "../../redux/modEditModal/modEditModalSlice";
 import { selectModEditModalIsOpen, selectModEditModalModName } from "../../redux/modEditModal/modEditModalSlice";
@@ -52,8 +52,8 @@ export const ModEditModal = () => {
       className="ModEditModalContainer"
       shouldCloseOnOverlayClick={false}
     >
-      <ExitButton onClick={onRequestClose}/>
-      <div className="ModEditModal shape">
+      <ExitButton onClick={onRequestClose} className="ModalExitButton"/>
+      <div className="ModEditModal ModalShape">
         
         {modData && (
           <div className="EditableTextBox">

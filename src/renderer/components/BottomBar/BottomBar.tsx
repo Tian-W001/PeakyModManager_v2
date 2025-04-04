@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import './BottomBar.css';
+import '../../App.css';
 import clsx from 'clsx';
 import { useAppDispatch } from '../../redux/hooks';
 import { fetchModResourcesMetadata } from '../../redux/modResources/modResourcesSlice';
@@ -9,7 +9,7 @@ import { electron } from 'process';
 interface ButtonProps extends React.ComponentProps<'button'> {}
 
 function Button({ title, className, ...props }: ButtonProps) {
-  const baseClassName = 'Button';
+  const baseClassName = 'BottomBarButton';
   const classNames = clsx(baseClassName, className);
 
   return (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import './ModCard.css';
+import '../../App.css';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { selectModMetadataByName } from '../../redux/modResources/modResourcesSlice';
 import { openModEditModal } from '../../redux/modEditModal/modEditModalSlice';

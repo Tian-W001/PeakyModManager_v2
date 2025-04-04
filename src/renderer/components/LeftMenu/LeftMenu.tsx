@@ -1,5 +1,5 @@
 import React from 'react';
-import './LeftMenu.css';
+import '../../App.css';
 
 function LeftMenu() {
   return (

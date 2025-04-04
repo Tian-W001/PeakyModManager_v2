@@ -1,5 +1,5 @@
 import React from 'react';
-import './CardGrid.css';
+import '../../App.css';
 import { useAppSelector } from '../../redux/hooks';
 import { selectModMetadataList } from '../../redux/modResources/modResourcesSlice';
 import { ModCard } from '../ModCard/ModCard';
