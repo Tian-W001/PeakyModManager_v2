@@ -6,14 +6,14 @@ import { fetchModResourcesMetadata } from '../../redux/modResources/modResources
 import { electron } from 'process';
 
 
-interface ButtonProps extends React.ComponentProps<'button'> {}
+type ButtonProps = React.ComponentProps<'button'> & {
+  title: string;
+  className?: string;
+};
 
-function Button({ title, className, ...props }: ButtonProps) {
-  const baseClassName = 'BottomBarButton';
-  const classNames = clsx(baseClassName, className);
-
+function Button({ title, className='', ...props }: ButtonProps) {
   return (
-    <button className={classNames} {...props}>
+    <button className={`BottomBarButton ${className}`} {...props}>
       {title}
     </button>
   );
