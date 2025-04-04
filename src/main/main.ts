@@ -16,13 +16,13 @@ import Store from 'electron-store';
 import fs from 'fs';
 import MenuBuilder from './menu';
 import { combineObjects, resolveHtmlPath } from './util';
-import { TCharacter } from '../types/characterType';
-import { Tmod } from '../types/modType';
 import { TMetadata } from '../types/metadataType';
-import { execFile } from 'child_process';
+import { execFile, exec } from 'child_process';
+import mime from 'mime-types';
 
 const METADATA_VERSION = 2;
 const METADATA_FILENAME = 'metadata.json';
+const IMG_TYPES = new Set(['.png', '.jpg', '.jpeg', '.webp']);
 
 class AppUpdater {
   constructor() {
@@ -125,21 +125,37 @@ ipcMain.handle('update-mod-metadata', async (_event, modName: string, newMetadat
   }
 });
 
+ipcMain.handle('fetch-image', async (_event, modName: string, imgName: string) => {
+  const modResourcesPath = store.get('modResourcesPath');
+  if (!modResourcesPath) return null;
+  try {
+    const ext = path.extname(imgName);
+    if (!IMG_TYPES.has(ext)) {
+      console.error(`Invalid image type: ${ext}`);
+      return undefined;
+    }
+    const mimeType = mime.lookup(ext);
+
+    const fullPath = path.join(modResourcesPath, modName, imgName);
+    const imageBuffer = await fs.promises.readFile(fullPath);
+    const imageData = imageBuffer.toString('base64');
+    return `data:${mimeType};base64,${imageData}`;
+
+  } catch (error) {
+    console.error(`Failed to read image file: ${error}`);
+    return undefined;
+  }
+})
+
 ipcMain.handle('open-mod-launcher', () => {
-  const path = 'F:/ZZMI/Resources/Bin/XXMI Launcher.exe';
-  execFile(path, (error) => {
+  const path = 'F:\\ZZMI\\Resources\\Bin\\XXMI Launcher.exe';
+  exec(`"${path}"`, (error) => {
     if (error) {
       console.error('Failed to start EXE:', error);
       return error;
     }
   });
   return;
-});
-
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
 });
 
 if (process.env.NODE_ENV === 'production') {
