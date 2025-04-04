@@ -151,10 +151,7 @@
   75% {
     transform: var(--translate) scale(0.95);
   }
-
 }
-
-
 
 .ExitButtonImg {
   width: auto;

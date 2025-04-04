@@ -1,13 +1,13 @@
 import React, { CSSProperties, StyleHTMLAttributes, useEffect, useState } from "react";
 import Modal from "react-modal";
 
-import "../../App.css";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { selectModEditModalModMetadata } from "../../redux/modEditModal/modEditModalSlice";
-import { selectModEditModalIsOpen, selectModEditModalModName } from "../../redux/modEditModal/modEditModalSlice";
-import { closeModEditModal } from "../../redux/modEditModal/modEditModalSlice";
-import { updateMod } from "../../redux/modResources/modResourcesSlice";
-import ExitButton from "../ExitButton/ExitButton";
+import "../App.css";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { selectModEditModalModMetadata } from "../redux/modEditModal/modEditModalSlice";
+import { selectModEditModalIsOpen, selectModEditModalModName } from "../redux/modEditModal/modEditModalSlice";
+import { closeModEditModal } from "../redux/modEditModal/modEditModalSlice";
+import { updateMod } from "../redux/modResources/modResourcesSlice";
+import ExitButton from "./ExitButton";
 
 
 Modal.setAppElement('#root');

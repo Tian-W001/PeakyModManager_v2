@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import '../../App.css';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { selectModMetadataByName } from '../../redux/modResources/modResourcesSlice';
-import { openModEditModal } from '../../redux/modEditModal/modEditModalSlice';
+import '../App.css';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { selectModMetadataByName } from '../redux/modResources/modResourcesSlice';
+import { openModEditModal } from '../redux/modEditModal/modEditModalSlice';
 
 const DEFAULT_MOD_NAME = "Default Mod Name";
 const DEFAULT_MOD_DESC = "Default Mod Description";

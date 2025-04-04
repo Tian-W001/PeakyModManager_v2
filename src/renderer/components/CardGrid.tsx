@@ -1,9 +1,9 @@
 import React from 'react';
-import '../../App.css';
-import { useAppSelector } from '../../redux/hooks';
-import { selectModMetadataList } from '../../redux/modResources/modResourcesSlice';
-import { ModCard } from '../ModCard/ModCard';
-import { ModEditModal } from '../ModEditModal/ModEditModal';
+import '../App.css';
+import { useAppSelector } from '../redux/hooks';
+import { selectModMetadataList } from '../redux/modResources/modResourcesSlice';
+import { ModCard } from './ModCard';
+import { ModEditModal } from './ModEditModal';
 
 function CardGrid() {
   const metadataList = useAppSelector(selectModMetadataList);

@@ -1,7 +1,7 @@
 import React from "react";
-import exitButtonImg from "../../../assets/zzz_exit_button.png";
+import exitButtonImg from "../assets/zzz_exit_button.png";
 
-import '../../App.css';
+import '../App.css';
 
 type ExitButtonProps = React.ComponentProps<'button'> & {
   className?: string;
