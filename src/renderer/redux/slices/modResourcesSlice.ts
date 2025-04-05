@@ -7,15 +7,11 @@ import { Tmod } from "../../../types/modType";
 import { useMemo } from "react";
 
 interface ModResourcesState {
-  modResourcesPath: string;
   metadataList: Record<string, TMetadata>;
-  loading: boolean;
 }
 
 const initialState: ModResourcesState = {
-  modResourcesPath: "",
   metadataList: {},
-  loading: true,
 };
 
 export const updateMod = createAsyncThunk(
@@ -32,13 +28,6 @@ export const updateMod = createAsyncThunk(
   }
 );
 
-export const fetchModResourcesPath = createAsyncThunk(
-  'modResources/fetchModResourcesPath',
-  async () => {
-    return await window.electron.getModResourcesPath();
-  }
-);
-
 export const fetchModResourcesMetadata = createAsyncThunk(
   'modResources/fetchModResourcesMetadata',
   async () => {
@@ -52,20 +41,9 @@ export const modResourcesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchModResourcesPath.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(fetchModResourcesPath.fulfilled, (state, action) => {
-        state.modResourcesPath = action.payload;
-      })
-      .addCase(fetchModResourcesMetadata.pending, (state) => {
-        state.loading = true;
-      })
       .addCase(fetchModResourcesMetadata.fulfilled, (state, action) => {
         state.metadataList = action.payload;
-        state.loading = false;
       })
-
       .addCase(updateMod.fulfilled, (state, action) => {
         const { modName, newMetadata } = action.payload;
         state.metadataList[modName] = newMetadata;
@@ -79,9 +57,6 @@ export default modResourcesSlice.reducer;
 /* 
   Selectors
 */
-export const selectModResources = (state: RootState) => state.modResources;
-export const selectModResourcesPath = (state: RootState) => state.modResources.modResourcesPath;
-export const selectModResourcesLoading = (state: RootState) => state.modResources.loading;
 export const selectModMetadataList = (state: RootState) => state.modResources.metadataList;
 
 export const selectModMetadataListByType = (modType: Tmod | null | undefined) => 

@@ -94,7 +94,6 @@ const store = new Store<{ modResourcesPath: string }>();
 
 ipcMain.handle('set-mod-resources-path', (_event, modResourcesPath: string) => {
   store.set('modResourcesPath', modResourcesPath);
-  return true;
 });
 
 ipcMain.handle('get-mod-resources-path', () => {
@@ -146,6 +145,27 @@ ipcMain.handle('fetch-image', async (_event, imagePath: string) => {
 });
 
 
+ipcMain.handle('get-target-path', () => {
+  return store.get('targetPath');
+});
+ipcMain.handle('set-target-path', (_event, targetPath: string) => {
+  store.set('targetPath', targetPath);
+});
+
+ipcMain.handle('get-launcher-path', () => {
+  console.log('[electron]get launcher path', store.get('launcherPath'));
+  return store.get('launcherPath');
+});
+ipcMain.handle('set-launcher-path', (_event, launcherPath: string) => {
+  store.set('launcherPath', launcherPath);
+});
+
+ipcMain.handle('get-game-path', () => {
+  return store.get('gamePath');
+});
+ipcMain.handle('set-game-path', (_event, gamePath: string) => {
+  store.set('gamePath', gamePath);
+});
 
 ipcMain.handle('open-mod-launcher', () => {
   const path = 'F:\\ZZMI\\Resources\\Bin\\XXMI Launcher.exe';

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import '../App.css';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { selectModMetadataByName, selectModResourcesPath } from '../redux/slices/modResourcesSlice';
+import { selectModResourcesPath } from '../redux/slices/settingsSlice';
+import { selectModMetadataByName } from '../redux/slices/modResourcesSlice';
 import { openModEditModal } from '../redux/slices/modEditModalSlice';
 import path from 'path-browserify';
 

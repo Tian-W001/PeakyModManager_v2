@@ -1,7 +1,8 @@
 import React from 'react';
 import '../App.css';
-
 function LeftMenu() {
+
+
   return (
     <>
       {console.log('BottomBar rendererd')}
