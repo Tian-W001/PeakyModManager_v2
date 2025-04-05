@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { useAppDispatch } from '../redux/hooks';
 import { fetchModResourcesMetadata } from '../redux/slices/modResourcesSlice';
 import { electron } from 'process';
+import { SettingsModal } from './SettingsModal';
 
 
 type ButtonProps = React.ComponentProps<'button'> & {
@@ -41,6 +42,8 @@ function ButtonGroup({
 function BottomBar() {
   const dispatch = useAppDispatch();
 
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = React.useState(false);
+
   const refreshMods = useCallback(() => {
     dispatch(fetchModResourcesMetadata());
   }, []);
@@ -57,12 +60,14 @@ function BottomBar() {
   return (
     <>
       {console.log('BottomBar rendererd')}
+      <SettingsModal isOpen={isSettingsModalOpen} onRequestClose={() => setIsSettingsModalOpen(false)} />
       <div className="BottomBarContainer">
         <ButtonGroup>
           <Button
             title="Settings"
             onClick={() => {
               console.log('Settings');
+              setIsSettingsModalOpen(true);
             }}
           />
           <Button

@@ -1,4 +1,4 @@
-import React, { CSSProperties, StyleHTMLAttributes, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 
 import "../App.css";
