@@ -28,6 +28,18 @@ export const updateMod = createAsyncThunk(
   }
 );
 
+//Not tested!
+export const deleteMod = createAsyncThunk(
+  'modEditModal/deleteMod',
+  async (modName: string, { rejectWithValue }) => {
+    const success = await window.electron.deleteMod(modName);
+    if (!success) {
+      return rejectWithValue('Delete Mod Failed');
+    }
+    return modName;
+  }
+);
+
 export const fetchModResourcesMetadata = createAsyncThunk(
   'modResources/fetchModResourcesMetadata',
   async () => {
@@ -47,6 +59,10 @@ export const modResourcesSlice = createSlice({
       .addCase(updateMod.fulfilled, (state, action) => {
         const { modName, newMetadata } = action.payload;
         state.metadataList[modName] = newMetadata;
+      })
+      .addCase(deleteMod.fulfilled, (state, action) => {
+        const modName = action.payload;
+        delete state.metadataList[modName];
       });
   },
 });

@@ -15,6 +15,7 @@ contextBridge.exposeInMainWorld('electron', {
   //mod resources
   fetchModResourcesMetadata: () => ipcRenderer.invoke('fetch-mod-resources-metadata'),
   addNewMod: (srcModPath: string) => ipcRenderer.invoke('add-new-mod'),
+  deleteMod: (modName: string) => ipcRenderer.invoke('delete-mod', modName),
   updateMod: (modName: string, newMetadata: TMetadata) => ipcRenderer.invoke('update-mod-metadata', modName, newMetadata),
   fetchImage: (modName: string, imgName: string) => ipcRenderer.invoke('fetch-image', modName, imgName),
   

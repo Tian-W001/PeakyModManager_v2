@@ -180,6 +180,27 @@ ipcMain.handle('add-new-mod', async (_event, srcModPath) => {
   }
 });
 
+ipcMain.handle('delete-mod', async (_event, modName: string) => {
+  const modResourcesPath = store.get('modResourcesPath');
+  if (!modResourcesPath) {
+    console.error('Mod resources path not set');
+    return false;
+  }
+  const modPath = path.join(modResourcesPath, modName);
+  try {
+    if (await fs.pathExists(modPath)) {
+      await fs.remove(modPath);
+      return true;
+    } else {
+      console.error('Mod does not exist');
+      return false;
+    }
+  } catch (error) {
+    console.error('Error deleting mod:', error);
+    return false;
+  }
+});
+
 ipcMain.handle('get-target-path', () => {
   return store.get('targetPath');
 });
@@ -277,6 +298,8 @@ const createWindow = async () => {
     autoHideMenuBar: true,
     icon: getAssetPath('icon.png'),
     webPreferences: {
+      contextIsolation: true,
+      nodeIntegration: false,
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
         : path.join(__dirname, '../../.erb/dll/preload.js'),
