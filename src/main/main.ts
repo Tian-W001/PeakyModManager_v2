@@ -125,19 +125,17 @@ ipcMain.handle('update-mod-metadata', async (_event, modName: string, newMetadat
   }
 });
 
-ipcMain.handle('fetch-image', async (_event, modName: string, imgName: string) => {
-  const modResourcesPath = store.get('modResourcesPath');
-  if (!modResourcesPath) return null;
+ipcMain.handle('fetch-image', async (_event, imagePath: string) => {
+  if (!imagePath) return undefined;
   try {
-    const ext = path.extname(imgName);
+    const ext = path.extname(imagePath);
     if (!IMG_TYPES.has(ext)) {
       console.error(`Invalid image type: ${ext}`);
       return undefined;
     }
     const mimeType = mime.lookup(ext);
 
-    const fullPath = path.join(modResourcesPath, modName, imgName);
-    const imageBuffer = await fs.promises.readFile(fullPath);
+    const imageBuffer = await fs.promises.readFile(imagePath);
     const imageData = imageBuffer.toString('base64');
     return `data:${mimeType};base64,${imageData}`;
 
@@ -145,7 +143,9 @@ ipcMain.handle('fetch-image', async (_event, modName: string, imgName: string) =
     console.error(`Failed to read image file: ${error}`);
     return undefined;
   }
-})
+});
+
+
 
 ipcMain.handle('open-mod-launcher', () => {
   const path = 'F:\\ZZMI\\Resources\\Bin\\XXMI Launcher.exe';
