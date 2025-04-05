@@ -13,7 +13,7 @@ import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import Store from 'electron-store';
-import fs from 'fs';
+import fs from 'fs-extra';
 import MenuBuilder from './menu';
 import { combineObjects, resolveHtmlPath } from './util';
 import { TMetadata } from '../types/metadataType';
@@ -47,7 +47,7 @@ const updateAllModMetadata = async (modResourcesPath: string): Promise<Record<st
     const validModFolders = modFolders.filter(Boolean) as string[];
 
     const metadataEntries = await Promise.all(
-      validModFolders.map(async mod => [mod, await updateModMetadata(modResourcesPath, mod)])
+      validModFolders.map(async mod => [mod, await updateModMetadata(path.join(modResourcesPath, mod))])
     );
     return Object.fromEntries(metadataEntries);
 
@@ -57,8 +57,7 @@ const updateAllModMetadata = async (modResourcesPath: string): Promise<Record<st
   }
 };
 
-const updateModMetadata = async (modResourcesPath: string, mod: string): Promise<TMetadata> => {
-  const modPath = path.join(modResourcesPath, mod);
+const updateModMetadata = async (modPath: string): Promise<TMetadata|null> => {
   const modMetadataPath = path.join(modPath, METADATA_FILENAME);
   
   const defaultMetadata: TMetadata = {
@@ -72,23 +71,29 @@ const updateModMetadata = async (modResourcesPath: string, mod: string): Promise
   };
 
   try {
-    await fs.promises.access(modMetadataPath);
-    const rawData = await fs.promises.readFile(modMetadataPath, 'utf-8');
+    // metadata doesn't exist, create new metadata file
+    if (!(await fs.pathExists(modMetadataPath))) {
+      await fs.outputFile(modMetadataPath, JSON.stringify(defaultMetadata, null, 2));
+      return defaultMetadata;
+    }
+    const rawData = await fs.readFile(modMetadataPath, 'utf-8');
     const currentMetadata = JSON.parse(rawData);
-
     if (currentMetadata.metadataVersion === METADATA_VERSION) {
+      // metadata exists, read and return
       return currentMetadata;
+    } else {
+      // metadata outdatated, update 
+      const newMetadata = combineObjects(currentMetadata, defaultMetadata);
+      await fs.outputFile(modMetadataPath, JSON.stringify(newMetadata, null, 2));
+      return newMetadata;
     }
 
-    const newMetadata = combineObjects(currentMetadata, defaultMetadata);
-    await fs.promises.writeFile(modMetadataPath, JSON.stringify(newMetadata, null, 2));
-    return newMetadata;
   } catch (error) {
-    // File doesn't exist or other error
-    await fs.promises.writeFile(modMetadataPath, JSON.stringify(defaultMetadata, null, 2));
-    return defaultMetadata;
+    console.error('Error updating mod metadata:', error);
+    return null;
   }
 };
+
 
 const store = new Store<{ modResourcesPath: string }>();
 
@@ -144,6 +149,36 @@ ipcMain.handle('fetch-image', async (_event, imagePath: string) => {
   }
 });
 
+ipcMain.handle('add-new-mod', async (_event, srcModPath) => {
+  try {
+    if (!(await fs.stat(srcModPath)).isDirectory()) {
+      console.error('Selected path is not a directory');
+      return null;
+    }
+    const targetPath = store.get('modResourcesPath');
+    if (!targetPath) {
+      console.error('Target path not set');
+      return null;
+    }
+    const targetModPath = path.join(targetPath, path.basename(srcModPath));
+    const modResourcesPath = store.get('modResourcesPath');
+    if (!modResourcesPath) {
+      console.error('Mod resources path not set');
+      return null;
+    }
+    await fs.ensureDir(modResourcesPath);
+    if (await fs.pathExists(targetModPath)) {
+      console.error('Mod already exists in target path');
+      return null;
+    }
+    await fs.copy(srcModPath, targetModPath);
+    return await updateModMetadata(targetModPath);
+
+  } catch (error) {
+    console.error('Error copying mod:', error);
+    return null;
+  }
+});
 
 ipcMain.handle('get-target-path', () => {
   return store.get('targetPath');
