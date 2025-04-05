@@ -76,6 +76,9 @@ export const modResourcesSlice = createSlice({
 export default modResourcesSlice.reducer;
 
 
+/* 
+  Selectors
+*/
 export const selectModResources = (state: RootState) => state.modResources;
 export const selectModResourcesPath = (state: RootState) => state.modResources.modResourcesPath;
 export const selectModResourcesLoading = (state: RootState) => state.modResources.loading;

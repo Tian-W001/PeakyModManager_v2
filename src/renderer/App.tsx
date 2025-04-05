@@ -5,7 +5,7 @@ import LeftMenu from './components/LeftMenu';
 import { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from './redux/hooks';
-import { fetchModResourcesPath, fetchModResourcesMetadata } from './redux/modResources/modResourcesSlice';
+import { fetchModResourcesPath, fetchModResourcesMetadata } from './redux/slices/modResourcesSlice';
 
 import wallpaper from './assets/zzz_wallpaper.png';
 

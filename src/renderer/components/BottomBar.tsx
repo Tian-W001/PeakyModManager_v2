@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import '../App.css';
 import clsx from 'clsx';
 import { useAppDispatch } from '../redux/hooks';
-import { fetchModResourcesMetadata } from '../redux/modResources/modResourcesSlice';
+import { fetchModResourcesMetadata } from '../redux/slices/modResourcesSlice';
 import { electron } from 'process';
 
 

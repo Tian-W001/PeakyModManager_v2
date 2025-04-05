@@ -3,10 +3,10 @@ import Modal from "react-modal";
 
 import "../App.css";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { selectModEditModalModMetadata } from "../redux/modEditModal/modEditModalSlice";
-import { selectModEditModalIsOpen, selectModEditModalModName } from "../redux/modEditModal/modEditModalSlice";
-import { closeModEditModal } from "../redux/modEditModal/modEditModalSlice";
-import { updateMod } from "../redux/modResources/modResourcesSlice";
+import { selectModEditModalModMetadata } from "../redux/slices/modEditModalSlice";
+import { selectModEditModalIsOpen, selectModEditModalModName } from "../redux/slices/modEditModalSlice";
+import { closeModEditModal } from "../redux/slices/modEditModalSlice";
+import { updateMod } from "../redux/slices/modResourcesSlice";
 import ExitButton from "./ExitButton";
 
 

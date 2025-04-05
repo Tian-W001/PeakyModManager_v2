@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import '../App.css';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { selectModMetadataByName } from '../redux/modResources/modResourcesSlice';
-import { openModEditModal } from '../redux/modEditModal/modEditModalSlice';
+import { selectModMetadataByName } from '../redux/slices/modResourcesSlice';
+import { openModEditModal } from '../redux/slices/modEditModalSlice';
 
 const DEFAULT_MOD_NAME = "Default Mod Name";
 const DEFAULT_MOD_DESC = "Default Mod Description";
@@ -18,6 +18,7 @@ export const ModCard = ({ modName }: ModCardProps) => {
     console.error("ModCard: modData not found for modName:", modName);
   }
 
+  //Load mod image
   const [modImageData, setModImageData] = useState<string | undefined>(undefined);
   useEffect(() => {
     if (modData?.image) {

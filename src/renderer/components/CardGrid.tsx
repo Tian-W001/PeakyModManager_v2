@@ -1,7 +1,7 @@
 import React from 'react';
 import '../App.css';
 import { useAppSelector } from '../redux/hooks';
-import { selectModMetadataList } from '../redux/modResources/modResourcesSlice';
+import { selectModMetadataList } from '../redux/slices/modResourcesSlice';
 import { ModCard } from './ModCard';
 import { ModEditModal } from './ModEditModal';
 

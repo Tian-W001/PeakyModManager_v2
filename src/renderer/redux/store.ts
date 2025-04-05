@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import modResourcesReducer from './modResources/modResourcesSlice';
-import modEditModalReducer from './modEditModal/modEditModalSlice';
+import modResourcesReducer from './slices/modResourcesSlice';
+import modEditModalReducer from './slices/modEditModalSlice';
 
 export const store = configureStore({
   reducer: {

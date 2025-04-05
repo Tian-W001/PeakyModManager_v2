@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { selectModMetadataList } from "../modResources/modResourcesSlice";
-import { TMetadata } from "../../../types/metadataType";
+import { selectModMetadataList } from "./modResourcesSlice";
 
 
 const initialState: {modName: string | null} = {
@@ -20,12 +19,6 @@ export const modalSlice = createSlice({
       state.modName = null;
     },
   },
-  // extraReducers: (builder) => {
-  //   builder
-  //     .addCase(updateMod.fulfilled, (state, action) => {
-  //       state.modName = null; // Close modal
-  //     });
-  // },
 });
 
 export const { openModEditModal, closeModEditModal } = modalSlice.actions;
