@@ -48,12 +48,12 @@ export const ModEditModal = () => {
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      overlayClassName="ModEditModalOverlay"
-      className="ModEditModalContainer"
+      overlayClassName="ModalOverlay"
+      className="ModalContainer"
       shouldCloseOnOverlayClick={false}
     >
       <ExitButton onClick={onRequestClose} className="ModalExitButton"/>
-      <div className="ModEditModal ModalShape">
+      <div className="Modal ModalShape">
         
         {modData && (
           <div className="EditableTextBox">

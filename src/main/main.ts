@@ -168,10 +168,29 @@ ipcMain.handle('set-game-path', (_event, gamePath: string) => {
 });
 
 ipcMain.handle('open-mod-launcher', () => {
-  const path = 'F:\\ZZMI\\Resources\\Bin\\XXMI Launcher.exe';
+  const path = store.get('launcherPath');
+  if (!path) {
+    console.error('Launcher path not set');
+    return;
+  }
   exec(`"${path}"`, (error) => {
     if (error) {
-      console.error('Failed to start EXE:', error);
+      console.error('Failed to start:', error);
+      return error;
+    }
+  });
+  return;
+});
+
+ipcMain.handle('open-game', () => {
+  const path = store.get('gamePath');
+  if (!path) {
+    console.error('Game path not set');
+    return;
+  }
+  exec(`"${path}"`, (error) => {
+    if (error) {
+      console.error('Failed to start:', error);
       return error;
     }
   });
