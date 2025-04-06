@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer } from 'electron';
+import { contextBridge, ipcRenderer, webUtils } from 'electron';
 import { TMetadata } from '../types/metadataType';
 
 contextBridge.exposeInMainWorld('electron', {
@@ -14,11 +14,14 @@ contextBridge.exposeInMainWorld('electron', {
 
   //mod resources
   fetchModResourcesMetadata: () => ipcRenderer.invoke('fetch-mod-resources-metadata'),
-  addNewMod: (srcModPath: string) => ipcRenderer.invoke('add-new-mod'),
+  addNewMod: (srcModPath: string) => ipcRenderer.invoke('add-new-mod', srcModPath),
   deleteMod: (modName: string) => ipcRenderer.invoke('delete-mod', modName),
   updateMod: (modName: string, newMetadata: TMetadata) => ipcRenderer.invoke('update-mod-metadata', modName, newMetadata),
   fetchImage: (modName: string, imgName: string) => ipcRenderer.invoke('fetch-image', modName, imgName),
-  
+  getModPath: (file: File) => {
+    return webUtils.getPathForFile(file);
+  },
+
   //executables
   openModLauncher: () => ipcRenderer.invoke('open-mod-launcher'),
   openGame: () => ipcRenderer.invoke('open-game'),
