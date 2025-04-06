@@ -6,8 +6,10 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectModEditModalModMetadata } from "../redux/slices/modEditModalSlice";
 import { selectModEditModalIsOpen, selectModEditModalModName } from "../redux/slices/modEditModalSlice";
 import { closeModEditModal } from "../redux/slices/modEditModalSlice";
-import { updateMod } from "../redux/slices/modResourcesSlice";
+import { deleteMod, updateMod } from "../redux/slices/modResourcesSlice";
 import ExitButton from "./ExitButton";
+import { EditableTextBox } from "./EditableTextBox";
+import { TMetadata } from "../../types/metadataType";
 
 
 Modal.setAppElement('#root');
@@ -19,12 +21,12 @@ export const ModEditModal = () => {
   const modName = useAppSelector(selectModEditModalModName);
   const modData = useAppSelector(selectModEditModalModMetadata);
   
-  const [desc, setDesc] = useState(modData?.description || "");
+  const [newModData, setNewModData] = useState<TMetadata|undefined>(undefined);
 
   console.log("ModEditModal Rendered");
 
   useEffect(() => {
-    setDesc(modData?.description || "");
+    setNewModData(modData);
   }, [modData]);
 
   const onRequestClose = () => {
@@ -32,15 +34,21 @@ export const ModEditModal = () => {
   };
 
   const handleSave = () => {
-    console.log("Save mod with new desc:", desc);
     if (!modName || !modData) return;
 
     dispatch(updateMod({
-      modName, newMetadata: {
+      modName, newMetadata: { //replace the old metadata with the new one
         ...modData,
-        description: desc
+        ...newModData,
       }
     }));
+  };
+
+  const handleDelete = () => {
+    console.log("Delete mod:", modName);
+    if (!modName) return;
+    dispatch(deleteMod(modName));
+    onRequestClose();
   };
 
 
@@ -55,17 +63,15 @@ export const ModEditModal = () => {
       <ExitButton onClick={onRequestClose} className="ModalExitButton"/>
       <div className="Modal ModalShape">
         
-        {modData && (
-          <div className="EditableTextBox">
-            <span>Description:</span>
-            <textarea
-              id="description"
-              value={desc}
-              onChange={(e) => setDesc(e.target.value)}
-            />
-          </div>
+        {newModData && (
+          <EditableTextBox title="Description" text={newModData?.description} 
+            handleChange={(e) => {
+              setNewModData({ ...newModData, description: e.target.value });
+            }}
+          />
         )}
         <button onClick={handleSave}>Save</button>
+        <button onClick={handleDelete}>Delete</button>
       </div>
       
     </Modal>
