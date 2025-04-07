@@ -15,10 +15,12 @@ import log from 'electron-log';
 import Store from 'electron-store';
 import fs from 'fs-extra';
 import MenuBuilder from './menu';
+import util from 'util';
 import { combineObjects, resolveHtmlPath } from './util';
 import { TMetadata } from '../types/metadataType';
 import { execFile, exec } from 'child_process';
 import mime from 'mime-types';
+import ws from 'windows-shortcuts';
 
 const METADATA_VERSION = 2;
 const METADATA_FILENAME = 'metadata.json';
@@ -204,15 +206,14 @@ const updateModMetadata = async (modPath: string): Promise<TMetadata|null> => {
 };
 
 
-const store = new Store<{ modResourcesPath: string }>();
+const store = new Store<{ 
+  modResourcesPath: string,
+  targetPath: string,
+  launcherPath: string,
+  gamePath: string,
+}>();
 
-ipcMain.handle('set-mod-resources-path', (_event, modResourcesPath: string) => {
-  store.set('modResourcesPath', modResourcesPath);
-});
 
-ipcMain.handle('get-mod-resources-path', () => {
-  return store.get('modResourcesPath');
-});
 
 ipcMain.handle('fetch-mod-resources-metadata', async () => {
   const modResourcesPath = store.get('modResourcesPath');
@@ -233,7 +234,7 @@ ipcMain.handle('update-mod-metadata', async (_event, modName: string, newMetadat
     );
     return true;
   } catch (error) {
-    console.log(`Failed to update mod ${modName}: ${error}`);
+    console.error(`Failed to update mod ${modName}: ${error}`);
     return false;
   }
 });
@@ -310,6 +311,47 @@ ipcMain.handle('delete-mod', async (_event, modName: string) => {
   }
 });
 
+ipcMain.handle('apply-mods', async (_event, diffList: Record<string,boolean>) => {
+  try {
+    const modResourcesPath = store.get('modResourcesPath');
+    const targetPath = store.get('targetPath');
+    for (const [modName, isActive] of Object.entries(diffList)) {
+      const modPath = path.join(modResourcesPath, modName);
+      const shortcutPath = path.join(targetPath, `${modName}.lnk`);
+      const metadataPath = path.join(modPath, METADATA_FILENAME);
+      if (!await fs.pathExists(metadataPath)) {
+        console.error(`Metadata file not found for mod ${modName}, skipping...`);
+        continue;
+      }
+      const metadata: TMetadata = await fs.readJSON(metadataPath);
+      if (!metadata) {
+        console.error(`Failed to read metadata for mod ${modName}`);
+        continue;
+      }
+      metadata.active = isActive;
+      await fs.writeJSON(metadataPath, metadata, { spaces: 2 });
+
+      if (isActive) { // Create a shortcut for the mod
+        shell.writeShortcutLink(shortcutPath, { target: modPath });
+      } else {        // Remove the shortcut
+        await fs.remove(shortcutPath);
+      }
+    }
+    return true;
+  }  catch (error) {
+    console.error('Error applying mods:', error);
+    return false;
+  }
+});
+
+ipcMain.handle('get-mod-resources-path', () => {
+  return store.get('modResourcesPath');
+});
+
+ipcMain.handle('set-mod-resources-path', (_event, modResourcesPath: string) => {
+  store.set('modResourcesPath', modResourcesPath);
+});
+
 ipcMain.handle('get-target-path', () => {
   return store.get('targetPath');
 });
@@ -318,7 +360,6 @@ ipcMain.handle('set-target-path', (_event, targetPath: string) => {
 });
 
 ipcMain.handle('get-launcher-path', () => {
-  console.log('[electron]get launcher path', store.get('launcherPath'));
   return store.get('launcherPath');
 });
 ipcMain.handle('set-launcher-path', (_event, launcherPath: string) => {

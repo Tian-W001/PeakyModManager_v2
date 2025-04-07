@@ -17,7 +17,7 @@ export default function App() {
   useEffect(() => {
 
     //dispatch(updateModResourcesPath('C:\\Users\\Tian\\Desktop\\testModResources'));
-    //dispatch(updateTargetPath('C:\Users\Tian\Desktop\testModTarget'));
+    //dispatch(updateTargetPath('C:\\Users\\Tian\\Desktop\\testModFolder'));
     //dispatch(updateLauncherPath('F:\\ZZMI\\Resources\\Bin\\XXMI Launcher.exe'));
     //dispatch(updateGamePath('F:\\Program Files\\miHoYo Launcher\\games\\ZenlessZoneZero Game\\ZenlessZoneZero.exe'))
 

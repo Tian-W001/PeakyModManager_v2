@@ -1,11 +1,8 @@
 import React, { useCallback } from 'react';
 import '../App.css';
-import clsx from 'clsx';
 import { useAppDispatch } from '../redux/hooks';
-import { fetchModResourcesMetadata } from '../redux/slices/modResourcesSlice';
-import { electron } from 'process';
+import { fetchModResourcesMetadata, applyMods } from '../redux/slices/modResourcesSlice';
 import { SettingsModal } from './SettingsModal';
-
 
 type ButtonProps = React.ComponentProps<'button'> & {
   title: string;
@@ -51,11 +48,13 @@ function BottomBar() {
   const openModLauncher = useCallback(async () => {
     const error = await window.electron.openModLauncher();
     if (error) {
-      console.log(error);
+      console.error(error);
     }
   }, []);
 
-
+  const handleApplyMods = useCallback(async () => {
+    await dispatch(applyMods());
+  }, []);
 
   return (
     <>
@@ -66,38 +65,29 @@ function BottomBar() {
           <Button
             title="Settings"
             onClick={() => {
-              console.log('Settings');
               setIsSettingsModalOpen(true);
             }}
           />
           <Button
             title="Refresh"
-            onClick={() => {
-              console.log("Refresh");
-              refreshMods();
-            }}
+            onClick={refreshMods}
           />
         </ButtonGroup>
         
         <ButtonGroup>
           <Button
             title="Launcher"
-            onClick={async () => {
-              console.log('Launcher');
-              await openModLauncher();
-            }}
+            onClick={openModLauncher}
           />
           <Button
             title="Game"
             onClick={() => {
-              console.log('Game');
+
             }}
           />
           <Button
             title="Apply"
-            onClick={() => {
-              console.log('Apply');
-            }}
+            onClick={handleApplyMods}
           />
         </ButtonGroup>
       </div>

@@ -8,10 +8,12 @@ import { useMemo } from "react";
 
 interface ModResourcesState {
   metadataList: Record<string, TMetadata>;
+  diffList: Record<string, boolean>;
 }
 
 const initialState: ModResourcesState = {
   metadataList: {},
+  diffList: {},
 };
 
 export const updateMod = createAsyncThunk(
@@ -42,7 +44,6 @@ export const addNewMod = createAsyncThunk(
   }
 );
 
-//Not tested!
 export const deleteMod = createAsyncThunk(
   'modEditModal/deleteMod',
   async (modName: string, { rejectWithValue }) => {
@@ -51,6 +52,19 @@ export const deleteMod = createAsyncThunk(
       return rejectWithValue('Delete Mod Failed');
     }
     return modName;
+  }
+);
+
+export const applyMods = createAsyncThunk(
+  'modResources/applyMods',
+  async (_, {getState, rejectWithValue }) => {
+    const state = getState() as RootState;
+    const diffList = state.modResources.diffList;
+    const success = await window.electron.applyMods(diffList);
+    if (!success) {
+      return rejectWithValue('Apply Mods Failed');
+    }
+    return diffList;
   }
 );
 
@@ -64,7 +78,19 @@ export const fetchModResourcesMetadata = createAsyncThunk(
 export const modResourcesSlice = createSlice({
   name: 'modResources',
   initialState,
-  reducers: {},
+  reducers: {
+    updateDiffList: (state, action) => {
+      const { modName, isActive } = action.payload;
+      const oldActive = state.metadataList[modName]?.active;
+      if (oldActive !== undefined) {
+        if (oldActive !== isActive) {
+          state.diffList[modName] = isActive;
+        } else {
+          delete state.diffList[modName];
+        }
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchModResourcesMetadata.fulfilled, (state, action) => {
@@ -81,10 +107,18 @@ export const modResourcesSlice = createSlice({
       .addCase(deleteMod.fulfilled, (state, action) => {
         const modName = action.payload;
         delete state.metadataList[modName];
+      })
+      .addCase(applyMods.fulfilled, (state, action) => {
+        const diffList = action.payload;
+        for (const [modName, isActive] of Object.entries(diffList)) {
+          state.metadataList[modName].active = isActive;
+        }
+        state.diffList = {};
       });
   },
 });
 
+export const { updateDiffList } = modResourcesSlice.actions;
 export default modResourcesSlice.reducer;
 
 

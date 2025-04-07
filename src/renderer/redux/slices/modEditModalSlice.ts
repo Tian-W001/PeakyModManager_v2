@@ -12,7 +12,7 @@ export const modalSlice = createSlice({
   name: "modEditModal",
   initialState,
   reducers: {
-    openModEditModal: (state, action: PayloadAction<string>) => {
+    openModEditModal: (state, action) => {
       state.modName = action.payload;
     },
     closeModEditModal: (state) => {
