@@ -18,25 +18,6 @@ function Button({ title, className='', ...props }: ButtonProps) {
   );
 }
 
-interface ButtonGroupProps extends React.ComponentProps<'div'> {
-  children: React.ReactNode;
-}
-function ButtonGroup({
-  children,
-  className = '',
-  ...props
-}: ButtonGroupProps) {
-  const baseClassName = 'ButtonGroup';
-  const classNames = `${baseClassName} ${className}`;
-
-  return (
-    <div className={classNames.trim()} {...props}>
-      {children}
-    </div>
-  );
-}
-
-
 function BottomBar() {
   const dispatch = useAppDispatch();
 
@@ -71,7 +52,7 @@ function BottomBar() {
       {console.log('BottomBar rendererd')}
       <SettingsModal isOpen={isSettingsModalOpen} onRequestClose={() => setIsSettingsModalOpen(false)} />
       <div className="BottomBarContainer">
-        <ButtonGroup>
+        <div className="ButtonGroup flexStart">
           <Button
             title="Settings"
             onClick={() => {
@@ -82,9 +63,9 @@ function BottomBar() {
             title="Refresh"
             onClick={refreshMods}
           />
-        </ButtonGroup>
+        </div>
         
-        <ButtonGroup>
+        <div className="ButtonGroup flexEnd">
           <Button
             title="Launcher"
             onClick={openModLauncher}
@@ -97,7 +78,7 @@ function BottomBar() {
             title="Apply"
             onClick={handleApplyMods}
           />
-        </ButtonGroup>
+        </div>
       </div>
     </>
   );

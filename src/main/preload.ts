@@ -11,6 +11,7 @@ contextBridge.exposeInMainWorld('electron', {
   setLauncherPath: (path: string) => ipcRenderer.invoke('set-launcher-path', path),
   getGamePath: () => ipcRenderer.invoke('get-game-path'),
   setGamePath: (path: string) => ipcRenderer.invoke('set-game-path', path),
+  selectFolder: () => ipcRenderer.invoke('select-folder'),
 
   //mod resources
   fetchModResourcesMetadata: () => ipcRenderer.invoke('fetch-mod-resources-metadata'),
