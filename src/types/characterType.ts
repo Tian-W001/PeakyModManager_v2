@@ -1,2 +1,10 @@
 
-export type TCharacter = "Unknown" | "Anby" | "Nicole";
+export const characters = [
+    "Unknown",
+    "Anby",
+    "Burnice",
+    "Nicole", 
+    "Ellen",
+] as const;
+
+export type TCharacter = typeof characters[number];

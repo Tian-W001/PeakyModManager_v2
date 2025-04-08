@@ -11,8 +11,8 @@ export const EditableTextBox = ({ title, text, handleChange }: EditableTextBoxPr
   
   return (
     <div className="EditableTextBoxContainer">
-      {title && <span>{title}</span>}
-      <textarea className="EditableTextBox" value={text} onChange={handleChange}/>
+      {title && <span>{title}: </span>}
+      <textarea className="EditableTextBox" rows={1} value={text} onChange={handleChange}/>
     </div>
   );
   

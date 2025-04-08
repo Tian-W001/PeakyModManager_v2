@@ -10,15 +10,17 @@ import path from 'path-browserify';
 const DEFAULT_MOD_NAME = "Default Mod Name";
 const DEFAULT_MOD_DESC = "Default Mod Description";
 
+type TActiveState = "active" | "inactive" | "preActive" | "preInactive";
 
 interface ModCardProps {
   modName: string;
 }
 
 export const ModCard = ({ modName }: ModCardProps) => {
+  console.log(`ModCard ${modName} rendered`);
+
   const dispatch = useAppDispatch();
   
-  const diffList = useAppSelector((state) => state.modResources.diffList);
   const modResourcesPath = useAppSelector(selectModResourcesPath);
   const modData = useAppSelector(selectModMetadataByName(modName));
   if (!modData) {
@@ -30,6 +32,22 @@ export const ModCard = ({ modName }: ModCardProps) => {
       setIsActive(modData.active);
     }
   }, [modData?.active]);
+
+  const cardActiveState = useMemo(() => {
+    if (modData?.active !== undefined) {
+      if (modData.active && isActive)
+        return "active";
+      if (!modData.active && !isActive)
+        return "inactive";
+      if (modData.active && !isActive)
+        return "preInactive";
+      if (!modData.active && isActive)
+        return "preActive";
+    }
+    else {
+      return "inactive";
+    }
+  }, [modData?.active, isActive]) as TActiveState;
 
   //Load mod image
   const [modImageData, setModImageData] = useState<string | undefined>(undefined);
@@ -53,10 +71,10 @@ export const ModCard = ({ modName }: ModCardProps) => {
   };
 
   return (
-    <div className={`ModCardContainer ${isActive ? 'active' : ''}`} onClick={handleClick} onContextMenu={handleContextMenu}>
+    <div className={`ModCardContainer ${cardActiveState}`} onClick={handleClick} onContextMenu={handleContextMenu}>
       <div className="ModCardTitle">{modName || DEFAULT_MOD_NAME}</div>
       <div className="ModCardDesc">{modData?.description || DEFAULT_MOD_DESC}</div>
-      <img src={modImageData} alt="Mod Image" className="ModCardImage" />
+      <img src={modImageData} alt="Mod Image" className="" />
     </div>
   );
 
