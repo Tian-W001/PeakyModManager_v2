@@ -15,14 +15,12 @@ import log from 'electron-log';
 import Store from 'electron-store';
 import fs from 'fs-extra';
 import MenuBuilder from './menu';
-import util from 'util';
 import { combineObjects, resolveHtmlPath } from './util';
 import { TMetadata } from '../types/metadataType';
-import { execFile, exec } from 'child_process';
+import { exec } from 'child_process';
 import mime from 'mime-types';
-import ws from 'windows-shortcuts';
 
-const METADATA_VERSION = 2;
+const OVERWRITE_METADATA = false;
 const METADATA_FILENAME = 'metadata.json';
 const IMG_TYPES = new Set(['.png', '.jpg', '.jpeg', '.webp']);
 
@@ -178,7 +176,6 @@ const updateModMetadata = async (modPath: string): Promise<TMetadata|null> => {
     image: '',
     sourceUrl: '',
     active: false,
-    metadataVersion: METADATA_VERSION,
   };
 
   try {
@@ -189,11 +186,11 @@ const updateModMetadata = async (modPath: string): Promise<TMetadata|null> => {
     }
     const rawData = await fs.readFile(modMetadataPath, 'utf-8');
     const currentMetadata = JSON.parse(rawData);
-    if (currentMetadata.metadataVersion === METADATA_VERSION) {
+    if (!OVERWRITE_METADATA) {
       // metadata exists, read and return
       return currentMetadata;
     } else {
-      // metadata outdatated, update 
+      // metadata outdatated, update
       const newMetadata = combineObjects(currentMetadata, defaultMetadata);
       await fs.outputFile(modMetadataPath, JSON.stringify(newMetadata, null, 2));
       return newMetadata;
@@ -220,18 +217,15 @@ ipcMain.handle('fetch-mod-resources-metadata', async () => {
   if (modResourcesPath) {
     return await updateAllModMetadata(modResourcesPath);
   }
-  return [];
+  return null;
 });
 
 ipcMain.handle('update-mod-metadata', async (_event, modName: string, newMetadata: TMetadata) => {
   const modResourcesPath = store.get('modResourcesPath');
-  if (!modResourcesPath) return false;
+  const metadataPath = path.join(modResourcesPath, modName, METADATA_FILENAME);
+
   try {
-    const modPath = path.join(modResourcesPath, modName);
-    await fs.promises.writeFile(
-      path.join(modPath, METADATA_FILENAME),
-      JSON.stringify(newMetadata, null, 2)
-    );
+    await fs.writeJson(metadataPath, newMetadata, { spaces: 2 });
     return true;
   } catch (error) {
     console.error(`Failed to update mod ${modName}: ${error}`);
@@ -265,24 +259,15 @@ ipcMain.handle('add-new-mod', async (_event, srcModPath) => {
       console.error('Selected path is not a directory');
       return null;
     }
-    const targetPath = store.get('modResourcesPath');
-    if (!targetPath) {
-      console.error('Target path not set');
-      return null;
-    }
-    const targetModPath = path.join(targetPath, path.basename(srcModPath));
     const modResourcesPath = store.get('modResourcesPath');
-    if (!modResourcesPath) {
-      console.error('Mod resources path not set');
+    const modPath = path.join(modResourcesPath, path.basename(srcModPath));
+
+    if (await fs.pathExists(modPath)) {
+      console.error('Mod already exists in modResources');
       return null;
     }
-    await fs.ensureDir(modResourcesPath);
-    if (await fs.pathExists(targetModPath)) {
-      console.error('Mod already exists in target path');
-      return null;
-    }
-    await fs.copy(srcModPath, targetModPath);
-    return await updateModMetadata(targetModPath);
+    await fs.copy(srcModPath, modPath);
+    return await updateModMetadata(modPath);
 
   } catch (error) {
     console.error('Error copying mod:', error);
@@ -292,19 +277,15 @@ ipcMain.handle('add-new-mod', async (_event, srcModPath) => {
 
 ipcMain.handle('delete-mod', async (_event, modName: string) => {
   const modResourcesPath = store.get('modResourcesPath');
-  if (!modResourcesPath) {
-    console.error('Mod resources path not set');
-    return false;
-  }
+  const targetPath = store.get('targetPath');
+
   const modPath = path.join(modResourcesPath, modName);
+  const shortcutPath = path.join(targetPath, `${modName}.lnk`);
+
   try {
-    if (await fs.pathExists(modPath)) {
-      await fs.remove(modPath);
-      return true;
-    } else {
-      console.error('Mod does not exist');
-      return false;
-    }
+    await fs.remove(modPath);
+    await fs.remove(shortcutPath);
+    return true;
   } catch (error) {
     console.error('Error deleting mod:', error);
     return false;
@@ -385,7 +366,6 @@ ipcMain.handle('open-mod-launcher', () => {
       return error;
     }
   });
-  return;
 });
 
 ipcMain.handle('open-game', () => {
@@ -402,3 +382,12 @@ ipcMain.handle('open-game', () => {
   });
   return;
 });
+
+ipcMain.handle('reveal-in-file-explorer', (_event, path) => {
+  exec(`start "" "${path}"`, error => {
+    if (error) {
+      console.error('Failed to start:', error);
+      return error;
+    }
+  });
+})

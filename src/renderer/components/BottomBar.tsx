@@ -1,8 +1,9 @@
 import React, { useCallback } from 'react';
 import '../App.css';
-import { useAppDispatch } from '../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchModResourcesMetadata, applyMods } from '../redux/slices/modResourcesSlice';
 import { SettingsModal } from './SettingsModal';
+import { selectModResourcesPath } from '../redux/slices/settingsSlice';
 
 type ButtonProps = React.ComponentProps<'button'> & {
   title: string;
@@ -39,6 +40,8 @@ function ButtonGroup({
 function BottomBar() {
   const dispatch = useAppDispatch();
 
+  const modResourcesPath = useAppSelector(selectModResourcesPath);
+
   const [isSettingsModalOpen, setIsSettingsModalOpen] = React.useState(false);
 
   const refreshMods = useCallback(() => {
@@ -51,6 +54,13 @@ function BottomBar() {
       console.error(error);
     }
   }, []);
+
+  const handleOpenModResourcesFolder = useCallback(async () => {
+    const error = await window.electron.openFileExplorer(modResourcesPath);
+    if (error) {
+      console.error(error);
+    }
+  }, [modResourcesPath]);
 
   const handleApplyMods = useCallback(async () => {
     await dispatch(applyMods());
@@ -80,10 +90,8 @@ function BottomBar() {
             onClick={openModLauncher}
           />
           <Button
-            title="Game"
-            onClick={() => {
-
-            }}
+            title="mod resources"
+            onClick={handleOpenModResourcesFolder}
           />
           <Button
             title="Apply"

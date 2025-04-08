@@ -24,4 +24,5 @@ contextBridge.exposeInMainWorld('electron', {
   //executables
   openModLauncher: () => ipcRenderer.invoke('open-mod-launcher'),
   openGame: () => ipcRenderer.invoke('open-game'),
+  openFileExplorer: (path: string) => ipcRenderer.invoke('reveal-in-file-explorer', path),
 });

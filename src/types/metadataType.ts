@@ -8,5 +8,4 @@ export type TMetadata = {
   image: string,
   sourceUrl: string,
   active: boolean,
-  metadataVersion: number,
 };

@@ -94,7 +94,9 @@ export const modResourcesSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchModResourcesMetadata.fulfilled, (state, action) => {
-        state.metadataList = action.payload;
+        const newMetadataList = action.payload;
+        if (newMetadataList)
+          state.metadataList = action.payload;
       })
       .addCase(updateMod.fulfilled, (state, action) => {
         const { modName, newMetadata } = action.payload;
