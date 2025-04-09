@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
 
 import "../App.css";
@@ -11,6 +11,7 @@ import ExitButton from "./ExitButton";
 import { EditableTextBox } from "./EditableTextBox";
 import { TMetadata } from "../../types/metadataType";
 import { characters, TCharacter } from "../../types/characterType";
+import { TKeybinds } from "../../types/KeybindType";
 
 Modal.setAppElement('#root');
 
@@ -30,6 +31,112 @@ const CharacterSelector = ({currentCharacter, setCharacter}: {currentCharacter: 
   );
 };
 
+interface KeybindItemProps {
+  currentkey: string;
+  currentDesc: string;
+  setKey: (newKey: string)=>void;
+  setDesc: (newDesc: string)=>void;
+}
+
+const KeybindItem = ({ currentkey, currentDesc, setKey, setDesc }: KeybindItemProps) => {
+
+  const listenerRef = useRef<(e: KeyboardEvent) => void | null>(null);
+  const keyInputRef = useRef<HTMLInputElement>(null);
+  const descInputRef = useRef<HTMLInputElement>(null);
+
+  const getKeybind = (e: KeyboardEvent) => {
+    const key = e.key.length === 1 ? e.key.toUpperCase() : e.key;
+    if (e.ctrlKey)  return `Ctrl+${key}`;
+    if (e.altKey)   return `Alt+${key}`;
+    if (e.shiftKey) return `Shift+${key}`;
+    return key;
+  };
+
+  const handleKeyInput = () => {
+
+    const listener = (e: KeyboardEvent) => {
+      e.preventDefault();
+      if (['Control', 'Shift', 'Alt', 'Meta', 'CapsLock', 'Tab'].includes(e.key)) {
+        return;
+      }
+      const newKeybind = getKeybind(e);
+      if (newKeybind && newKeybind !== 'Escape') {
+        setKey(newKeybind);
+      }
+      keyInputRef.current?.blur();
+      descInputRef.current?.focus();
+    };
+
+    console.log("+++Add key listener+++");
+    listenerRef.current = listener;
+    window.addEventListener("keydown", listener);
+  };
+
+  const handleKeyInputOnBlur = () => {
+    console.log("blur");
+    if (listenerRef.current) {
+      console.log("---Remove key listener---");
+      window.removeEventListener("keydown", listenerRef.current);
+    }
+  }
+
+  const handleDescChange = (newDesc: string) => {
+    setDesc(newDesc);
+  };
+  
+  return (
+    <div className="KeybindItem">
+      <input className="KeybindKeyInput"
+        type="text"
+        value={currentkey}
+        onFocus={()=>handleKeyInput()}
+        onBlur={handleKeyInputOnBlur}
+        readOnly
+        ref={keyInputRef}
+      />
+      <input className="KeybindDescInput"
+        type="text"
+        value={currentDesc}
+        onChange={(e) => handleDescChange(e.target.value)}
+        ref={descInputRef}
+      />
+    </div>
+  );
+};
+
+
+const KeybindMenuList = ({ keybinds, setKeybinds }: { keybinds: TKeybinds, setKeybinds: (newKeybinds: TKeybinds) => void }) => {
+
+  const handleSetKey = (oldKey: string, newKey: string) => {
+    if (oldKey === newKey) {
+      console.error("Same keybind!");
+      return;
+    }
+    const updatedKeybinds = ({[oldKey]: desc, ...rest}: TKeybinds) => ({...rest, [newKey]: desc});
+    setKeybinds(updatedKeybinds(keybinds));
+  }
+  const handleSetDesc = (key: string, newDesc: string) => {
+    setKeybinds({...keybinds, [key]: newDesc});
+  }
+  const handleAddKeybind = () => {
+    setKeybinds({ ...keybinds, ['']: ''});
+  };
+
+  return (
+    <div>
+      {Object.entries(keybinds).map(([key, desc], index) => (
+        <KeybindItem 
+          key={index} 
+          currentkey={key} 
+          currentDesc={desc} 
+          setKey={(newKeybind)=>handleSetKey(key, newKeybind)}
+          setDesc={(newDesc)=>handleSetDesc(key, newDesc)}
+        />
+      ))}
+      <button onClick={handleAddKeybind}> Add new Keybind</button>
+    </div>
+  );
+};
 
 
 export const ModEditModal = () => {
@@ -78,6 +185,7 @@ export const ModEditModal = () => {
       overlayClassName="ModalOverlay"
       className="ModalContainer"
       shouldCloseOnOverlayClick={false}
+      shouldCloseOnEsc={false}
     >
       <ExitButton onClick={onRequestClose} className="ModalExitButton"/>
       <div className="Modal ModalShape flexCol">
@@ -100,6 +208,7 @@ export const ModEditModal = () => {
                   }}
                 />
                 <CharacterSelector currentCharacter={newModData?.character} setCharacter={c=>setNewModData({...newModData, character: c})} />
+                <KeybindMenuList keybinds={newModData.keybinds} setKeybinds={(newKeybinds)=>setNewModData({...newModData, keybinds: newKeybinds})} />
               </>
             )}
           </div>

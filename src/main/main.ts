@@ -20,7 +20,7 @@ import { TMetadata } from '../types/metadataType';
 import { exec } from 'child_process';
 import mime from 'mime-types';
 
-const OVERWRITE_METADATA = false;
+const UPDATE_METADATA_STRUCTURE = true;
 const METADATA_FILENAME = 'metadata.json';
 const IMG_TYPES = new Set(['.png', '.jpg', '.jpeg', '.webp']);
 
@@ -175,6 +175,7 @@ const updateModMetadata = async (modPath: string): Promise<TMetadata|null> => {
     description: '',
     image: '',
     sourceUrl: '',
+    keybinds: {},
     active: false,
   };
 
@@ -186,7 +187,7 @@ const updateModMetadata = async (modPath: string): Promise<TMetadata|null> => {
     }
     const rawData = await fs.readFile(modMetadataPath, 'utf-8');
     const currentMetadata = JSON.parse(rawData);
-    if (!OVERWRITE_METADATA) {
+    if (!UPDATE_METADATA_STRUCTURE) {
       // metadata exists, read and return
       return currentMetadata;
     } else {
