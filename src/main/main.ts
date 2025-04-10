@@ -395,3 +395,14 @@ ipcMain.handle('select-folder', async () => {
   else
     return result.filePaths[0];
 });
+
+ipcMain.handle('select-file', async () => {
+  const result = await dialog.showOpenDialog({
+    properties: ['openFile']
+  });
+  
+  if (result.canceled || result.filePaths.length === 0)
+    return null;
+  else
+    return result.filePaths[0];
+});
