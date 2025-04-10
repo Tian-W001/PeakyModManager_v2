@@ -65,7 +65,8 @@ const createWindow = async () => {
   }
 
   const RESOURCES_PATH = app.isPackaged
-    ? path.join(process.resourcesPath, 'assets')
+  //? path.join(process.resourcesPath, 'assets')
+    ? process.resourcesPath
     : path.join(__dirname, '../../assets');
 
   const getAssetPath = (...paths: string[]): string => {
@@ -77,7 +78,7 @@ const createWindow = async () => {
     width: 1024,
     height: 728,
     autoHideMenuBar: true,
-    icon: getAssetPath('icon.png'),
+    icon: getAssetPath('icons/icon.png'),
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
