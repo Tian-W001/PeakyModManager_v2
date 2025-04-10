@@ -1,11 +1,11 @@
 export const modTypeList = [
-    "Unknown", 
     "Characters",
     "NPCs",
     "Environment",
     "UI",
     "Script/Tools",
     "Misc",
+    "Unknown", 
 ] as const;
 
 export type TModType = typeof modTypeList[number];

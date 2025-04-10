@@ -36,7 +36,6 @@
   display: flex;
   display: flex;
   flex-direction: column;
-  /* background-color: rgba(188, 43, 201, 0.151); */
 }
 
 .BackgroundContainer {
@@ -63,7 +62,7 @@
   display: flex;
   flex-direction: row;
   overflow: hidden;
-  /* background-color: rgba(182, 255, 186, 0.622); */
+
 }
 
 .LeftMenuContainer {
@@ -73,7 +72,79 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #d74e4ea5;
+  padding: 2em;
+}
+
+.MenuBox {
+  width: 100%;
+  height: 100%;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 10px;
+  background-color: #000;
+}
+
+.MenuButton {
+  width: 100%;
+  height: 2.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 9999px;
+  outline: none;
+  border: none;
+  transition: background-color 0.1s ease-out;
+}
+
+.MenuButton.up {
+  box-shadow: inset 0 1px 3px #404040;
+}
+.MenuButton.down {
+  box-shadow: inset 0 -1px 3px #404040;
+}
+
+.MenuList {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  gap: 0.8em;
+}
+.MenuList > * {
+  flex-shrink: 0; 
+}
+
+.MenuItem {
+  box-sizing: border-box;
+  width: 100%;
+  height: 4em;
+  text-align: center;
+  background-color: #000;
+  color: white;
+  border-radius: 10px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.MenuItem:hover {
+  background-color: #ffff0041;
+  transition: all 0.2s ease-out;
+}
+
+.MenuItem.active {
+  color: black;
+  background-color: yellow;
+  transition: all 0.2s ease-out;
 }
 
 .CardGridContainer {
@@ -85,17 +156,20 @@
   flex-wrap: wrap;
   justify-content: start;
   align-items: start;
+  align-content: start;
   padding: 2em;
   gap: 1.6em;
   overflow-y: scroll;
   scroll-behavior: smooth;
   scrollbar-width: none;
-  /* background-color: rgba(156, 144, 238, 0.526); */
+}
+
+.CardGridContainer > * {
+  flex-shrink: 0;
+  flex-grow: 0;
 }
 
 .ModCardContainer {
-  flex-shrink: 0;
-  flex-grow: 0; 
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -122,11 +196,11 @@
 }
 
 .ModCardContainer.preActive {
-  outline: 5px solid rgba(184, 240, 15, 0.293);
+  outline: 5px solid #ffff0074;
   transition: all 0.1s ease-out;
 }
 .ModCardContainer.active {
-  outline: 5px solid rgb(183, 240, 15);
+  outline: 5px solid #ffff00;
   transition: all 0.1s ease-out;
 }
 .ModCardContainer.preInactive {
