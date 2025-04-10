@@ -12,6 +12,8 @@ import { EditableTextBox } from "./EditableTextBox";
 import { TMetadata } from "../../types/metadataType";
 import { characters, TCharacter } from "../../types/characterType";
 import { TKeybinds } from "../../types/KeybindType";
+import { selectModResourcesPath } from "../redux/slices/settingsSlice";
+import path from "path-browserify";
 
 Modal.setAppElement('#root');
 
@@ -73,7 +75,6 @@ const KeybindItem = ({ currentkey, currentDesc, setKey, setDesc }: KeybindItemPr
   };
 
   const handleKeyInputOnBlur = () => {
-    console.log("blur");
     if (listenerRef.current) {
       console.log("---Remove key listener---");
       window.removeEventListener("keydown", listenerRef.current);
@@ -143,6 +144,8 @@ export const ModEditModal = () => {
   const dispatch = useAppDispatch();
 
   const isOpen = useAppSelector(selectModEditModalIsOpen);
+
+  const modResourcesPath = useAppSelector(selectModResourcesPath);
   const modName = useAppSelector(selectModEditModalModName);
   const modData = useAppSelector(selectModEditModalModMetadata);
   
@@ -168,6 +171,12 @@ export const ModEditModal = () => {
       }
     }));
     onRequestClose();
+  };
+
+  const handleOpenModFolder = () => {
+    if (modName) {
+      window.electron.openFileExplorer(path.join(modResourcesPath, modName));
+    }
   };
 
   const handleDelete = () => {
@@ -215,6 +224,7 @@ export const ModEditModal = () => {
 
           <div className="ModEditModalRightContainer">
             <button onClick={handleSave}>Save</button>
+            <button onClick={handleOpenModFolder}>Open in File Explorer</button>
             <button onClick={handleDelete}>Delete</button>
           </div>
 
