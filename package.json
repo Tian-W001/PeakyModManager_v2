@@ -166,7 +166,7 @@
       "dist",
       "node_modules",
       "package.json",
-      "assets/icons/**"
+      "assets/**/*"
     ],
     "mac": {
       "sign": ".erb/scripts/notarize.js",
@@ -199,7 +199,7 @@
       ]
     },
     "win": {
-      "icon": "bin/assets/icons/icon.ico",
+      "icon": "assets/icon.png",
       "target": [
         "nsis",
         "msi"

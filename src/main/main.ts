@@ -78,7 +78,7 @@ const createWindow = async () => {
     width: 1024,
     height: 728,
     autoHideMenuBar: true,
-    icon: getAssetPath('icons/icon.png'),
+    icon: getAssetPath('icon.png'),
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
