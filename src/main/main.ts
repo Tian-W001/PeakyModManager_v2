@@ -16,7 +16,7 @@ import Store from 'electron-store';
 import fs from 'fs-extra';
 import MenuBuilder from './menu';
 import { combineObjects, resolveHtmlPath } from './util';
-import { TMetadata } from '../types/metadataType';
+import { defaultMetadata, TMetadata } from '../types/metadataType';
 import { exec } from 'child_process';
 import mime from 'mime-types';
 
@@ -169,15 +169,7 @@ const updateAllModMetadata = async (modResourcesPath: string): Promise<Record<st
 const updateModMetadata = async (modPath: string): Promise<TMetadata|null> => {
   const modMetadataPath = path.join(modPath, METADATA_FILENAME);
   
-  const defaultMetadata: TMetadata = {
-    modType: 'Unknown',
-    character: 'Unknown', 
-    description: '',
-    image: '',
-    sourceUrl: '',
-    keybinds: {},
-    active: false,
-  };
+  
 
   try {
     // metadata doesn't exist, create new metadata file

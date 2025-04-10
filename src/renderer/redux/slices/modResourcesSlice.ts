@@ -3,7 +3,7 @@ import { TMetadata } from "../../../types/metadataType";
 
 import { createSelector } from "reselect";
 import { RootState } from "../store";
-import { Tmod } from "../../../types/modType";
+import { TModType } from "../../../types/modType";
 import { useMemo } from "react";
 
 interface ModResourcesState {
@@ -129,7 +129,7 @@ export default modResourcesSlice.reducer;
 */
 export const selectModMetadataList = (state: RootState) => state.modResources.metadataList;
 
-export const selectModMetadataListByType = (modType: Tmod | null | undefined) => 
+export const selectModMetadataListByType = (modType: TModType | null | undefined) => 
   useMemo(() => 
     createSelector(
       [selectModMetadataList], 

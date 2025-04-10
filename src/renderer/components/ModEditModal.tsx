@@ -11,7 +11,7 @@ import ExitButton from "./ExitButton";
 import { EditableTextBox } from "./EditableTextBox";
 import { TMetadata } from "../../types/metadataType";
 import { characters, TCharacter } from "../../types/characterType";
-import { TKeybinds } from "../../types/KeybindType";
+import { defaultKeybindDesc, defaultKeybindKey, TKeybinds } from "../../types/KeybindType";
 import { selectModResourcesPath } from "../redux/slices/settingsSlice";
 import path from "path-browserify";
 
@@ -120,7 +120,7 @@ const KeybindMenuList = ({ keybinds, setKeybinds }: { keybinds: TKeybinds, setKe
     setKeybinds({...keybinds, [key]: newDesc});
   }
   const handleAddKeybind = () => {
-    setKeybinds({ ...keybinds, ['']: ''});
+    setKeybinds({ ...keybinds, [defaultKeybindKey]: defaultKeybindDesc});
   };
 
   return (
