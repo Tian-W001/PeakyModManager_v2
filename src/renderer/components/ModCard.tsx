@@ -74,7 +74,7 @@ export const ModCard = ({ modName }: ModCardProps) => {
     <div className={`ModCardContainer ${cardActiveState}`} onClick={handleClick} onContextMenu={handleContextMenu}>
       <div className="ModCardTitle">{modName || DEFAULT_MOD_NAME}</div>
       <div className="ModCardDesc">{modData?.description || DEFAULT_MOD_DESC}</div>
-      <img src={modImageData} alt="Mod Image" className="" />
+      <img src={modImageData} alt="Mod Image" className="ModCardImage" />
     </div>
   );
 

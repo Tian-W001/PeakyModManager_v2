@@ -84,7 +84,13 @@
   justify-content: space-between;
   box-sizing: border-box;
   padding: 10px;
+  gap: 1em;
+  outline: 3px solid rgba(255, 255, 255, 0.2);
   background-color: #000;
+}
+.MenuBox:hover {
+  outline: 3px solid rgba(255, 255, 255, 0.5);
+  transition: all 0.1s ease-in-out;
 }
 
 .MenuButton {
@@ -98,6 +104,9 @@
   outline: none;
   border: none;
   transition: background-color 0.1s ease-out;
+}
+.MenuButton:disabled {
+  cursor:default;
 }
 
 .MenuButton.up {
@@ -115,7 +124,7 @@
   scrollbar-width: none;
   padding-top: 1em;
   padding-bottom: 1em;
-  gap: 0.8em;
+  gap: 0.3em;
 }
 .MenuList > * {
   flex-shrink: 0; 
@@ -177,12 +186,12 @@
   width: 12em;
   height: 20em;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: visible;
   outline: 2px solid #3e3e3e;
   border-radius: 20px 20px 0 20px;
   color: white;
   background-color: rgb(103, 103, 103);
-  box-shadow: 0 0 5px inset #ffffff48;
+  /* box-shadow: 0 0 5px inset #ffffff48; */
   user-select: none;
   transition: background-color 0.2s ease-in, 
               outline 0.2s ease-in,
@@ -212,6 +221,9 @@
   transition: all 0.1s ease-out;
 }
 
+.ModCardImage {
+  width: 100%;
+}
 
 .BottomBarContainer {
   width: 100%;
@@ -287,7 +299,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-image: repeating-linear-gradient(40deg, transparent 0 5px, rgba(255, 255, 255, .07) 5px 10px);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .ModalContainer {
@@ -349,13 +362,14 @@
   box-sizing: border-box;
   padding-left: 20px;
   padding-right: 20px;
-  background-color: #c3c3c3;
+  border-radius: 20px 20px 0 0;
+  background-image: linear-gradient(to bottom, #000000 0%, rgba(255, 255, 255, 0) 100%), 
 }
 .ModEditModalMainContainer {
   display: flex;
   flex: 1;
   width: 100%;
-  background-color: #691818;
+  /* background-color: #691818; */
 }
 
 .ModEditModalLeftContainer {
@@ -366,7 +380,7 @@
 
   box-sizing: border-box;
   padding: 30px;
-  background-color: #47872a;
+  /* background-color: #47872a; */
 }
 
 .ModEditModalRightContainer {
@@ -378,7 +392,7 @@
   align-items: center;
   /* min-width: 300px; */
   box-sizing: border-box;
-  background-color: #368982;
+  /* background-color: #368982; */
 }
 
 .EditableTextBoxContainer {
