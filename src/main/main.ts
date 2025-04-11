@@ -20,7 +20,9 @@ import { defaultMetadata, TMetadata } from '../types/metadataType';
 import { exec } from 'child_process';
 import mime from 'mime-types';
 
+const HARD_RESET_METADATA = false;
 const UPDATE_METADATA_STRUCTURE = false;
+
 const METADATA_FILENAME = 'metadata.json';
 const IMG_TYPES = new Set(['.png', '.jpg', '.jpeg', '.webp']);
 
@@ -174,7 +176,7 @@ const updateModMetadata = async (modPath: string): Promise<TMetadata|null> => {
 
   try {
     // metadata doesn't exist, create new metadata file
-    if (!(await fs.pathExists(modMetadataPath))) {
+    if (HARD_RESET_METADATA || !(await fs.pathExists(modMetadataPath))) {
       await fs.outputFile(modMetadataPath, JSON.stringify(defaultMetadata, null, 2));
       return defaultMetadata;
     }
