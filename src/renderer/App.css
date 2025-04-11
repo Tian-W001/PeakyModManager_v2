@@ -165,6 +165,7 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  gap: 2em;
 }
 
 .CardGridTopBar {
@@ -195,7 +196,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background-color: #f9a03f; */
 }
 
 .CharacterBarImageList {
@@ -208,32 +208,33 @@
   align-items: center;
   overflow-x: scroll;
   overflow-y: visible;
-  transform: skewX(-25.3deg);
   scrollbar-width: none;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-radius: 8px;
-  /* background-color: aqua; */
+  scroll-snap-type: x mandatory;
+  transform: skewX(-25.3deg);
 }
 
-.CharacterBarImageList > * {
-  transform: skewX(25.3deg);;
+.CharacterBarImageList > * { 
+  margin-left: -10px;
+  scroll-margin-left: -15px;
+  scroll-snap-align: start;
+  transform: skewX(25.3deg);
 }
 
+.CharacterBarImageContainer:first-child {
+  margin-left: -5px;
+}
+.CharacterBarImageContainer:last-child {
+  margin-right: 5px;
+}
 .CharacterBarImageContainer {
   height: 100%;
   cursor: pointer;
-  margin-left: -10px;
   overflow: visible;
-  /* border: black solid 1px; */
 }
 
 .CharacterBarImage {
   height: 100%;
   width: auto;
-}
-.CharacterBarImage:first-child {
-  margin-left: 0px;
 }
 
 .CharacterActiveMask {
@@ -254,11 +255,12 @@
   justify-content: start;
   align-items: start;
   align-content: start;
-  padding: 2em;
+  padding: 1em;
   gap: 1.6em;
   overflow-y: scroll;
   scroll-behavior: smooth;
   scrollbar-width: none;
+  /* background-color: #f9a03f; */
 }
 
 .CardGrid > * {

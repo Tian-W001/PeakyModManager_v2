@@ -16,8 +16,7 @@ function useHorizontalScroll(): React.RefObject<HTMLDivElement | null> {
       e.preventDefault();
       el.scrollTo({
         left: el.scrollLeft + e.deltaY,
-        //behavior: "smooth"
-      });
+      })
     };
 
     el.addEventListener("wheel", onWheel, { passive: false });
@@ -48,6 +47,7 @@ const CharacterBar = () => {
                 src={require(`./../assets/character_images/${c}.png`)} 
                 alt={c} 
               />
+              
               <div 
                 className="CharacterActiveMask"
                 style={{
