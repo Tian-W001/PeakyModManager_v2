@@ -19,6 +19,7 @@ import { combineObjects, resolveHtmlPath } from './util';
 import { defaultMetadata, TMetadata } from '../types/metadataType';
 import { exec } from 'child_process';
 import mime from 'mime-types';
+import { installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from "electron-devtools-installer";
 
 const HARD_RESET_METADATA = false;
 const UPDATE_METADATA_STRUCTURE = false;
@@ -133,15 +134,18 @@ app.on('window-all-closed', () => {
   }
 });
 
-app
-  .whenReady()
+app.whenReady().then(() => {
+  installExtension([REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS])
+      .then(([redux, react]) => console.log(`Added Extensions:  ${redux.name}, ${react.name}`))
+      .catch((err) => console.log('An error occurred: ', err));
+  })
   .then(() => {
-    createWindow();
-    app.on('activate', () => {
-      // On macOS it's common to re-create a window in the app when the
-      // dock icon is clicked and there are no other windows open.
-      if (mainWindow === null) createWindow();
-    });
+      createWindow();
+      app.on('activate', () => {
+        // On macOS it's common to re-create a window in the app when the
+        // dock icon is clicked and there are no other windows open.
+        if (mainWindow === null) createWindow();
+      });
   })
   .catch(console.log);
 
