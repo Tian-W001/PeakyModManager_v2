@@ -1,14 +1,28 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import '../App.css';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { addNewMod, selectModMetadataList } from '../redux/slices/modResourcesSlice';
 import { ModCard } from './ModCard';
 import { ModEditModal } from './ModEditModal';
 import CharacterBar from './CharacterBar';
+import { selectCurrentModType } from '../redux/slices/menuSlice';
 
 function CardGrid() {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch(); 
+
+  const currentModType = useAppSelector(selectCurrentModType);
   const metadataList = useAppSelector(selectModMetadataList);
+
+  const filteredModNameList = useMemo(() => {
+    if (currentModType === "All") {
+      return Object.keys(metadataList);
+    }
+    return Object.entries(metadataList)
+      .filter(([_, metadata]) => metadata.modType === currentModType)
+      .map(([modName]) => modName)
+    }, 
+    [metadataList, currentModType]
+  );
 
   const handleDrop = useCallback(async (e: React.DragEvent) => {
     e.preventDefault();
@@ -32,21 +46,21 @@ function CardGrid() {
     <>
       {console.log('CardGrid rendererd')}
       <div className="CardGridContainer">
-        <div className="CardGridContainer" >
+
           <div className="CardGridTopBar">
             <CharacterBar />
           </div>
           <div className="CardGrid" onDrop={handleDrop} onDragOver={handleDragOver}>
 
             {
-              Object.keys(metadataList).map(modName => (
+              filteredModNameList.map(modName => (
                 <ModCard key={modName} modName={modName} />
               ))
             }
 
           </div>
           <ModEditModal />
-        </div>
+        
       </div>
     </>
   );

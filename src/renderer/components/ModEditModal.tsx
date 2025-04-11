@@ -14,11 +14,13 @@ import { characters, TCharacter } from "../../types/characterType";
 import { defaultKeybindDesc, defaultKeybindKey, TKeybinds } from "../../types/KeybindType";
 import { selectModResourcesPath } from "../redux/slices/settingsSlice";
 import path from "path-browserify";
+import { modTypeList, TModType } from "../../types/modType";
 
 Modal.setAppElement('#root');
 
 
 const CharacterSelector = ({currentCharacter, setCharacter}: {currentCharacter: TCharacter, setCharacter: (c:TCharacter)=>void}) => {
+  if (currentCharacter === null) return;
   return (
     <>
       <span>Character: </span>
@@ -33,13 +35,27 @@ const CharacterSelector = ({currentCharacter, setCharacter}: {currentCharacter: 
   );
 };
 
+const ModTypeSelector = ({currentType, setModType}: {currentType: TModType, setModType: (t:TModType)=>void}) => {
+  return (
+    <>
+      <span>modType: </span>
+        <select value={currentType} onChange={e=>setModType(e.target.value as TModType)}>
+          {modTypeList.map((t) => (
+            <option key={t} value={t}>
+              {t}
+            </option>
+          ))}
+        </select>
+    </>
+  );
+};
+
 interface KeybindItemProps {
   currentkey: string;
   currentDesc: string;
   setKey: (newKey: string)=>void;
   setDesc: (newDesc: string)=>void;
-}
-
+};
 const KeybindItem = ({ currentkey, currentDesc, setKey, setDesc }: KeybindItemProps) => {
 
   const listenerRef = useRef<(e: KeyboardEvent) => void | null>(null);
@@ -216,6 +232,9 @@ export const ModEditModal = () => {
                     setNewModData({ ...newModData, sourceUrl: e.target.value });
                   }}
                 />
+                <ModTypeSelector currentType={newModData?.modType} setModType={t=>setNewModData({...newModData, modType: t, character: t==="Characters"?"Unknown":null})} />
+
+
                 <CharacterSelector currentCharacter={newModData?.character} setCharacter={c=>setNewModData({...newModData, character: c})} />
                 <KeybindMenuList keybinds={newModData.keybinds} setKeybinds={(newKeybinds)=>setNewModData({...newModData, keybinds: newKeybinds})} />
               </>

@@ -22,15 +22,20 @@ const MenuButton = ({ direction, active, onClick }: MenuButtonProps) => {
   );
 };
 
-const MenuList = ({ currentModType }: {currentModType: TModType}) => {
+interface MenuListProps {
+  menuListItems: (TModType|"All")[], 
+  currentModType: TModType|"All",
+};
+const MenuList = ({ menuListItems, currentModType }: MenuListProps) => {
   const dispatch = useAppDispatch();
-  const handleSelectModType = (newModType: TModType) => {
+
+  const handleSelectModType = (newModType: TModType|"All") => {
     dispatch(updateSelectedModType(newModType));
   }
 
   return (
     <div className="MenuList">
-      {modTypeList.map((modType, index) => (
+      {menuListItems.map((modType, index) => (
         <MenuItem key={index} 
           active={currentModType === modType}
           onClick={()=>handleSelectModType(modType)}
@@ -44,7 +49,12 @@ const MenuList = ({ currentModType }: {currentModType: TModType}) => {
   );
 };
 
-const MenuItem = ({ children, active, onClick }: { children: React.ReactNode, active: boolean, onClick: ()=>void }) => {
+interface MenuItemProps { 
+  children: React.ReactNode, 
+  active: boolean, 
+  onClick: ()=>void,
+};
+const MenuItem = ({ children, active, onClick }: MenuItemProps) => {
 
   return (
     <div onClick={onClick} className={`MenuItem ${active?'active':''}`} >
@@ -55,11 +65,12 @@ const MenuItem = ({ children, active, onClick }: { children: React.ReactNode, ac
 
 const Menu = () => {
   const dispatch = useAppDispatch();
-
+  
+  const menuListItems: (TModType|"All")[] = ["All", ...modTypeList];
   const currentModType = useAppSelector(selectCurrentModType);
 
-  //updated via rerender
-  const currentIndex = modTypeList.indexOf(currentModType);
+  //updated via re-render
+  const currentIndex = menuListItems.indexOf(currentModType);
 
   const handleSelectUp = () => {
     dispatch(updateSelectedModType(modTypeList[currentIndex - 1]));
@@ -72,7 +83,7 @@ const Menu = () => {
   return (
     <div className="MenuBox">
       <MenuButton direction='UP' active={currentIndex!==0} onClick={handleSelectUp}/>
-      <MenuList currentModType={currentModType} />
+      <MenuList menuListItems={menuListItems} currentModType={currentModType} />
       <MenuButton direction='DOWN' active={currentIndex!==modTypeList.length-1} onClick={handleSelectDown}/>
     </div>
   );

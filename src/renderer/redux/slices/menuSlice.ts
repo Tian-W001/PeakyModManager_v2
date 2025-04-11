@@ -3,11 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import { defaultModType, modTypeList, TModType } from "../../../types/modType";
 
 interface MenuState {
-  selectedModType: TModType,
+  selectedModType: TModType | "All",
 };
 
 const initialState: MenuState = {
-  selectedModType: defaultModType,
+  selectedModType: "All",
 };
 
 export const menuSlice = createSlice({

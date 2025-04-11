@@ -37,6 +37,6 @@ export const characters = [
   "Unknown",
 ] as const;
 
-export type TCharacter = typeof characters[number];
+export type TCharacter = typeof characters[number] | null;
 
-export const defaultCharacter: TCharacter = "Unknown";
+export const defaultCharacter: TCharacter = null;
