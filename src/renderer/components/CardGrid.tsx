@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { addNewMod, selectModMetadataList } from '../redux/slices/modResourcesSlice';
 import { ModCard } from './ModCard';
 import { ModEditModal } from './ModEditModal';
+import CharacterBar from './CharacterBar';
 
 function CardGrid() {
   const dispatch = useAppDispatch();
@@ -30,16 +31,23 @@ function CardGrid() {
   return (
     <>
       {console.log('CardGrid rendererd')}
-      <div className="CardGridContainer" onDrop={handleDrop} onDragOver={handleDragOver}>
+      <div className="CardGridContainer">
+        <div className="CardGridContainer" >
+          <div className="CardGridTopBar">
+            <CharacterBar />
+          </div>
+          <div className="CardGrid" onDrop={handleDrop} onDragOver={handleDragOver}>
 
-        {
-          Object.keys(metadataList).map(modName => (
-            <ModCard key={modName} modName={modName} />
-          ))
-        }
+            {
+              Object.keys(metadataList).map(modName => (
+                <ModCard key={modName} modName={modName} />
+              ))
+            }
 
+          </div>
+          <ModEditModal />
+        </div>
       </div>
-      <ModEditModal />
     </>
   );
 }
