@@ -9,15 +9,15 @@ export const characters = [
   "Grace Howard",
   "Anton Ivanov",
   "Von Lycaon",
-  "Ellen Joe",
   "Alexandrina Sebastiane",
   "Corin Wickes",
   "Soldier 11",
-  //Released After 1.0
-  "Zhu Yuan",
   "Soukaku",
   "Luciana de Montefio",
   "Piper Wheel",
+  //Released After 1.0
+  "Ellen Joe",
+  "Zhu Yuan",
   "Qingyi",
   "Jane Doe",
   "Seith Lowell",
@@ -32,6 +32,8 @@ export const characters = [
   "Pulchra Fellini",
   "Soldier 0 - Anby",
   "Trigger",
+  "Hugo",
+  "Vivian",
   "Unknown",
 ] as const;
 

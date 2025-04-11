@@ -20,7 +20,7 @@ import { defaultMetadata, TMetadata } from '../types/metadataType';
 import { exec } from 'child_process';
 import mime from 'mime-types';
 
-const UPDATE_METADATA_STRUCTURE = true;
+const UPDATE_METADATA_STRUCTURE = false;
 const METADATA_FILENAME = 'metadata.json';
 const IMG_TYPES = new Set(['.png', '.jpg', '.jpeg', '.webp']);
 
