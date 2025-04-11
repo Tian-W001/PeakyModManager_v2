@@ -26,12 +26,10 @@ export const ModCard = ({ modName }: ModCardProps) => {
   if (!modData) {
     console.error("ModCard: modData not found for modName:", modName);
   }
-  const [isActive, setIsActive] = useState(false);
-  useEffect(() => {
-    if (modData?.active) {
-      setIsActive(modData.active);
-    }
-  }, [modData?.active]);
+
+  //updated by re-render
+  const [isActive, setIsActive] = useState(modData?.active);
+
 
   const cardActiveState = useMemo(() => {
     if (modData?.active !== undefined) {
