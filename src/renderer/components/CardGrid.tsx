@@ -47,9 +47,11 @@ function CardGrid() {
       {console.log('CardGrid rendererd')}
       <div className="CardGridContainer">
 
-          <div className="CardGridTopBar">
-            <CharacterBar />
-          </div>
+          {currentModType === "Characters" && 
+            <div className="CardGridTopBar">
+              <CharacterBar />
+            </div>
+          }
           <div className="CardGrid" onDrop={handleDrop} onDragOver={handleDragOver}>
 
             {

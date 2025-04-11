@@ -202,6 +202,7 @@
   width: 100%;
   height: 80%;
   box-sizing: border-box;
+  border-radius: 8px;
   display: flex;
   flex-direction: row;
   justify-content: start;
@@ -221,10 +222,7 @@
 }
 
 .CharacterBarImageContainer:first-child {
-  margin-left: -5px;
-}
-.CharacterBarImageContainer:last-child {
-  margin-right: 5px;
+  margin-left: 0px;
 }
 .CharacterBarImageContainer {
   height: 100%;
