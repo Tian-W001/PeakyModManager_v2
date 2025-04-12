@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { characters, TCharacter } from "../../types/characterType";
 import activeMask from "./../assets/character_images/character_active_mask.png";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { selectCurrentCharacter, updateSelectedCharacter } from "../redux/slices/menuSlice";
 
 function useHorizontalScroll(): React.RefObject<HTMLDivElement | null> {
   const elRef = useRef<HTMLDivElement>(null);
@@ -26,12 +28,36 @@ function useHorizontalScroll(): React.RefObject<HTMLDivElement | null> {
   return elRef;
 }
 
+interface CharacterItemProps {
+  active: boolean
+  c: TCharacter|"All",
+  onClick: () => void,
+}
+const CharacterItem = ({active, c, onClick}: CharacterItemProps) => (
+  <div className="CharacterBarImageContainer" key={c} onClick={onClick}>
+    <img 
+      className="CharacterBarImage"
+      src={require(`./../assets/character_images/${c}.png`)} 
+      alt='Character'
+    />
+    <div 
+      className="CharacterActiveMask"
+      style={{
+        opacity: active ? 1 : 0,
+        background: `url(${activeMask}) no-repeat 0 0 / 101% 101%`
+      }}  
+    />
+  </div>
+);
 
 const CharacterBar = () => {
-
+  const dispatch = useAppDispatch();
+  const selectedCharacter = useAppSelector(selectCurrentCharacter);
   const scrollRef = useHorizontalScroll();
-  const handleOnClickImage = (c: TCharacter) => {
-    console.log("Clicked ", c);
+
+  const handleOnClickImage = (c: TCharacter|"All") => {
+    console.log("Clicked", c);
+    dispatch(updateSelectedCharacter(c));
   }
 
   return (
@@ -40,22 +66,9 @@ const CharacterBar = () => {
         <FaAngleLeft size={'20px'} color="#ffffff" />
       </div>
       <div className="CharacterBarImageList" ref={scrollRef}>
-        {characters.map(c => (
-            <div className="CharacterBarImageContainer" key={c} onClick={()=>handleOnClickImage(c)}>
-              <img 
-                className="CharacterBarImage"
-                src={require(`./../assets/character_images/${c}.png`)} 
-                alt={c} 
-              />
-              
-              <div 
-                className="CharacterActiveMask"
-                style={{
-                  background: `url(${activeMask}) no-repeat 0 0 / 101% 101%`
-                }}  
-              />
-            </div>
-          )
+        <CharacterItem active={selectedCharacter==="All"} c={"All"} onClick={()=>handleOnClickImage("All")} />
+        {characters.map(c => 
+            <CharacterItem active={selectedCharacter===c} c={c} onClick={()=>handleOnClickImage(c)} />
         )}
       </div>
       <div className="CharacterBarButtonContainer">

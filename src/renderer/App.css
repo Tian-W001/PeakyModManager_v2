@@ -293,7 +293,7 @@
 }
 
 .ModCardContainer.preActive {
-  outline: 5px solid #ffff0074;
+  outline: 3px dashed #ffff0099;
   transition: all 0.1s ease-out;
 }
 .ModCardContainer.active {
@@ -301,11 +301,11 @@
   transition: all 0.1s ease-out;
 }
 .ModCardContainer.preInactive {
-  outline: 5px solid rgba(255, 16, 16, 0.5);
+  outline: 3px dashed rgba(255, 16, 16, 0.678);
   transition: all 0.1s ease-out;
 }
 .ModCardContainer.inactive {
-  outline: 2px solid black;
+  outline: 3px solid black;
   transition: all 0.1s ease-out;
 }
 
