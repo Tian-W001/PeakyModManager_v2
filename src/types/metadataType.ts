@@ -1,6 +1,6 @@
-import { defaultCharacter, TCharacter } from "./characterType"
+import { DEFAULT_CHARACTER, TCharacter } from "./characterType"
 import { TKeybinds } from "./KeybindType";
-import { defaultModType, TModType } from "./modType"
+import { DEFAULT_MOD_TYPE, TModType } from "./modType"
 
 export type TMetadata = {
   modType: TModType,
@@ -13,9 +13,9 @@ export type TMetadata = {
   active: boolean,
 };
 
-export const defaultMetadata: TMetadata = {
-  modType: defaultModType,
-  character: defaultCharacter, 
+export const DEFAULT_METADATA: TMetadata = {
+  modType: DEFAULT_MOD_TYPE,
+  character: DEFAULT_CHARACTER, 
   description: '',
   image: '',
   sourceUrl: '',

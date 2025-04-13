@@ -10,4 +10,4 @@ export const modTypeList = [
 
 export type TModType = typeof modTypeList[number];
 
-export const defaultModType: TModType = "Unknown";
+export const DEFAULT_MOD_TYPE: TModType = "Unknown";

@@ -9,9 +9,9 @@ import { closeModEditModal } from "../redux/slices/modEditModalSlice";
 import { deleteMod, updateMod } from "../redux/slices/modResourcesSlice";
 import ExitButton from "./ExitButton";
 import { EditableTextBox } from "./EditableTextBox";
-import { defaultMetadata, TMetadata } from "../../types/metadataType";
+import { DEFAULT_METADATA, TMetadata } from "../../types/metadataType";
 import { characters, TCharacter } from "../../types/characterType";
-import { defaultKeybindDesc, defaultKeybindKey, TKeybinds } from "../../types/KeybindType";
+import { DEFAULT_KEYBIND_KEY, DEFAULT_KEYBIND_DESC, TKeybinds } from "../../types/KeybindType";
 import { selectModResourcesPath } from "../redux/slices/settingsSlice";
 import path from "path-browserify";
 import { modTypeList, TModType } from "../../types/modType";
@@ -136,7 +136,7 @@ const KeybindMenuList = ({ keybinds, setKeybinds }: { keybinds: TKeybinds, setKe
     setKeybinds({...keybinds, [key]: newDesc});
   }
   const handleAddKeybind = () => {
-    setKeybinds({ ...keybinds, [defaultKeybindKey]: defaultKeybindDesc});
+    setKeybinds({ ...keybinds, [DEFAULT_KEYBIND_KEY]: DEFAULT_KEYBIND_DESC});
   };
 
   return (
@@ -203,7 +203,7 @@ export const ModEditModal = () => {
 
   const handleRemoveCover = () => {
     if (!modName || !newModData) return;
-    setNewModData({ ...newModData, image: defaultMetadata.image });
+    setNewModData({ ...newModData, image: DEFAULT_METADATA.image });
   }
 
   const handleSave = () => {

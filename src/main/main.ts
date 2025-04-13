@@ -16,7 +16,7 @@ import Store from 'electron-store';
 import fs from 'fs-extra';
 import MenuBuilder from './menu';
 import { combineObjects, resolveHtmlPath } from './util';
-import { defaultMetadata, TMetadata } from '../types/metadataType';
+import { DEFAULT_METADATA, TMetadata } from '../types/metadataType';
 import { exec } from 'child_process';
 import mime from 'mime-types';
 import { installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from "electron-devtools-installer";
@@ -182,8 +182,8 @@ const updateModMetadata = async (modPath: string): Promise<TMetadata|null> => {
   try {
     // metadata doesn't exist, create new metadata file
     if (HARD_RESET_METADATA || !(await fs.pathExists(modMetadataPath))) {
-      await fs.outputFile(modMetadataPath, JSON.stringify(defaultMetadata, null, 2));
-      return defaultMetadata;
+      await fs.outputFile(modMetadataPath, JSON.stringify(DEFAULT_METADATA, null, 2));
+      return DEFAULT_METADATA;
     }
     const rawData = await fs.readFile(modMetadataPath, 'utf-8');
     const currentMetadata = JSON.parse(rawData);
@@ -192,7 +192,7 @@ const updateModMetadata = async (modPath: string): Promise<TMetadata|null> => {
       return currentMetadata;
     } else {
       // metadata outdatated, update
-      const newMetadata = combineObjects(currentMetadata, defaultMetadata);
+      const newMetadata = combineObjects(currentMetadata, DEFAULT_METADATA);
       await fs.outputFile(modMetadataPath, JSON.stringify(newMetadata, null, 2));
       return newMetadata;
     }

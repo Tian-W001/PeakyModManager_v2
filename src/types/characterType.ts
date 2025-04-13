@@ -39,4 +39,4 @@ export const characters = [
 
 export type TCharacter = typeof characters[number] | null;
 
-export const defaultCharacter: TCharacter = null;
+export const DEFAULT_CHARACTER: TCharacter = null;
