@@ -66,9 +66,9 @@ const CharacterBar = () => {
         <FaAngleLeft size={'20px'} color="#ffffff" />
       </div>
       <div className="CharacterBarImageList" ref={scrollRef}>
-        <CharacterItem active={selectedCharacter==="All"} c={"All"} onClick={()=>handleOnClickImage("All")} />
+        <CharacterItem key={"All"} active={selectedCharacter==="All"} c={"All"} onClick={()=>handleOnClickImage("All")} />
         {characters.map(c => 
-            <CharacterItem active={selectedCharacter===c} c={c} onClick={()=>handleOnClickImage(c)} />
+            <CharacterItem key={c} active={selectedCharacter===c} c={c} onClick={()=>handleOnClickImage(c)} />
         )}
       </div>
       <div className="CharacterBarButtonContainer">
