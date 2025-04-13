@@ -5,23 +5,30 @@ import { addNewMod, selectModMetadataList } from '../redux/slices/modResourcesSl
 import { ModCard } from './ModCard';
 import { ModEditModal } from './ModEditModal';
 import CharacterBar from './CharacterBar';
-import { selectCurrentModType } from '../redux/slices/menuSlice';
+import { selectCurrentCharacter, selectCurrentModType } from '../redux/slices/menuSlice';
 
 function CardGrid() {
   const dispatch = useAppDispatch(); 
 
   const currentModType = useAppSelector(selectCurrentModType);
+  const currentCharacter = useAppSelector(selectCurrentCharacter);
   const metadataList = useAppSelector(selectModMetadataList);
 
   const filteredModNameList = useMemo(() => {
-    if (currentModType === "All") {
-      return Object.keys(metadataList);
-    }
-    return Object.entries(metadataList)
-      .filter(([_, metadata]) => metadata.modType === currentModType)
-      .map(([modName]) => modName)
-    }, 
-    [metadataList, currentModType]
+      if (currentModType === "All") {
+        return Object.keys(metadataList);
+      }
+      else if (currentModType === "Characters" && currentCharacter !== "All") {
+        return Object.entries(metadataList)
+          .filter(([__dirname, metadata]) => (metadata.modType === currentModType && metadata.character === currentCharacter))
+          .map(([modName]) => modName);
+      }
+      else {
+        return Object.entries(metadataList)
+          .filter(([_, metadata]) => metadata.modType === currentModType)
+          .map(([modName]) => modName);
+      }
+    }, [metadataList, currentModType, currentCharacter]
   );
 
   const handleDrop = useCallback(async (e: React.DragEvent) => {
