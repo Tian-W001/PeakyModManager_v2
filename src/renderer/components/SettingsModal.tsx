@@ -30,7 +30,7 @@ export const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onR
   };
 
   const handleSelectLauncherPath = async () => {
-    const path = await window.electron.selectFile();
+    const path = await window.electron.selectFile("", ['exe']);
     if (path) {
       dispatch(updateLauncherPath(path));
     }

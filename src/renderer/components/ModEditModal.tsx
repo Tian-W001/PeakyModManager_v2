@@ -9,7 +9,7 @@ import { closeModEditModal } from "../redux/slices/modEditModalSlice";
 import { deleteMod, updateMod } from "../redux/slices/modResourcesSlice";
 import ExitButton from "./ExitButton";
 import { EditableTextBox } from "./EditableTextBox";
-import { TMetadata } from "../../types/metadataType";
+import { defaultMetadata, TMetadata } from "../../types/metadataType";
 import { characters, TCharacter } from "../../types/characterType";
 import { defaultKeybindDesc, defaultKeybindKey, TKeybinds } from "../../types/KeybindType";
 import { selectModResourcesPath } from "../redux/slices/settingsSlice";
@@ -166,6 +166,15 @@ export const ModEditModal = () => {
   const modData = useAppSelector(selectModEditModalModMetadata);
   
   const [newModData, setNewModData] = useState<TMetadata|undefined>(undefined);
+  const [modImageData, setModImageData] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    if (!modName) return;
+    if (newModData?.image) {
+      console.log("fetch image for:", modName);
+      window.electron.fetchImage(path.join(modResourcesPath, modName, newModData.image))
+        .then(setModImageData);
+    }
+  }, [newModData?.image]);
 
   console.log("ModEditModal Rendered");
 
@@ -176,6 +185,26 @@ export const ModEditModal = () => {
   const onRequestClose = () => {
     dispatch(closeModEditModal());
   };
+
+  const handleSelectCover = async () => {
+    if (!modName || !newModData) return;
+
+    const imgPath: string = await window.electron.selectFile(
+      path.join(modResourcesPath, modName).replace(/\//g, '\\'), // use windows '\'
+      ['png', 'jpg', 'jpeg', 'webp']
+    );
+    if (!imgPath) return;
+    console.log("imgPath", imgPath);
+
+    const imgName = path.basename(imgPath.replace(/\\/g, '/')); // use posix '/' for path-browserify
+    console.log("imgname:", imgName);
+    setNewModData({ ...newModData, image: imgName });
+  }
+
+  const handleRemoveCover = () => {
+    if (!modName || !newModData) return;
+    setNewModData({ ...newModData, image: defaultMetadata.image });
+  }
 
   const handleSave = () => {
     if (!modName || !modData) return;
@@ -242,6 +271,9 @@ export const ModEditModal = () => {
           </div>
 
           <div className="ModEditModalRightContainer">
+            <img src={modImageData} alt="Mod Image" className="ModCardImage" />
+            <button onClick={handleSelectCover}>Select Cover</button>
+            <button onClick={handleRemoveCover}>Remove Cover</button>
             <button onClick={handleSave}>Save</button>
             <button onClick={handleOpenModFolder}>Open in File Explorer</button>
             <button onClick={handleDelete}>Delete</button>

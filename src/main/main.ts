@@ -242,8 +242,8 @@ ipcMain.handle('fetch-image', async (_event, imagePath: string) => {
       console.error(`Invalid image type: ${ext}`);
       return undefined;
     }
-    const mimeType = mime.lookup(ext);
 
+    const mimeType = mime.lookup(ext);
     const imageBuffer = await fs.promises.readFile(imagePath);
     const imageData = imageBuffer.toString('base64');
     return `data:${mimeType};base64,${imageData}`;
@@ -404,9 +404,13 @@ ipcMain.handle('select-folder', async () => {
     return result.filePaths[0];
 });
 
-ipcMain.handle('select-file', async () => {
+ipcMain.handle('select-file', async (_event, path: string, extnames:string[] = []) => {
   const result = await dialog.showOpenDialog({
-    properties: ['openFile']
+    properties: ['openFile'],
+    defaultPath: path,
+    filters: [
+      { name: "Files", extensions: extnames }
+    ]
   });
   
   if (result.canceled || result.filePaths.length === 0)
