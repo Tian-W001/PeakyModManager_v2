@@ -1,7 +1,7 @@
 
-export type TLanguage = "en" | "zh";
-
-export const languageMap: {[key in TLanguage]: string} = {
+export const languageMap = {
   en: "English",
   zh: "中文",
 };
+
+export type TLanguage = keyof typeof languageMap;

@@ -21,7 +21,7 @@ Modal.setAppElement('#root');
 
 
 const CharacterSelector = ({currentCharacter, setCharacter}: {currentCharacter: TCharacter | null, setCharacter: (c:TCharacter)=>void}) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   if (currentCharacter === null) return;
   return (
@@ -30,7 +30,7 @@ const CharacterSelector = ({currentCharacter, setCharacter}: {currentCharacter: 
       <select value={currentCharacter || undefined} onChange={e=>setCharacter(e.target.value as TCharacter)}>
         {Characters.map((c) => (
           <option key={c} value={c}>
-            {t(`Characters.${c}`)}
+            {t(`Characters.fullnames.${c}`)}
           </option>
         ))}
       </select>
