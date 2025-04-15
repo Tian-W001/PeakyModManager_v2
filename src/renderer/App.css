@@ -53,10 +53,6 @@
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
-  -webkit-filter: blur(5px);
-  -moz-filter: blur(5px);
-  -o-filter: blur(5px);
-  -ms-filter: blur(5px);
   filter: blur(10px);
 }
 
@@ -67,7 +63,7 @@
   flex-direction: row;
   overflow: hidden;
   box-sizing: border-box;
-  padding: 2em;
+  padding: 1.5em;
   gap: 1.5em;
 }
 
@@ -84,7 +80,7 @@
 .MenuBox {
   width: 100%;
   height: 100%;
-  border-radius: 30px;
+  border-radius: 1.5em;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -163,13 +159,14 @@
 }
 
 .CardGridContainer {
+  position: relative;
   flex: 1;
   min-width: none;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  gap: 2em;
+  gap: 1em;
 }
 
 .CardGridTopBar {
@@ -233,10 +230,12 @@
   cursor: pointer;
   overflow: visible;
 }
+.CharacterBarImageContainer > img {
+  height: 100%;
+}
 
 .CharacterBarImage {
   height: 100%;
-  width: auto;
 }
 
 .CharacterActiveMask {
@@ -245,6 +244,13 @@
   bottom: 0;
   left: -1px;
   right: 0;
+  opacity: 0;
+  transition: opacity 0.1s ease-out;
+}
+
+.CharacterActiveMask.active {
+  transition: opacity 0.1s ease-out;
+  opacity: 1;
 }
 
 .CardGrid {
@@ -258,11 +264,12 @@
   align-items: start;
   align-content: start;
   padding: 1em;
-  gap: 1.6em;
+  gap: 1.5em;
   overflow-y: scroll;
   scroll-behavior: smooth;
   scrollbar-width: none;
-  /* background-color: #f9a03f; */
+  border-radius: 1.5em;
+  background-color: #ffffff38;
 }
 
 .CardGrid > * {
@@ -280,7 +287,8 @@
   box-sizing: border-box;
   overflow: visible;
   outline: 2px solid #3e3e3e;
-  border-radius: 20px 20px 0 20px;
+  --br : 1em;
+  border-radius: var(--br) var(--br) 0 var(--br);
   color: white;
   background-color: rgb(103, 103, 103);
   /* box-shadow: 0 0 5px inset #ffffff48; */
@@ -401,13 +409,10 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  width: 70%;
-  height: 70%;
+  width: 80%;
+  height: 80%;
   max-width: 900px;
   max-height: 600px;
-}
-.ModalContainer:focus {
-  outline: none;
 }
 
 .Modal {
@@ -483,10 +488,23 @@
   max-width: 300px;
   height: 100%;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   box-sizing: border-box;
-  /* background-color: #368982; */
+  background-color: #368982;
+}
+.ModEditModalRightContainer > img {
+  aspect-ratio: 1;
+  object-fit: cover;
+  width: 70%;
+  border-radius: 20px;
+  margin: 2em;
+  border: 2px solid rgb(255, 255, 255);
+  transition: all 0.1s ease-out;
+}
+.ModEditModalRightContainer > img:hover {
+  filter: blur(2px) brightness(80%);
+  transition: 0.1s ease-out;
 }
 
 .EditableTextBoxContainer {
