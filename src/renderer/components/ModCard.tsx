@@ -5,6 +5,7 @@ import { selectModResourcesPath } from '../redux/slices/settingsSlice';
 import { selectModMetadataByName, updateDiffList } from '../redux/slices/modResourcesSlice';
 import { openModEditModal } from '../redux/slices/modEditModalSlice';
 import path from 'path-browserify';
+import { DEFAULT_METADATA } from '../../types/metadataType';
 
 
 const DEFAULT_MOD_NAME = "Default Mod Name";
@@ -50,7 +51,11 @@ export const ModCard = ({ modName }: ModCardProps) => {
   //Load mod image
   const [modImageData, setModImageData] = useState<string | undefined>(undefined);
   useEffect(() => {
-    if (modData?.image) {
+    if (modData) {
+      if (modData.image === DEFAULT_METADATA.image) {
+        setModImageData(undefined);
+        return;
+      }
       console.log("fetch image for:", modName);
       window.electron.fetchImage(path.join(modResourcesPath, modName, modData.image))
         .then(setModImageData);

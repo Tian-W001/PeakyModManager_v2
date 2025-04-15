@@ -168,8 +168,15 @@ export const ModEditModal = () => {
   const [newModData, setNewModData] = useState<TMetadata|undefined>(undefined);
   const [modImageData, setModImageData] = useState<string | undefined>(undefined);
   useEffect(() => {
-    if (!modName) return;
-    if (newModData?.image) {
+    if (!modName) {
+      setModImageData(undefined);
+      return;
+    };
+    if (newModData) {
+      if (newModData.image === DEFAULT_METADATA.image) {
+        setModImageData(undefined);
+        return;
+      }
       console.log("fetch image for:", modName);
       window.electron.fetchImage(path.join(modResourcesPath, modName, newModData.image))
         .then(setModImageData);
