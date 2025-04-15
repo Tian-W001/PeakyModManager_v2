@@ -1,0 +1,13 @@
+@font-face {
+  font-family: "HongMeng";
+  src: url('./HongMeng.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "HanYiQiHei";
+  src: url('./HanYiQiHei-105Jian-Regular-2.ttf');
+  font-weight: normal;
+  font-style: normal;
+}

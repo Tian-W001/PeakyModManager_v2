@@ -1,3 +1,4 @@
+import './assets/fonts/fonts.css'
 import './App.css';
 import BottomBar from './components/BottomBar';
 import CardGrid from './components/CardGrid';

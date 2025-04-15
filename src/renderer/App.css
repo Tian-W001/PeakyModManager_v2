@@ -27,6 +27,10 @@
   flex: 1;
 }
 
+:root {
+  user-select: none;
+  font-family: HanYiQiHei;
+}
 .AppContainer {
   position: fixed;
   top: 0;
