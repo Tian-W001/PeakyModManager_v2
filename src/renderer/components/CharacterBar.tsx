@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
-import { characters, TCharacter } from "../../types/characterType";
+import { Characters, TCharacter } from "../../types/characterType";
 import activeMask from "./../assets/character_images/character_active_mask.png";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentCharacter, updateSelectedCharacter } from "../redux/slices/menuSlice";
@@ -66,8 +66,8 @@ const CharacterBar = () => {
       </div>
       <div className="CharacterBarImageList" ref={scrollRef}>
         <CharacterItem key={"All"} active={selectedCharacter==="All"} c={"All"} onClick={()=>handleOnClickImage("All")} />
-        {characters.map(c => 
-            <CharacterItem key={c} active={selectedCharacter===c} c={c} onClick={()=>handleOnClickImage(c)} />
+        {Characters.map((c: TCharacter) => 
+          <CharacterItem key={c} active={selectedCharacter===c} c={c} onClick={()=>handleOnClickImage(c)} />
         )}
       </div>
       <div className="CharacterBarButtonContainer">

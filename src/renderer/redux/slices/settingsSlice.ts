@@ -1,11 +1,13 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
+import { TLanguage } from "../../../types/languageType";
 
 interface SettingsState {
   modResourcesPath: string;
   targetPath: string;
   launcherPath: string;
   gamePath: string;
+  language: TLanguage;
 };
 
 const initialState: SettingsState = {
@@ -13,6 +15,7 @@ const initialState: SettingsState = {
   targetPath: "",
   launcherPath: "",
   gamePath: "",
+  language: "en",
 };
 
 
@@ -75,7 +78,11 @@ export const fetchGamePath = createAsyncThunk(
 export const settingsSlice = createSlice({
   name: "settings",
   initialState,
-  reducers: {},
+  reducers: {
+    setLanguage(state, action: PayloadAction<TLanguage>) {
+      state.language = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(updateModResourcesPath.fulfilled, (state, action) => {
@@ -105,9 +112,11 @@ export const settingsSlice = createSlice({
   },
 });
 
+export const { setLanguage } = settingsSlice.actions;
 export default settingsSlice.reducer;
 
 export const selectModResourcesPath = (state: RootState) => state.settings.modResourcesPath;
 export const selectTargetPath = (state: RootState) => state.settings.targetPath;
 export const selectLauncherPath = (state: RootState) => state.settings.launcherPath;
 export const selectGamePath = (state: RootState) => state.settings.gamePath;
+export const selectLanguage = (state: RootState) => state.settings.language;

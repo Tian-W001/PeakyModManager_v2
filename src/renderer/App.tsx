@@ -5,11 +5,12 @@ import CardGrid from './components/CardGrid';
 import LeftMenu from './components/LeftMenu';
 import { useEffect } from 'react';
 
-import { useAppDispatch } from './redux/hooks';
+import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { fetchModResourcesMetadata } from './redux/slices/modResourcesSlice';
-import { fetchGamePath, fetchLauncherPath, fetchModResourcesPath, fetchTargetPath, updateGamePath, updateLauncherPath, updateModResourcesPath, updateTargetPath } from './redux/slices/settingsSlice';
+import { fetchGamePath, fetchLauncherPath, fetchModResourcesPath, fetchTargetPath, selectLanguage, updateGamePath, updateLauncherPath, updateModResourcesPath, updateTargetPath } from './redux/slices/settingsSlice';
 
 import wallpaper from './assets/zzz_wallpaper.png';
+import { useTranslation } from 'react-i18next';
 
 export default function App() {
 
@@ -29,6 +30,12 @@ export default function App() {
 
     dispatch(fetchModResourcesMetadata());
   }, []);
+
+  const { i18n } = useTranslation();
+  const language = useAppSelector(selectLanguage);
+  useEffect(() => {
+    i18n.changeLanguage(language);
+  }, [language, i18n]);
 
   return (
     <>

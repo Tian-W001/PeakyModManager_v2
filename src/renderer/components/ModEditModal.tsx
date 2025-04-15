@@ -10,24 +10,27 @@ import { deleteMod, updateMod } from "../redux/slices/modResourcesSlice";
 import ExitButton from "./ExitButton";
 import { EditableTextBox } from "./EditableTextBox";
 import { DEFAULT_METADATA, TMetadata } from "../../types/metadataType";
-import { characters, TCharacter } from "../../types/characterType";
+import { Characters, TCharacter } from "../../types/characterType";
 import { DEFAULT_KEYBIND_KEY, DEFAULT_KEYBIND_DESC, TKeybinds } from "../../types/KeybindType";
 import { selectModResourcesPath } from "../redux/slices/settingsSlice";
 import path from "path-browserify";
 import { modTypeList, TModType } from "../../types/modType";
+import { useTranslation } from "react-i18next";
 
 Modal.setAppElement('#root');
 
 
-const CharacterSelector = ({currentCharacter, setCharacter}: {currentCharacter: TCharacter, setCharacter: (c:TCharacter)=>void}) => {
+const CharacterSelector = ({currentCharacter, setCharacter}: {currentCharacter: TCharacter | null, setCharacter: (c:TCharacter)=>void}) => {
+  const { t, i18n } = useTranslation();
+
   if (currentCharacter === null) return;
   return (
     <>
       <span>Character: </span>
-      <select value={currentCharacter} onChange={e=>setCharacter(e.target.value as TCharacter)}>
-        {characters.map((c) => (
+      <select value={currentCharacter || undefined} onChange={e=>setCharacter(e.target.value as TCharacter)}>
+        {Characters.map((c) => (
           <option key={c} value={c}>
-            {c}
+            {t(`Characters.${c}`)}
           </option>
         ))}
       </select>

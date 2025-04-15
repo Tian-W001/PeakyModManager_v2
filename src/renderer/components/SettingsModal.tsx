@@ -4,7 +4,8 @@ import Modal from "react-modal";
 import "../App.css";
 import ExitButton from "./ExitButton";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { selectGamePath, selectLauncherPath, selectModResourcesPath, selectTargetPath, updateLauncherPath, updateModResourcesPath, updateTargetPath } from "../redux/slices/settingsSlice";
+import { selectGamePath, selectLanguage, selectLauncherPath, selectModResourcesPath, selectTargetPath, setLanguage, updateLauncherPath, updateModResourcesPath, updateTargetPath } from "../redux/slices/settingsSlice";
+import { languageMap, TLanguage } from "../../types/languageType";
 
 export const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onRequestClose: ()=>void }) => {
   const dispatch = useAppDispatch();
@@ -12,7 +13,8 @@ export const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onR
   const modResourcesPath = useAppSelector(selectModResourcesPath);
   const targetPath = useAppSelector(selectTargetPath);
   const launcherPath = useAppSelector(selectLauncherPath);
-  const gamePath = useAppSelector(selectGamePath);
+  //const gamePath = useAppSelector(selectGamePath);
+  const language = useAppSelector(selectLanguage);
 
 
   const handleSelectModResourcesPath = async () => {
@@ -35,6 +37,10 @@ export const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onR
       dispatch(updateLauncherPath(path));
     }
   };
+
+  const handleSetLanguage = (newLanguage: TLanguage) => {
+    dispatch(setLanguage(newLanguage));
+  }
 
   return (
     <Modal
@@ -73,6 +79,13 @@ export const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onR
           value={launcherPath}
           onClick={handleSelectLauncherPath}
         />
+
+        <label>Language</label>
+        <select value={language} onChange={(e)=>handleSetLanguage(e.target.value as TLanguage)}>
+          {Object.entries(languageMap).map(([languageKey, languageString]) => (
+            <option key={languageKey} value={languageKey}>{languageString}</option>
+          ))}
+        </select>
       </div>
       
     </Modal>
