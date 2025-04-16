@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import '../App.css';
+import '../App.scss';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { selectModResourcesPath } from '../redux/slices/settingsSlice';
 import { selectModMetadataByName, updateDiffList } from '../redux/slices/modResourcesSlice';

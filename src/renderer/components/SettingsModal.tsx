@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 
-import "../App.css";
+import "../App.scss";
 import ExitButton from "./ExitButton";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectGamePath, selectLanguage, selectLauncherPath, selectModResourcesPath, selectTargetPath, updateLanguage, updateLauncherPath, updateModResourcesPath, updateTargetPath } from "../redux/slices/settingsSlice";

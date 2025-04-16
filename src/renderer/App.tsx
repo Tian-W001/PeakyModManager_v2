@@ -1,5 +1,5 @@
 import './assets/fonts/fonts.css'
-import './App.css';
+import './App.scss';
 import BottomBar from './components/BottomBar';
 import CardGrid from './components/CardGrid';
 import LeftMenu from './components/LeftMenu';

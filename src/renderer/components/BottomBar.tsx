@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import '../App.css';
+import '../App.scss';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchModResourcesMetadata, applyMods } from '../redux/slices/modResourcesSlice';
 import { SettingsModal } from './SettingsModal';

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../App.css';
+import '../App.scss';
 import { TiArrowSortedUp, TiArrowSortedDown } from "react-icons/ti";
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { selectCurrentModType, updateSelectedModType } from '../redux/slices/menuSlice';

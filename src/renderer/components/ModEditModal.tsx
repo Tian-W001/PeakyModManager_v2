@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
 
-import "../App.css";
+import "../App.scss";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectModEditModalModMetadata } from "../redux/slices/modEditModalSlice";
 import { selectModEditModalIsOpen, selectModEditModalModName } from "../redux/slices/modEditModalSlice";
@@ -18,6 +18,7 @@ import { modTypeList, TModType } from "../../types/modType";
 import { useTranslation } from "react-i18next";
 import { Button } from "./Button";
 import { TTranslations } from "../translations/translations";
+import { MdDeleteForever } from "react-icons/md";
 
 Modal.setAppElement('#root');
 
@@ -285,13 +286,21 @@ export const ModEditModal = () => {
           </div>
 
           <div className="ModEditModalRightContainer">
-            <img src={modImageData} alt="Mod Image" className="ModCardImage" />
-            <div className="ButtonGroup ModEditModalButtonGroup">
+            <div className="ModEditModalImageContainer">
+              <div className="ButtonGroup">
+                <button className="DeleteButtonContainer" onClick={handleRemoveCover}>
+                  <MdDeleteForever size={"90%"}/>
+                </button>
+                <button className="SelectImageButtonContainer" onClick={handleSelectCover}>
+                  Select Image
+                </button>
+              </div>
+              <img src={modImageData} alt="Mod Image" className="ModCardImage" />
+            </div>
+            <div className="ButtonGroup">
               <Button title="Delete" onClick={handleDelete} />
               <Button title="Save" onClick={handleSave} />
             </div>
-            <button onClick={handleSelectCover}>Select Cover</button>
-            <button onClick={handleRemoveCover}>Remove Cover</button>
             <button onClick={handleOpenModFolder}>Open in File Explorer</button>
           </div>
 
