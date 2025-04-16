@@ -5,3 +5,4 @@ export const languageMap = {
 };
 
 export type TLanguage = keyof typeof languageMap;
+export const DEFAULT_LANGUAGE: TLanguage = "en";

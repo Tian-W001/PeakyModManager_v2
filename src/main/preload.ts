@@ -1,5 +1,6 @@
 import { contextBridge, ipcRenderer, webUtils } from 'electron';
 import { TMetadata } from '../types/metadataType';
+import { TLanguage } from '../types/languageType';
 
 contextBridge.exposeInMainWorld('electron', {
   //settings
@@ -11,6 +12,8 @@ contextBridge.exposeInMainWorld('electron', {
   setLauncherPath: (path: string) => ipcRenderer.invoke('set-launcher-path', path),
   getGamePath: () => ipcRenderer.invoke('get-game-path'),
   setGamePath: (path: string) => ipcRenderer.invoke('set-game-path', path),
+  getLanguage: () => ipcRenderer.invoke('get-language'),
+  setLanguage: (lang: TLanguage) => ipcRenderer.invoke('set-language', lang),
   selectFolder: () => ipcRenderer.invoke('select-folder'),
   selectFile: (path: string, extnames: string[]) => ipcRenderer.invoke('select-file', path, extnames),
 

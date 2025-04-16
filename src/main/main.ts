@@ -17,6 +17,7 @@ import fs from 'fs-extra';
 import MenuBuilder from './menu';
 import { combineObjects, resolveHtmlPath } from './util';
 import { DEFAULT_METADATA, TMetadata } from '../types/metadataType';
+import { languageMap, TLanguage } from '../types/languageType';
 import { exec } from 'child_process';
 import mime from 'mime-types';
 import { installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from "electron-devtools-installer";
@@ -209,8 +210,8 @@ const store = new Store<{
   targetPath: string,
   launcherPath: string,
   gamePath: string,
+  language: TLanguage,
 }>();
-
 
 
 ipcMain.handle('fetch-mod-resources-metadata', async () => {
@@ -354,6 +355,13 @@ ipcMain.handle('get-game-path', () => {
 ipcMain.handle('set-game-path', (_event, gamePath: string) => {
   store.set('gamePath', gamePath);
 });
+
+ipcMain.handle('get-language', () => {
+  return store.get('language');
+});
+ipcMain.handle('set-language', (_event, lang: TLanguage) => {
+  store.set('language', lang);
+})
 
 ipcMain.handle('open-mod-launcher', () => {
   const path = store.get('launcherPath');

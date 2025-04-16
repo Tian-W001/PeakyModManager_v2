@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { TLanguage } from "../../../types/languageType";
+import { DEFAULT_LANGUAGE, TLanguage } from "../../../types/languageType";
 
 interface SettingsState {
   modResourcesPath: string;
@@ -15,7 +15,7 @@ const initialState: SettingsState = {
   targetPath: "",
   launcherPath: "",
   gamePath: "",
-  language: "en",
+  language: DEFAULT_LANGUAGE,
 };
 
 
@@ -73,16 +73,25 @@ export const fetchGamePath = createAsyncThunk(
     return await window.electron.getGamePath();
   }
 );
+export const updateLanguage = createAsyncThunk(
+  'settings/updateLanguage',
+  async (lang: TLanguage) => {
+    await window.electron.setLanguage(lang);
+    return lang;
+  }
+);
+export const fetchLanguage = createAsyncThunk(
+  'settings/fetchLanguage',
+  async () => {
+    return await window.electron.getLanguage();
+  }
+);
 
 
 export const settingsSlice = createSlice({
   name: "settings",
   initialState,
-  reducers: {
-    setLanguage(state, action: PayloadAction<TLanguage>) {
-      state.language = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(updateModResourcesPath.fulfilled, (state, action) => {
@@ -108,11 +117,17 @@ export const settingsSlice = createSlice({
       })
       .addCase(fetchGamePath.fulfilled, (state, action) => {
         state.gamePath = action.payload;
+      })
+      .addCase(updateLanguage.fulfilled, (state, action) => {
+        console.log("returned lang:", action.payload);
+        state.language = action.payload;
+      })
+      .addCase(fetchLanguage.fulfilled, (state, action) => {
+        state.language = action.payload;
       });
   },
 });
 
-export const { setLanguage } = settingsSlice.actions;
 export default settingsSlice.reducer;
 
 export const selectModResourcesPath = (state: RootState) => state.settings.modResourcesPath;

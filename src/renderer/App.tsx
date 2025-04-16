@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { fetchModResourcesMetadata } from './redux/slices/modResourcesSlice';
-import { fetchGamePath, fetchLauncherPath, fetchModResourcesPath, fetchTargetPath, selectLanguage, updateGamePath, updateLauncherPath, updateModResourcesPath, updateTargetPath } from './redux/slices/settingsSlice';
+import { fetchGamePath, fetchLanguage, fetchLauncherPath, fetchModResourcesPath, fetchTargetPath, selectLanguage, updateGamePath, updateLauncherPath, updateModResourcesPath, updateTargetPath } from './redux/slices/settingsSlice';
 
 import wallpaper from './assets/zzz_wallpaper.png';
 import { useTranslation } from 'react-i18next';
@@ -27,6 +27,7 @@ export default function App() {
     dispatch(fetchTargetPath());
     dispatch(fetchLauncherPath());
     dispatch(fetchGamePath());
+    dispatch(fetchLanguage());
 
     dispatch(fetchModResourcesMetadata());
   }, []);
