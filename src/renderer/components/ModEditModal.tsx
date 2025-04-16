@@ -16,6 +16,7 @@ import { selectModResourcesPath } from "../redux/slices/settingsSlice";
 import path from "path-browserify";
 import { modTypeList, TModType } from "../../types/modType";
 import { useTranslation } from "react-i18next";
+import { Button } from "./Button";
 
 Modal.setAppElement('#root');
 
@@ -282,11 +283,13 @@ export const ModEditModal = () => {
 
           <div className="ModEditModalRightContainer">
             <img src={modImageData} alt="Mod Image" className="ModCardImage" />
+            <div className="ButtonGroup ModEditModalButtonGroup">
+              <Button title="Delete" onClick={handleDelete} />
+              <Button title="Save" onClick={handleSave} />
+            </div>
             <button onClick={handleSelectCover}>Select Cover</button>
             <button onClick={handleRemoveCover}>Remove Cover</button>
-            <button onClick={handleSave}>Save</button>
             <button onClick={handleOpenModFolder}>Open in File Explorer</button>
-            <button onClick={handleDelete}>Delete</button>
           </div>
 
         </div>

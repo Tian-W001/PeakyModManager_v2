@@ -4,19 +4,7 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchModResourcesMetadata, applyMods } from '../redux/slices/modResourcesSlice';
 import { SettingsModal } from './SettingsModal';
 import { selectModResourcesPath } from '../redux/slices/settingsSlice';
-
-type ButtonProps = React.ComponentProps<'button'> & {
-  title: string;
-  className?: string;
-};
-
-function Button({ title, className='', ...props }: ButtonProps) {
-  return (
-    <button className={`BottomBarButton ${className}`} {...props}>
-      {title}
-    </button>
-  );
-}
+import { Button } from './Button';
 
 function BottomBar() {
   const dispatch = useAppDispatch();
