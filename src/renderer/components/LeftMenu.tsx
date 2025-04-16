@@ -4,6 +4,8 @@ import { TiArrowSortedUp, TiArrowSortedDown } from "react-icons/ti";
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { selectCurrentModType, updateSelectedModType } from '../redux/slices/menuSlice';
 import { modTypeList, TModType } from '../../types/modType';
+import { useTranslation } from 'react-i18next';
+import { TTranslations } from '../translations/translations';
 
 
 interface MenuButtonProps { 
@@ -28,6 +30,8 @@ interface MenuListProps {
 };
 const MenuList = ({ menuListItems, currentModType }: MenuListProps) => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
+  const menuField = "menuItems" satisfies keyof TTranslations;
 
   const handleSelectModType = (newModType: TModType|"All") => {
     dispatch(updateSelectedModType(newModType));
@@ -41,7 +45,7 @@ const MenuList = ({ menuListItems, currentModType }: MenuListProps) => {
           onClick={()=>handleSelectModType(modType)}
         >
           <span>
-            {modType}
+            {t(`${menuField}.${modType}`)}
           </span>
         </MenuItem>
       ))}

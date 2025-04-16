@@ -73,7 +73,17 @@ const en: TTranslations = {
       Hugo: "Hugo",
       Vivian: "Vivian",
       Unknown: "Unknown",
-    }
+    },
+  },
+  menuItems: {
+    All: "All",
+    Characters: "Characters",
+    NPCs: "NPCs",
+    Environment: "Environment",
+    UI: "UI",
+    ScriptsTools: "Scripts/Tools",
+    Misc: "Misc",
+    Unknown: "Unknown",
   },
 };
 

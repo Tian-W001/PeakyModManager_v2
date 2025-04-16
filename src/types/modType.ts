@@ -3,7 +3,7 @@ export const modTypeList = [
     "NPCs",
     "Environment",
     "UI",
-    "Script/Tools",
+    "ScriptsTools",
     "Misc",
     "Unknown", 
 ] as const;

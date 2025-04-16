@@ -73,8 +73,18 @@ const zh: TTranslations = {
       Hugo: "雨果",
       Vivian: "薇薇安",
       Unknown: "未知角色",
-    }
-  }
-}
+    },
+  },
+  menuItems: {
+    All: "全部",
+    Characters: "角色",
+    NPCs: "NPC",
+    Environment: "场景",
+    UI: "UI",
+    ScriptsTools: "脚本/工具",
+    Misc: "其他",
+    Unknown: "未知",
+  },
+};
 
 export default zh;

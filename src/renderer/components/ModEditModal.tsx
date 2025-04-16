@@ -17,21 +17,25 @@ import path from "path-browserify";
 import { modTypeList, TModType } from "../../types/modType";
 import { useTranslation } from "react-i18next";
 import { Button } from "./Button";
+import { TTranslations } from "../translations/translations";
 
 Modal.setAppElement('#root');
 
 
 const CharacterSelector = ({currentCharacter, setCharacter}: {currentCharacter: TCharacter | null, setCharacter: (c:TCharacter)=>void}) => {
-  const { t } = useTranslation();
-
   if (currentCharacter === null) return;
+
+  const { t } = useTranslation();
+  const charField = "characters" satisfies keyof TTranslations;
+  const charFullnameField = "fullnames" satisfies keyof TTranslations[typeof charField];
+
   return (
     <>
       <span>Character: </span>
       <select value={currentCharacter || undefined} onChange={e=>setCharacter(e.target.value as TCharacter)}>
         {Characters.map((c) => (
           <option key={c} value={c}>
-            {t(`Characters.fullnames.${c}`)}
+            {t(`${charField}.${charFullnameField}.${c}`)}
           </option>
         ))}
       </select>
@@ -89,14 +93,12 @@ const KeybindItem = ({ currentkey, currentDesc, setKey, setDesc }: KeybindItemPr
       descInputRef.current?.focus();
     };
 
-    console.log("+++Add key listener+++");
     listenerRef.current = listener;
     window.addEventListener("keydown", listener);
   };
 
   const handleKeyInputOnBlur = () => {
     if (listenerRef.current) {
-      console.log("---Remove key listener---");
       window.removeEventListener("keydown", listenerRef.current);
     }
   }
@@ -125,16 +127,19 @@ const KeybindItem = ({ currentkey, currentDesc, setKey, setDesc }: KeybindItemPr
   );
 };
 
-
-const KeybindMenuList = ({ keybinds, setKeybinds }: { keybinds: TKeybinds, setKeybinds: (newKeybinds: TKeybinds) => void }) => {
+interface KeybindMenuListProps {
+  keybinds: TKeybinds, 
+  setKeybinds: (newKeybinds: TKeybinds) => void,
+};
+const KeybindMenuList = ({ keybinds, setKeybinds }: KeybindMenuListProps) => {
 
   const handleSetKey = (oldKey: string, newKey: string) => {
     if (oldKey === newKey) {
       console.error("Same keybind!");
       return;
     }
-    const updatedKeybinds = ({[oldKey]: desc, ...rest}: TKeybinds) => ({...rest, [newKey]: desc});
-    setKeybinds(updatedKeybinds(keybinds));
+    const { [oldKey]: desc, ...rest } = keybinds;
+    setKeybinds({ ...rest, [newKey]: desc });
   }
   const handleSetDesc = (key: string, newDesc: string) => {
     setKeybinds({...keybinds, [key]: newDesc});
@@ -154,7 +159,7 @@ const KeybindMenuList = ({ keybinds, setKeybinds }: { keybinds: TKeybinds, setKe
           setDesc={(newDesc)=>handleSetDesc(key, newDesc)}
         />
       ))}
-      <button onClick={handleAddKeybind}> Add new Keybind</button>
+      <button onClick={handleAddKeybind}>Add new Keybind</button>
     </div>
   );
 };
@@ -205,10 +210,8 @@ export const ModEditModal = () => {
       ['png', 'jpg', 'jpeg', 'webp']
     );
     if (!imgPath) return;
-    console.log("imgPath", imgPath);
 
     const imgName = path.basename(imgPath.replace(/\\/g, '/')); // use posix '/' for path-browserify
-    console.log("imgname:", imgName);
     setNewModData({ ...newModData, image: imgName });
   }
 
