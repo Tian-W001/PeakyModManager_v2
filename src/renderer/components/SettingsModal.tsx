@@ -4,7 +4,7 @@ import Modal from "react-modal";
 import "../App.css";
 import ExitButton from "./ExitButton";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { selectGamePath, selectLanguage, selectLauncherPath, selectModResourcesPath, selectTargetPath, setLanguage, updateLauncherPath, updateModResourcesPath, updateTargetPath } from "../redux/slices/settingsSlice";
+import { selectGamePath, selectLanguage, selectLauncherPath, selectModResourcesPath, selectTargetPath, updateLanguage, updateLauncherPath, updateModResourcesPath, updateTargetPath } from "../redux/slices/settingsSlice";
 import { languageMap, TLanguage } from "../../types/languageType";
 
 export const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onRequestClose: ()=>void }) => {
@@ -38,8 +38,8 @@ export const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onR
     }
   };
 
-  const handleSetLanguage = (newLanguage: TLanguage) => {
-    dispatch(setLanguage(newLanguage));
+  const handleSetLanguage = (newLang: TLanguage) => {
+    dispatch(updateLanguage(newLang));
   }
 
   return (
