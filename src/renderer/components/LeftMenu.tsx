@@ -77,18 +77,18 @@ const Menu = () => {
   const currentIndex = menuListItems.indexOf(currentModType);
 
   const handleSelectUp = () => {
-    dispatch(updateSelectedModType(modTypeList[currentIndex - 1]));
-  };
+    dispatch(updateSelectedModType(menuListItems[currentIndex - 1]));
+  }
 
   const handleSelectDown = () => {
-    dispatch(updateSelectedModType(modTypeList[currentIndex + 1]));
-  }
+    dispatch(updateSelectedModType(menuListItems[currentIndex + 1]));
+  };
 
   return (
     <div className="MenuBox">
       <MenuButton direction='UP' active={currentIndex!==0} onClick={handleSelectUp}/>
       <MenuList menuListItems={menuListItems} currentModType={currentModType} />
-      <MenuButton direction='DOWN' active={currentIndex!==modTypeList.length-1} onClick={handleSelectDown}/>
+      <MenuButton direction='DOWN' active={currentIndex!==menuListItems.length-1} onClick={handleSelectDown}/>
     </div>
   );
 };
