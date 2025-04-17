@@ -1,6 +1,6 @@
 import { RootState } from "../store";
 import { createSlice } from "@reduxjs/toolkit";
-import { defaultModType, modTypeList, TModType } from "../../../types/modType";
+import { TModType } from "../../../types/modType";
 import { TCharacter } from "../../../types/characterType";
 
 interface MenuState {

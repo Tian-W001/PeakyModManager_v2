@@ -300,8 +300,8 @@ export const ModEditModal = () => {
             <div className="ButtonGroup">
               <Button title="Delete" onClick={handleDelete} />
               <Button title="Save" onClick={handleSave} />
+              <Button title="Open Folder" onClick={handleOpenModFolder} />
             </div>
-            <button onClick={handleOpenModFolder}>Open in File Explorer</button>
           </div>
 
         </div>
