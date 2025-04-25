@@ -35,7 +35,7 @@ const zh: TTranslations = {
       Anby0: "零号·安比",
       Trigger: "「 扳机 」",
       Hugo: "雨果",
-      Vivian: "薇薇安",
+      Vivian: "薇薇安·班希",
       Unknown: "未知角色",
     },
     nicknames: {

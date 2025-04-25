@@ -35,7 +35,7 @@ const en: TTranslations = {
       Anby0: "Soldier 0 - Anby",
       Trigger: "Trigger",
       Hugo: "Hugo",
-      Vivian: "Vivian",
+      Vivian: "Vivian Banshee",
       Unknown: "Unknown",
     },
     nicknames: {
