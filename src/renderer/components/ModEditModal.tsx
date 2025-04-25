@@ -74,8 +74,8 @@ const KeybindItem = ({ currentkey, currentDesc, setKey, setDesc }: KeybindItemPr
   const getKeybind = (e: KeyboardEvent) => {
     const key = e.key.length === 1 ? e.key.toUpperCase() : e.key;
     if (e.ctrlKey)  return `Ctrl+${key}`;
-    if (e.altKey)   return `Alt+${key}`;
     if (e.shiftKey) return `Shift+${key}`;
+    if (e.altKey)   return `Alt+${key}`;
     return key;
   };
 
@@ -83,15 +83,15 @@ const KeybindItem = ({ currentkey, currentDesc, setKey, setDesc }: KeybindItemPr
 
     const listener = (e: KeyboardEvent) => {
       e.preventDefault();
-      if (['Control', 'Shift', 'Alt', 'Meta', 'CapsLock', 'Tab'].includes(e.key)) {
+      if (['Control', 'Shift', 'Alt', 'Meta', 'Tab'].includes(e.key)) {
         return;
       }
       const newKeybind = getKeybind(e);
       if (newKeybind && newKeybind !== 'Escape') {
         setKey(newKeybind);
+        descInputRef.current?.focus();
       }
       keyInputRef.current?.blur();
-      descInputRef.current?.focus();
     };
 
     listenerRef.current = listener;
