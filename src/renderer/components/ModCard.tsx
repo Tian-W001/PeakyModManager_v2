@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import '../App.scss';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { selectModResourcesPath } from '../redux/slices/settingsSlice';
 import { selectModMetadataByName, updateDiffList } from '../redux/slices/modResourcesSlice';
 import { openModEditModal } from '../redux/slices/modEditModalSlice';
-import path from 'path-browserify';
-import { DEFAULT_METADATA } from '../../types/metadataType';
 
 
 const DEFAULT_MOD_NAME = "Default Mod Name";
@@ -22,7 +20,6 @@ export const ModCard = ({ modName }: ModCardProps) => {
 
   const dispatch = useAppDispatch();
   
-  const modResourcesPath = useAppSelector(selectModResourcesPath);
   const modData = useAppSelector(selectModMetadataByName(modName));
   if (!modData) {
     console.error("ModCard: modData not found for modName:", modName);
@@ -48,21 +45,6 @@ export const ModCard = ({ modName }: ModCardProps) => {
     }
   }, [modData?.active, isActive]) as TActiveState;
 
-  //Load mod image
-  const [modImageData, setModImageData] = useState<string | undefined>(undefined);
-  useEffect(() => {
-    if (modData) {
-      if (modData.image === DEFAULT_METADATA.image) {
-        setModImageData(undefined);
-        return;
-      }
-      console.log("fetch image for:", modName);
-      window.electron.fetchImage(path.join(modResourcesPath, modName, modData.image))
-        .then(setModImageData);
-    }
-  }, [modData?.image]);
-
-
   const handleClick = (e: React.MouseEvent) => {
     setIsActive(!isActive);
     dispatch(updateDiffList({ modName, isActive: !isActive }));
@@ -74,11 +56,13 @@ export const ModCard = ({ modName }: ModCardProps) => {
   };
 
   return (
-    <div className={`ModCardContainer ${cardActiveState}`} onClick={handleClick} onContextMenu={handleContextMenu}>
-      <div className="ModCardTitle">{modName || DEFAULT_MOD_NAME}</div>
-      <div className="ModCardDesc">{modData?.description || DEFAULT_MOD_DESC}</div>
-      <img src={modImageData} alt="Mod Image" className="ModCardImage" />
-    </div>
+    <>
+      <div className={`ModCardContainer ${cardActiveState}`} onClick={handleClick} onContextMenu={handleContextMenu}>
+        <div className="ModCardTitle">{modName || DEFAULT_MOD_NAME}</div>
+        <div className="ModCardDesc">{modData?.description || DEFAULT_MOD_DESC}</div>
+        <img src={(modName&&modData?.image) && `mod-image://local/${modName}/${modData?.image}` || undefined} alt="Mod Image" className="ModCardImage" />
+      </div>
+    </>
   );
 
 };

@@ -22,7 +22,6 @@ contextBridge.exposeInMainWorld('electron', {
   addNewMod: (srcModPath: string) => ipcRenderer.invoke('add-new-mod', srcModPath),
   deleteMod: (modName: string) => ipcRenderer.invoke('delete-mod', modName),
   updateMod: (modName: string, newMetadata: TMetadata) => ipcRenderer.invoke('update-mod-metadata', modName, newMetadata),
-  fetchImage: (modName: string, imgName: string) => ipcRenderer.invoke('fetch-image', modName, imgName),
   applyMods: (isActiveModList: Record<string,boolean>) => ipcRenderer.invoke('apply-mods', isActiveModList),
   getModPath: (file: File) => webUtils.getPathForFile(file),
 

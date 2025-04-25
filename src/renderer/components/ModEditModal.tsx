@@ -176,22 +176,6 @@ export const ModEditModal = () => {
   const modData = useAppSelector(selectModEditModalModMetadata);
   
   const [newModData, setNewModData] = useState<TMetadata|undefined>(undefined);
-  const [modImageData, setModImageData] = useState<string | undefined>(undefined);
-  useEffect(() => {
-    if (!modName) {
-      setModImageData(undefined);
-      return;
-    };
-    if (newModData) {
-      if (newModData.image === DEFAULT_METADATA.image) {
-        setModImageData(undefined);
-        return;
-      }
-      console.log("fetch image for:", modName);
-      window.electron.fetchImage(path.join(modResourcesPath, modName, newModData.image))
-        .then(setModImageData);
-    }
-  }, [newModData?.image]);
 
   console.log("ModEditModal Rendered");
 
@@ -295,7 +279,7 @@ export const ModEditModal = () => {
                   Select Image
                 </button>
               </div>
-              <img src={modImageData} alt="Mod Image" className="ModCardImage" />
+              <img src={(modName&&newModData?.image) && `mod-image://local/${modName}/${newModData?.image}` || undefined} alt="Mod Image" className="ModCardImage" />
             </div>
             <div className="ButtonGroup">
               <Button title="Delete" onClick={handleDelete} />

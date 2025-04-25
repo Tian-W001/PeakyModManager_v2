@@ -9,7 +9,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, dialog, protocol } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import Store from 'electron-store';
@@ -62,6 +62,10 @@ const installExtensions = async () => {
     )
     .catch(console.log);
 };
+
+protocol.registerSchemesAsPrivileged([
+  { scheme: 'mod-image', privileges: { secure: true, standard: true } },
+]);
 
 const createWindow = async () => {
   if (isDebug) {
@@ -140,6 +144,10 @@ app.whenReady()
     installExtension([REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS])
     .then(([redux, react]) => console.log(`Added Extensions:  ${redux.name}, ${react.name}`))
     .catch((err) => console.log('An error occurred: ', err));
+  })
+  .then(() => {
+    
+    registerImageProtocol();
   })
   .then(() => {
     createWindow();
@@ -232,26 +240,6 @@ ipcMain.handle('update-mod-metadata', async (_event, modName: string, newMetadat
   } catch (error) {
     console.error(`Failed to update mod ${modName}: ${error}`);
     return false;
-  }
-});
-
-ipcMain.handle('fetch-image', async (_event, imagePath: string) => {
-  if (!imagePath) return undefined;
-  try {
-    const ext = path.extname(imagePath);
-    if (!IMG_TYPES.has(ext)) {
-      console.error(`Invalid image type: ${ext}`);
-      return undefined;
-    }
-
-    const mimeType = mime.lookup(ext);
-    const imageBuffer = await fs.promises.readFile(imagePath);
-    const imageData = imageBuffer.toString('base64');
-    return `data:${mimeType};base64,${imageData}`;
-
-  } catch (error) {
-    console.error(`Failed to read image file: ${error}`);
-    return undefined;
   }
 });
 
@@ -426,3 +414,35 @@ ipcMain.handle('select-file', async (_event, path: string, extnames:string[] = [
   else
     return result.filePaths[0];
 });
+
+export function registerImageProtocol() {
+  protocol.handle('mod-image', async (request) => {
+    try {
+      const url = new URL(request.url);
+      const imagePath = decodeURIComponent(url.pathname).replace(/^\//, '');
+      const ext = path.extname(imagePath).toLowerCase();
+      if (!IMG_TYPES.has(ext)) {
+        console.error(`Invalid image type: ${ext}`);
+        return new Response(null, { status: 400 });
+      }
+
+      const modResourcesPath = store.get('modResourcesPath');
+      const absPath = path.resolve(modResourcesPath, imagePath);
+      if (!absPath.startsWith(modResourcesPath)) {
+        //safety check (prevent ../path/to/file)
+        console.error(`Invalid image path: ${absPath}`);
+        return new Response(null, { status: 400 });
+      }
+
+      const buffer = await fs.readFile(absPath);
+      const mimeType = mime.lookup(ext);
+      return new Response(buffer, {
+        status: 200,
+        headers: mimeType ? { 'Content-Type': mimeType } : undefined
+      });
+    } catch (error) {
+      console.error('Error handling image protocol:', error);
+      return new Response(null, { status: 404 });
+    }
+  });
+}
