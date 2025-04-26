@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import '../App.scss';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { addNewMod, selectModMetadataList } from '../redux/slices/modResourcesSlice';
+import { addNewMod, selectDiffList, selectModMetadataList } from '../redux/slices/modResourcesSlice';
 import { ModCard } from './ModCard';
 import { ModEditModal } from './ModEditModal';
 import CharacterBar from './CharacterBar';
@@ -30,6 +30,8 @@ function CardGrid() {
       }
     }, [metadataList, currentModType, currentCharacter]
   );
+
+  const diffList = useAppSelector(selectDiffList);
 
   const handleDrop = useCallback(async (e: React.DragEvent) => {
     e.preventDefault();
@@ -63,7 +65,7 @@ function CardGrid() {
 
             {
               filteredModNameList.map(modName => (
-                <ModCard key={modName} modName={modName} />
+                <ModCard key={modName} modName={modName} diff={typeof diffList[modName] === "boolean" ? diffList[modName] : null}/>
               ))
             }
 

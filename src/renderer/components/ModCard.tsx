@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import '../App.scss';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { selectModResourcesPath } from '../redux/slices/settingsSlice';
 import { selectModMetadataByName, updateDiffList } from '../redux/slices/modResourcesSlice';
 import { openModEditModal } from '../redux/slices/modEditModalSlice';
 
@@ -13,10 +12,11 @@ type TActiveState = "active" | "inactive" | "preActive" | "preInactive";
 
 interface ModCardProps {
   modName: string;
+  diff: boolean | null;
 }
 
-export const ModCard = ({ modName }: ModCardProps) => {
-  console.log(`ModCard ${modName} rendered`);
+export const ModCard = ({ modName, diff }: ModCardProps) => {
+  console.log(`ModCard rendered: ${modName}`);
 
   const dispatch = useAppDispatch();
   
@@ -25,9 +25,7 @@ export const ModCard = ({ modName }: ModCardProps) => {
     console.error("ModCard: modData not found for modName:", modName);
   }
 
-  //updated by re-render
-  const [isActive, setIsActive] = useState(modData?.active);
-
+  const [isActive, setIsActive] = useState(diff!==null ? diff : modData?.active);
 
   const cardActiveState = useMemo(() => {
     if (modData?.active !== undefined) {

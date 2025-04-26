@@ -128,7 +128,7 @@ export default modResourcesSlice.reducer;
   Selectors
 */
 export const selectModMetadataList = (state: RootState) => state.modResources.metadataList;
-
+export const selectDiffList = (state: RootState) => state.modResources.diffList;
 export const selectModMetadataListByType = (modType: TModType | null | undefined) => 
   useMemo(() => 
     createSelector(
