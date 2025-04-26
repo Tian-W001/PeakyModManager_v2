@@ -65,7 +65,7 @@ function CardGrid() {
 
             {
               filteredModNameList.map(modName => (
-                <ModCard key={modName} modName={modName} diff={typeof diffList[modName] === "boolean" ? diffList[modName] : null}/>
+                <ModCard key={modName} modName={modName} diff={modName in diffList ? diffList[modName] : null}/>
               ))
             }
 
