@@ -3,6 +3,7 @@ import { TTranslations } from "./translations";
 const zh: TTranslations = {
   characters: {
     fullnames: {
+      Belle: "玲",
       Anby: "安比·德玛拉",
       Billy: "比利·奇德",
       Nicole: "妮可·德玛拉",
@@ -39,6 +40,7 @@ const zh: TTranslations = {
       Unknown: "未知角色",
     },
     nicknames: {
+      Belle: "玲",
       Anby: "安比",
       Billy: "比利",
       Nicole: "妮可",

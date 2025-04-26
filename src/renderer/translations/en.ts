@@ -3,6 +3,7 @@ import { TTranslations } from "./translations";
 const en: TTranslations = {
   characters: {
     fullnames: {
+      Belle: "Belle",
       Anby: "Anby Demara",
       Billy: "Billy Kid",
       Nicole: "Nicole Demara",
@@ -39,6 +40,7 @@ const en: TTranslations = {
       Unknown: "Unknown",
     },
     nicknames: {
+      Belle: "Belle",
       Anby: "Anby",
       Billy: "Billy",
       Nicole: "Nicole",

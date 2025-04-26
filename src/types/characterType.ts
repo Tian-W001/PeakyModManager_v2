@@ -1,5 +1,7 @@
 
 export const Characters = [
+  "Unknown",
+  "Belle",
   "Anby", 
   "Billy", 
   "Nicole", 
@@ -33,7 +35,6 @@ export const Characters = [
   "Trigger", 
   "Hugo", 
   "Vivian", 
-  "Unknown"
 ] as const;
 
 export type TCharacter = typeof Characters[number];
