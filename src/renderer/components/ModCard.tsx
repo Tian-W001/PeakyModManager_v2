@@ -6,8 +6,8 @@ import { selectModMetadataByName, updateDiffList } from '../redux/slices/modReso
 import { openModEditModal } from '../redux/slices/modEditModalSlice';
 
 
-const DEFAULT_MOD_NAME = "Default Mod Name";
-const DEFAULT_MOD_DESC = "Default Mod Description";
+const DEFAULT_MOD_NAME = "name";
+const DEFAULT_MOD_DESC = "no description";
 
 type TActiveState = "active" | "inactive" | "preActive" | "preInactive";
 
@@ -58,9 +58,9 @@ export const ModCard = ({ modName }: ModCardProps) => {
   return (
     <>
       <div className={`ModCardContainer ${cardActiveState}`} onClick={handleClick} onContextMenu={handleContextMenu}>
+        <img src={modData?.image && `mod-image://local/${modName}/${modData.image}` || require('../assets/default_cover.webp')} alt="Mod Image" className="CoverImage"/>
         <div className="ModCardTitle">{modName || DEFAULT_MOD_NAME}</div>
         <div className="ModCardDesc">{modData?.description || DEFAULT_MOD_DESC}</div>
-        <img src={(modName&&modData?.image) && `mod-image://local/${modName}/${modData?.image}` || undefined} alt="Mod Image" className="ModCardImage" />
       </div>
     </>
   );
