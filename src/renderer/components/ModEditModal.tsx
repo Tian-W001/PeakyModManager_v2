@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "./Button";
 import { TTranslations } from "../translations/translations";
 import { MdDeleteForever } from "react-icons/md";
+import { t } from "i18next";
 
 Modal.setAppElement('#root');
 
@@ -49,9 +50,9 @@ const ModTypeSelector = ({currentType, setModType}: {currentType: TModType, setM
     <>
       <span>modType: </span>
         <select value={currentType} onChange={e=>setModType(e.target.value as TModType)}>
-          {modTypeList.map((t) => (
-            <option key={t} value={t}>
-              {t}
+          {modTypeList.map((modType) => (
+            <option key={modType} value={modType}>
+              {t(`menuItems.${modType}`)}
             </option>
           ))}
         </select>
@@ -241,7 +242,7 @@ export const ModEditModal = () => {
       shouldCloseOnEsc={false}
     >
       <ExitButton onClick={onRequestClose} className="ModalExitButton"/>
-      <div className="Modal ModalShape flexCol">
+      <div className="Modal flexCol">
         <div className="ModEditModalTitleBar">
           {modName}
         </div>

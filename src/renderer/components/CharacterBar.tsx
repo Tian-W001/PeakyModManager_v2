@@ -66,7 +66,7 @@ const CharacterBar = () => {
       </div>
       <div className="CharacterBarImageList" ref={scrollRef}>
         <CharacterItem key={"All"} active={selectedCharacter==="All"} c={"All"} onClick={()=>handleOnClickImage("All")} />
-        {Characters.map((c: TCharacter) => 
+        {Characters.slice().reverse().map((c: TCharacter) => 
           <CharacterItem key={c} active={selectedCharacter===c} c={c} onClick={()=>handleOnClickImage(c)} />
         )}
       </div>

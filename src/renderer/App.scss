@@ -287,7 +287,7 @@
   width: 12em;
   height: 20em;
   box-sizing: border-box;
-  overflow: visible;
+  overflow: hidden;
   outline: 2px solid #3e3e3e;
   --br : 1em;
   border-radius: var(--br) var(--br) 0 var(--br);
@@ -298,33 +298,34 @@
   transition: background-color 0.2s ease-in, 
               outline 0.2s ease-in,
               transform 0.2s ease-in;
-}
+  &:hover {
+    background-color: rgb(82, 82, 82);
+    transform: scale(1.05);
+    transition: all 0.15s ease-out;
+  }
+  &.preActive {
+    outline: 3px dashed #ffff0099;
+    transition: all 0.1s ease-out;
+  }
+  &.active {
+    outline: 5px solid #ffff00;
+    transition: all 0.1s ease-out;
+  }
+  &.preInactive {
+    outline: 3px dashed rgba(255, 16, 16, 0.678);
+    transition: all 0.1s ease-out;
+  }
+  &.inactive {
+    outline: 3px solid black;
+    transition: all 0.1s ease-out;
+  }
 
-.ModCardContainer:hover {
-  background-color: rgb(82, 82, 82);
-  transform: scale(1.05);
-  transition: all 0.15s ease-out;
-}
+  .CoverImage {
+    width: 100%;
+    height: 50%;
+    object-fit: cover;
+  }
 
-.ModCardContainer.preActive {
-  outline: 3px dashed #ffff0099;
-  transition: all 0.1s ease-out;
-}
-.ModCardContainer.active {
-  outline: 5px solid #ffff00;
-  transition: all 0.1s ease-out;
-}
-.ModCardContainer.preInactive {
-  outline: 3px dashed rgba(255, 16, 16, 0.678);
-  transition: all 0.1s ease-out;
-}
-.ModCardContainer.inactive {
-  outline: 3px solid black;
-  transition: all 0.1s ease-out;
-}
-
-.ModCardImage {
-  width: 100%;
 }
 
 .BottomBarContainer {
@@ -527,27 +528,23 @@
   border-radius: 20px;
   border: 2px solid rgb(255, 255, 255);
   overflow: hidden;
-  transition: filter 0.1s ease-out;
   display: flex;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
 
-  > img {
+  & > img {
     position: absolute;
-    aspect-ratio: 1;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     filter: none;
     transition: filter 0.1s ease-in;
     z-index: 0;
-  };
+  }
 
   &:hover > img {
     filter: blur(3px) brightness(80%);
-  };
-
-  &:hover > .ButtonGroup {
-    opacity: 100%;
   }
 
   .ButtonGroup {
@@ -578,12 +575,15 @@
     .DeleteButtonContainer {
       aspect-ratio: 1;
       color: rgb(200, 0, 0);
-    };
+    }
     .SelectImageButtonContainer {
       flex: 1;
       color: inherit;
-    };
-  };
+    }
+  }
+  &:hover > .ButtonGroup {
+    opacity: 100%;
+  }
 }
 
 
@@ -622,7 +622,7 @@
 }
 
 .ModalExitButton {
-  --translate: translate(64px, -36px);
+  --translate: translate(44px, -36px);
   width: auto;
   height: auto;
   position: absolute;
