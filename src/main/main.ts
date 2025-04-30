@@ -186,8 +186,6 @@ const updateAllModMetadata = async (modResourcesPath: string): Promise<Record<st
 const updateModMetadata = async (modPath: string): Promise<TMetadata|null> => {
   const modMetadataPath = path.join(modPath, METADATA_FILENAME);
   
-  
-
   try {
     // metadata doesn't exist, create new metadata file
     if (HARD_RESET_METADATA || !(await fs.pathExists(modMetadataPath))) {
@@ -316,10 +314,10 @@ async function applyMods(diffList?: Record<string, boolean>) {
         await applyMod(modName, isActive);
       }
     } else {
-      const files = (await fs.readdir(modResourcesPath, { withFileTypes: true }))
+      const modNames = (await fs.readdir(modResourcesPath, { withFileTypes: true }))
                       .filter(dirent => dirent.isDirectory())
                       .map(dirent => dirent.name);
-      for (const modName of files) {
+      for (const modName of modNames) {
         await applyMod(modName, false);
       }
     }
@@ -342,16 +340,16 @@ ipcMain.handle('disable-all-mods', async () => {
 ipcMain.handle('remove-all-metadata-files', async () => {
   const modResourcesPath = store.get('modResourcesPath');
   try {
-    const files = await fs.readdir(modResourcesPath);
-    for (const file of files) {
-      const filePath = path.join(modResourcesPath, file, METADATA_FILENAME);
-      const stat = await fs.stat(filePath);
-      if (stat.isDirectory()) {
-        const metadataPath = path.join(filePath, METADATA_FILENAME);
-        fs.remove(metadataPath);
-      }
+    const modNames = (await fs.readdir(modResourcesPath, { withFileTypes: true }))
+                      .filter(dirent => dirent.isDirectory())
+                      .map(dirent => dirent.name);
+
+    for (const modName of modNames) {
+      const metadataPath = path.join(modResourcesPath, modName, METADATA_FILENAME);
+      await fs.remove(metadataPath);
     }
     return true;
+
   } catch (error) {
     console.error('Error removing metadata files:', error);
     return false;

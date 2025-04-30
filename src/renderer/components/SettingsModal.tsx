@@ -27,7 +27,6 @@ export const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onR
       // clear diffList
       dispatch(clearDiffList());
       // rebuild diffList based on the assumption of empty targetFolder
-      
       dispatch(resetDiffList());
       // clear target folder & write false to all mod.active
       await dispatch(disableAllMods());
