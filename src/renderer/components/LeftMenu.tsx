@@ -94,7 +94,7 @@ const Menu = () => {
 };
 
 
-function LeftMenu() {
+const LeftMenu = () => {
 
   return (
     <>

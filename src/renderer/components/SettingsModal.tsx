@@ -8,7 +8,7 @@ import { selectGamePath, selectLanguage, selectLauncherPath, selectModResourcesP
 import { languageMap, TLanguage } from "../../types/languageType";
 import { clearDiffList, disableAllMods, fetchModResourcesMetadata, resetDiffList } from "../redux/slices/modResourcesSlice";
 
-export const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onRequestClose: ()=>void }) => {
+const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onRequestClose: ()=>void }) => {
   const dispatch = useAppDispatch();
 
   const modResourcesPath = useAppSelector(selectModResourcesPath);
@@ -106,3 +106,4 @@ export const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onR
     </Modal>
   );
 };
+export default SettingsModal;

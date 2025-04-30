@@ -3,11 +3,11 @@ import '../App.scss';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { addNewMod, selectDiffList, selectModMetadataList } from '../redux/slices/modResourcesSlice';
 import ModCard from './ModCard';
-import { ModEditModal } from './ModEditModal';
+import ModEditModal from './ModEditModal';
 import CharacterBar from './CharacterBar';
 import { selectCurrentCharacter, selectCurrentModType } from '../redux/slices/menuSlice';
 
-function CardGrid() {
+const CardGrid = () =>{
   const dispatch = useAppDispatch(); 
 
   const currentModType = useAppSelector(selectCurrentModType);

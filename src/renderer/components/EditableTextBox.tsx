@@ -7,7 +7,7 @@ type EditableTextBoxProps = {
   handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 };
 
-export const EditableTextBox = ({ title, text, handleChange }: EditableTextBoxProps) => {
+const EditableTextBox = ({ title, text, handleChange }: EditableTextBoxProps) => {
   
   return (
     <div className="EditableTextBoxContainer">
@@ -15,6 +15,6 @@ export const EditableTextBox = ({ title, text, handleChange }: EditableTextBoxPr
       <textarea className="EditableTextBox" rows={1} value={text} onChange={handleChange}/>
     </div>
   );
-  
-    
 };
+
+export default EditableTextBox;

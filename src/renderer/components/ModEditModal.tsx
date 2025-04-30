@@ -8,7 +8,7 @@ import { selectModEditModalIsOpen, selectModEditModalModName } from "../redux/sl
 import { closeModEditModal } from "../redux/slices/modEditModalSlice";
 import { deleteMod, updateMod } from "../redux/slices/modResourcesSlice";
 import ExitButton from "./ExitButton";
-import { EditableTextBox } from "./EditableTextBox";
+import EditableTextBox from "./EditableTextBox";
 import { DEFAULT_METADATA, TMetadata } from "../../types/metadataType";
 import { Characters, TCharacter } from "../../types/characterType";
 import { DEFAULT_KEYBIND_KEY, DEFAULT_KEYBIND_DESC, TKeybinds } from "../../types/KeybindType";
@@ -167,7 +167,7 @@ const KeybindMenuList = ({ keybinds, setKeybinds }: KeybindMenuListProps) => {
 };
 
 
-export const ModEditModal = () => {
+const ModEditModal = () => {
   const dispatch = useAppDispatch();
 
   const isOpen = useAppSelector(selectModEditModalIsOpen);
@@ -295,3 +295,5 @@ export const ModEditModal = () => {
     </Modal>
   );
 };
+
+export default ModEditModal;

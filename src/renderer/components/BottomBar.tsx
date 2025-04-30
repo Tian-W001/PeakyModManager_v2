@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import '../App.scss';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchModResourcesMetadata, applyMods } from '../redux/slices/modResourcesSlice';
-import { SettingsModal } from './SettingsModal';
+import SettingsModal from './SettingsModal';
 import { selectModResourcesPath } from '../redux/slices/settingsSlice';
 import { Button } from './Button';
 
