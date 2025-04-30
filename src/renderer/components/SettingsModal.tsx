@@ -6,6 +6,7 @@ import ExitButton from "./ExitButton";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectGamePath, selectLanguage, selectLauncherPath, selectModResourcesPath, selectTargetPath, updateLanguage, updateLauncherPath, updateModResourcesPath, updateTargetPath } from "../redux/slices/settingsSlice";
 import { languageMap, TLanguage } from "../../types/languageType";
+import { clearDiffList, disableAllMods, fetchModResourcesMetadata, resetDiffList } from "../redux/slices/modResourcesSlice";
 
 export const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onRequestClose: ()=>void }) => {
   const dispatch = useAppDispatch();
@@ -19,16 +20,31 @@ export const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onR
 
   const handleSelectModResourcesPath = async () => {
     const path = await window.electron.selectFolder();
-    if (path) {
-      dispatch(updateModResourcesPath(path));
+    if (path && path !== modResourcesPath) {
+      await dispatch(updateModResourcesPath(path));
+      // refetch from the new path and update metadataList in redux
+      await dispatch(fetchModResourcesMetadata());
+      // clear diffList
+      dispatch(clearDiffList());
+      // rebuild diffList based on the assumption of empty targetFolder
+      
+      dispatch(resetDiffList());
+      // clear target folder & write false to all mod.active
+      await dispatch(disableAllMods());
     }
   };
 
   const handleSelectTargetPath = async () => {
     const path = await window.electron.selectFolder();
-    if (path) {
-      dispatch(updateTargetPath(path));
+    if (path && path !== targetPath) {
+      // rebuild diffList based on the assumption of empty targetFolder
+      dispatch(resetDiffList());
+      // clear old target folder & write false to all mod.active
+      await dispatch(disableAllMods()); 
+
+      await dispatch(updateTargetPath(path));
     }
+
   };
 
   const handleSelectLauncherPath = async () => {

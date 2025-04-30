@@ -282,52 +282,114 @@ ipcMain.handle('delete-mod', async (_event, modName: string) => {
   }
 });
 
-ipcMain.handle('apply-mods', async (_event, diffList: Record<string,boolean>) => {
-  try {
-    const modResourcesPath = store.get('modResourcesPath');
-    const targetPath = store.get('targetPath');
-    for (const [modName, isActive] of Object.entries(diffList)) {
-      const modPath = path.join(modResourcesPath, modName);
-      const shortcutPath = path.join(targetPath, `${modName}.lnk`);
-      const metadataPath = path.join(modPath, METADATA_FILENAME);
-      if (!await fs.pathExists(metadataPath)) {
-        console.error(`Metadata file not found for mod ${modName}, skipping...`);
-        continue;
-      }
-      const metadata: TMetadata = await fs.readJSON(metadataPath);
-      if (!metadata) {
-        console.error(`Failed to read metadata for mod ${modName}`);
-        continue;
-      }
-      metadata.active = isActive;
-      await fs.writeJSON(metadataPath, metadata, { spaces: 2 });
+// undefined diffList means disable all mods
+async function applyMods(diffList?: Record<string, boolean>) {
+  const modResourcesPath = store.get('modResourcesPath');
+  const targetPath = store.get('targetPath');
 
-      if (isActive) { // Create a shortcut for the mod
-        shell.writeShortcutLink(shortcutPath, { target: modPath });
-      } else {        // Remove the shortcut
-        await fs.remove(shortcutPath);
+  const applyMod = async (modName: string, isActive: boolean) => {
+    const modPath = path.join(modResourcesPath, modName);
+    const shortcutPath = path.join(targetPath, `${modName}.lnk`);
+    const metadataPath = path.join(modPath, METADATA_FILENAME);
+    if (!await fs.pathExists(metadataPath)) {
+      console.error(`Metadata file not found for mod ${modName}, skipping...`);
+      return;
+    }
+    const metadata: TMetadata = await fs.readJSON(metadataPath);
+    if (!metadata) {
+      console.error(`Failed to read metadata for mod ${modName}`);
+      return;
+    }
+    metadata.active = isActive;
+    await fs.writeJSON(metadataPath, metadata, { spaces: 2 });
+
+    if (isActive) { // Create a shortcut for the mod
+      shell.writeShortcutLink(shortcutPath, { target: modPath });
+    } else {        // Remove the shortcut
+      await fs.remove(shortcutPath);
+    }
+  };
+
+  try {
+    if (diffList) {
+      for (const [modName, isActive] of Object.entries(diffList)) {
+        await applyMod(modName, isActive);
+      }
+    } else {
+      const files = (await fs.readdir(modResourcesPath, { withFileTypes: true }))
+                      .filter(dirent => dirent.isDirectory())
+                      .map(dirent => dirent.name);
+      for (const modName of files) {
+        await applyMod(modName, false);
       }
     }
     return true;
-  }  catch (error) {
+  } catch (error) {
     console.error('Error applying mods:', error);
     return false;
   }
+}
+
+
+ipcMain.handle('apply-mods', async (_event, diffList: Record<string,boolean>) => {
+  return await applyMods(diffList);
 });
+
+ipcMain.handle('disable-all-mods', async () => {
+  return await applyMods();
+});
+
+ipcMain.handle('remove-all-metadata-files', async () => {
+  const modResourcesPath = store.get('modResourcesPath');
+  try {
+    const files = await fs.readdir(modResourcesPath);
+    for (const file of files) {
+      const filePath = path.join(modResourcesPath, file, METADATA_FILENAME);
+      const stat = await fs.stat(filePath);
+      if (stat.isDirectory()) {
+        const metadataPath = path.join(filePath, METADATA_FILENAME);
+        fs.remove(metadataPath);
+      }
+    }
+    return true;
+  } catch (error) {
+    console.error('Error removing metadata files:', error);
+    return false;
+  }
+});
+
+async function clearPath(targetPath: string) {
+  const files = await fs.readdir(targetPath);
+    for (const file of files) {
+      const filePath = path.join(targetPath, file);
+      await fs.remove(filePath);
+    }
+}
 
 ipcMain.handle('get-mod-resources-path', () => {
   return store.get('modResourcesPath');
 });
 
 ipcMain.handle('set-mod-resources-path', (_event, modResourcesPath: string) => {
-  store.set('modResourcesPath', modResourcesPath);
+  const oldModResourcesPath = store.get('modResourcesPath');
+  if (oldModResourcesPath && oldModResourcesPath !== modResourcesPath) {
+    store.set('modResourcesPath', modResourcesPath);
+    const targetPath = store.get('targetPath');
+    clearPath(targetPath);
+  }
 });
+
 
 ipcMain.handle('get-target-path', () => {
   return store.get('targetPath');
 });
-ipcMain.handle('set-target-path', (_event, targetPath: string) => {
-  store.set('targetPath', targetPath);
+ipcMain.handle('set-target-path', async (_event, targetPath: string) => {
+  const oldTargetPath = store.get('targetPath');
+  if (oldTargetPath && oldTargetPath !== targetPath) {
+    store.set('targetPath', targetPath);
+    clearPath(oldTargetPath);
+    clearPath(targetPath);
+  }
 });
 
 ipcMain.handle('get-launcher-path', () => {

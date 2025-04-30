@@ -23,6 +23,7 @@ contextBridge.exposeInMainWorld('electron', {
   deleteMod: (modName: string) => ipcRenderer.invoke('delete-mod', modName),
   updateMod: (modName: string, newMetadata: TMetadata) => ipcRenderer.invoke('update-mod-metadata', modName, newMetadata),
   applyMods: (isActiveModList: Record<string,boolean>) => ipcRenderer.invoke('apply-mods', isActiveModList),
+  disableAllMods: () => ipcRenderer.invoke('disable-all-mods'),
   getModPath: (file: File) => webUtils.getPathForFile(file),
 
   //executables

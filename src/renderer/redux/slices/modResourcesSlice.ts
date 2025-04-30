@@ -68,6 +68,13 @@ export const applyMods = createAsyncThunk(
   }
 );
 
+export const disableAllMods = createAsyncThunk(
+  'modResources/disableAllMods',
+  async () => {
+    return await window.electron.disableAllMods();
+  }
+);
+
 export const fetchModResourcesMetadata = createAsyncThunk(
   'modResources/fetchModResourcesMetadata',
   async () => {
@@ -87,6 +94,17 @@ export const modResourcesSlice = createSlice({
           state.diffList[modName] = isActive;
         } else {
           delete state.diffList[modName];
+        }
+      }
+    },
+    clearDiffList: (state) => {
+      state.diffList = {};
+    },
+    resetDiffList: (state) => {
+      for (const modName in state.metadataList) {
+        // if the mod is active and not in diffList, add it to diffList
+        if (state.metadataList[modName].active && state.diffList[modName] !== false) {
+          state.diffList[modName] = true;
         }
       }
     },
@@ -116,11 +134,16 @@ export const modResourcesSlice = createSlice({
           state.metadataList[modName].active = isActive;
         }
         state.diffList = {};
+      })
+      .addCase(disableAllMods.fulfilled, (state) => {
+        for (const modName in state.metadataList) {
+          state.metadataList[modName].active = false;
+        }
       });
   },
 });
 
-export const { updateDiffList } = modResourcesSlice.actions;
+export const { updateDiffList, clearDiffList, resetDiffList } = modResourcesSlice.actions;
 export default modResourcesSlice.reducer;
 
 
