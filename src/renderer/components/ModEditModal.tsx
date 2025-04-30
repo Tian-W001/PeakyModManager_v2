@@ -280,7 +280,7 @@ export const ModEditModal = () => {
                   Select Image
                 </button>
               </div>
-              <img src={newModData?.image && `mod-image://local/${modName}/${newModData.image}` || require('../assets/default_cover.webp')} alt="Mod Image" />
+              <img src={modName && newModData?.image && `mod-image://local/${modName}/${newModData.image}` || require('../assets/default_cover.webp')} alt="Mod Image" />
             </div>
             <div className="ButtonGroup">
               <Button title="Delete" onClick={handleDelete} />
