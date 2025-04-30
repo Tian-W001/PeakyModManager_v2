@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import '../App.scss';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { addNewMod, selectDiffList, selectModMetadataList } from '../redux/slices/modResourcesSlice';
-import { ModCard } from './ModCard';
+import ModCard from './ModCard';
 import { ModEditModal } from './ModEditModal';
 import CharacterBar from './CharacterBar';
 import { selectCurrentCharacter, selectCurrentModType } from '../redux/slices/menuSlice';

@@ -118,7 +118,10 @@ export const modResourcesSlice = createSlice({
       })
       .addCase(updateMod.fulfilled, (state, action) => {
         const { modName, newMetadata } = action.payload;
-        state.metadataList[modName] = newMetadata;
+        state.metadataList = {
+          ...state.metadataList,
+          [modName]: newMetadata
+        }
       })
       .addCase(addNewMod.fulfilled, (state, action) => {
         const { modName, newMetadata } = action.payload;
@@ -165,11 +168,8 @@ export const selectModMetadataListByType = (modType: TModType | null | undefined
     []
   );
 
-export const selectModMetadataByName = (modName: string | null | undefined) => 
-  useMemo(() => 
-    createSelector(
-      [selectModMetadataList],
-      metadataList => modName ? metadataList[modName] : undefined
-    ), 
-    []
+export const makeSelectModMetadataByName = (modName: string) => 
+  createSelector(
+    [selectModMetadataList],
+    metadataList => metadataList[modName]
   );

@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import '../App.scss';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { selectModMetadataByName, updateDiffList } from '../redux/slices/modResourcesSlice';
+import { makeSelectModMetadataByName, updateDiffList } from '../redux/slices/modResourcesSlice';
 import { openModEditModal } from '../redux/slices/modEditModalSlice';
 
 
@@ -15,12 +15,13 @@ interface ModCardProps {
   diff: boolean | null;
 }
 
-export const ModCard = ({ modName, diff }: ModCardProps) => {
+const ModCard = ({ modName, diff }: ModCardProps) => {
   console.log(`ModCard rendered: ${modName}`);
 
   const dispatch = useAppDispatch();
   
-  const modData = useAppSelector(selectModMetadataByName(modName));
+  const selectMetadata = useMemo(() => makeSelectModMetadataByName(modName), [modName]);
+  const modData = useAppSelector(selectMetadata);
   if (!modData) {
     console.error("ModCard: modData not found for modName:", modName);
   }
@@ -64,3 +65,5 @@ export const ModCard = ({ modName, diff }: ModCardProps) => {
   );
 
 };
+
+export default React.memo(ModCard);
