@@ -1,0 +1,31 @@
+name: Generate Character Metadata List
+
+on:
+  push:
+    paths:
+      - 'hot_updates/generateCharacterInfoList.js'
+jobs:
+  generate:
+    runs-on: ubantu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+        with: 
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate Metadata
+        working-directory: ./hot_updates
+        run: node generateCharacterInfoList.js
+
+      - name: Commit Changes
+        run: |
+          git config --global user.name "Github Actions"
+          git config --global user.email "actions@github.com"
+          git add hot_updates/metadata.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update metadata.js" && git push)
