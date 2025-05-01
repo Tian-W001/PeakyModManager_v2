@@ -142,6 +142,10 @@ const CharacterInfo = {
     en: { fullname: "Vivian Banshee", nickname: "Vivian" },
     zh: { fullname: "薇薇安·班希", nickname: "薇薇安" },
   },
+  Yixuan: {
+    en: { fullname: "Yixuan", nickname: "Yixuan" },
+    zh: { fullname: "仪玄", nickname: "仪玄" },
+  }
 };
 
 function generateOutputInfoList(characterInfoList) {
