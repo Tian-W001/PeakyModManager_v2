@@ -1,9 +1,7 @@
 name: Generate Character Metadata List
 
 on:
-  push:
-    paths:
-      - 'hot_updates/generateCharacterInfoList.js'
+  push: {}
 jobs:
   generate:
     runs-on: ubantu-latest
