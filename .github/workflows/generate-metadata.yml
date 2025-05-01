@@ -1,9 +1,7 @@
 name: Generate Character Metadata List
 
 on:
-  push:
-    paths:
-      - 'hot_updates/generateCharacterInfoList.js'
+  push: {}
   workflow_dispatch:
     inputs:
       force:
