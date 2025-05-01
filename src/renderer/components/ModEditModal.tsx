@@ -231,6 +231,28 @@ const ModEditModal = () => {
     onRequestClose();
   };
 
+  const handleDragOverImage = (e: React.DragEvent) => {
+    console.log("DragOver");
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+  };
+  const handleDropImage = async (e: React.DragEvent) => {
+    console.log("Drop");
+    e.preventDefault();
+    for (const item of e.dataTransfer.items) {
+      if (item.kind === 'file' && (item.webkitGetAsEntry())?.isFile) {
+        const file = item.getAsFile() as File;
+        const srcPath = await window.electron.getModPath(file);
+        if (srcPath) {
+          if (window.electron.copyCoverImage(modName, srcPath)) {
+            const imgName = path.basename(srcPath.replace(/\\/g, '/')); // use posix '/' for path-browserify
+            if (!modName || !newModData) return;
+            setNewModData({ ...newModData, image: imgName });
+          }
+        }
+      }
+    }
+  }
 
   return (
     <Modal
@@ -270,8 +292,8 @@ const ModEditModal = () => {
             )}
           </div>
 
-          <div className="ModEditModalRightContainer">
-            <div className="ModEditModalImageContainer">
+          <div className="ModEditModalRightContainer" >
+            <div className="ModEditModalImageContainer" onDragOver={handleDragOverImage} onDrop={handleDropImage}>
               <div className="ButtonGroup">
                 <button className="DeleteButtonContainer" onClick={handleRemoveCover}>
                   <MdDeleteForever size={"90%"}/>

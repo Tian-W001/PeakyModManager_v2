@@ -241,6 +241,31 @@ ipcMain.handle('update-mod-metadata', async (_event, modName: string, newMetadat
   }
 });
 
+ipcMain.handle("copy-cover-image", async (_event, modName, srcImagePath) => {
+  const modResourcesPath = store.get('modResourcesPath');
+  const modPath = path.join(modResourcesPath, modName);
+  const imageName = path.basename(srcImagePath);
+  const imagePath = path.join(modPath, imageName);
+  try {
+    //check if image is with IMG_TYPES
+    const ext = path.extname(srcImagePath).toLowerCase();
+    if (!IMG_TYPES.has(ext)) {
+      console.error('Selected path is not a file or invalid image type');
+      return false;
+    }
+    //check if image is already exists
+    if (await fs.pathExists(imagePath)) {
+      console.error('Image already exists in modResources');
+      return true;
+    }
+    await fs.copy(srcImagePath, imagePath);
+    return true;
+  } catch (error) {
+    console.error('Error copying image:', error);
+    return false;
+  }
+});
+
 ipcMain.handle('add-new-mod', async (_event, srcModPath) => {
   try {
     if (!(await fs.stat(srcModPath)).isDirectory()) {
