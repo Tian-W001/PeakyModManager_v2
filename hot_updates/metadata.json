@@ -34,7 +34,8 @@
     "Anby0",
     "Trigger",
     "Hugo",
-    "Vivian"
+    "Vivian",
+    "Yixuan"
   ],
   "translationList": {
     "en": {
@@ -73,7 +74,8 @@
         "Anby0": "Soldier 0 - Anby",
         "Trigger": "Trigger",
         "Hugo": "Hugo",
-        "Vivian": "Vivian Banshee"
+        "Vivian": "Vivian Banshee",
+        "Yixuan": "Yixuan"
       },
       "nicknames": {
         "Unknown": "Unknown",
@@ -110,7 +112,8 @@
         "Anby0": "Anby0",
         "Trigger": "Trigger",
         "Hugo": "Hugo",
-        "Vivian": "Vivian"
+        "Vivian": "Vivian",
+        "Yixuan": "Yixuan"
       }
     },
     "zh": {
@@ -149,7 +152,8 @@
         "Anby0": "零号·安比",
         "Trigger": "「 扳机 」",
         "Hugo": "雨果",
-        "Vivian": "薇薇安·班希"
+        "Vivian": "薇薇安·班希",
+        "Yixuan": "仪玄"
       },
       "nicknames": {
         "Unknown": "未知角色",
@@ -186,7 +190,8 @@
         "Anby0": "零号安比",
         "Trigger": "扳机",
         "Hugo": "雨果",
-        "Vivian": "薇薇安"
+        "Vivian": "薇薇安",
+        "Yixuan": "仪玄"
       }
     }
   }
