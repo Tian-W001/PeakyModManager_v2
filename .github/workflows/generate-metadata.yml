@@ -6,7 +6,7 @@ on:
       - 'hot_updates/generateCharacterInfoList.js'
 jobs:
   generate:
-    runs-on: ubantu-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 5
 
     steps:
