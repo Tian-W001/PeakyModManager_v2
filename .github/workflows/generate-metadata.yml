@@ -4,6 +4,13 @@ on:
   push:
     paths:
       - 'hot_updates/generateCharacterInfoList.js'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force update the metadata'
+        required: false
+        default: false
+        type: boolean
 jobs:
   generate:
     runs-on: ubuntu-latest
