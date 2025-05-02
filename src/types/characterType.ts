@@ -2,6 +2,7 @@
 export const Characters = [
   "Unknown",
   "Belle",
+  "Wise",
   "Anby", 
   "Billy", 
   "Nicole", 

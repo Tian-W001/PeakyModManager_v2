@@ -4,6 +4,7 @@ const en: TTranslations = {
   characters: {
     fullnames: {
       Belle: "Belle",
+      Wise: "Wise",
       Anby: "Anby Demara",
       Billy: "Billy Kid",
       Nicole: "Nicole Demara",
@@ -41,6 +42,7 @@ const en: TTranslations = {
     },
     nicknames: {
       Belle: "Belle",
+      Wise: "Wise",
       Anby: "Anby",
       Billy: "Billy",
       Nicole: "Nicole",
