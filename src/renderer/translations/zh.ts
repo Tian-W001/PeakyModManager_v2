@@ -4,6 +4,7 @@ const zh: TTranslations = {
   characters: {
     fullnames: {
       Belle: "玲",
+      Wise: "哲",
       Anby: "安比·德玛拉",
       Billy: "比利·奇德",
       Nicole: "妮可·德玛拉",
@@ -41,6 +42,7 @@ const zh: TTranslations = {
     },
     nicknames: {
       Belle: "玲",
+      Wise: "哲",
       Anby: "安比",
       Billy: "比利",
       Nicole: "妮可",
