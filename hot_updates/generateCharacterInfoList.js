@@ -10,6 +10,10 @@ const CharacterInfo = {
     en: { fullname: "Belle", nickname: "Belle" },
     zh: { fullname: "玲", nickname: "玲" },
   },
+  Wise: {
+    en: { fullname: "Wise", nickname: "Wise" },
+    zh: { fullname: "哲", nickname: "哲" },
+  },
   Anby: {
     en: { fullname: "Anby Demara", nickname: "Anby" },
     zh: { fullname: "安比·德玛拉", nickname: "安比" },
