@@ -2,6 +2,7 @@
   "characterList": [
     "Unknown",
     "Belle",
+    "Wise",
     "Anby",
     "Billy",
     "Nicole",
@@ -42,6 +43,7 @@
       "fullnames": {
         "Unknown": "Unknown",
         "Belle": "Belle",
+        "Wise": "Wise",
         "Anby": "Anby Demara",
         "Billy": "Billy Kid",
         "Nicole": "Nicole Demara",
@@ -80,6 +82,7 @@
       "nicknames": {
         "Unknown": "Unknown",
         "Belle": "Belle",
+        "Wise": "Wise",
         "Anby": "Anby",
         "Billy": "Billy",
         "Nicole": "Nicole",
@@ -120,6 +123,7 @@
       "fullnames": {
         "Unknown": "未知角色",
         "Belle": "玲",
+        "Wise": "哲",
         "Anby": "安比·德玛拉",
         "Billy": "比利·奇德",
         "Nicole": "妮可·德玛拉",
@@ -158,6 +162,7 @@
       "nicknames": {
         "Unknown": "未知角色",
         "Belle": "玲",
+        "Wise": "哲",
         "Anby": "安比",
         "Billy": "比利",
         "Nicole": "妮可",
