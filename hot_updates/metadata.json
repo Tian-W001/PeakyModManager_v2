@@ -36,7 +36,9 @@
     "Trigger",
     "Hugo",
     "Vivian",
-    "Yixuan"
+    "YiXuan",
+    "PanYinhu",
+    "JuFufu"
   ],
   "translationList": {
     "en": {
@@ -77,7 +79,9 @@
         "Trigger": "Trigger",
         "Hugo": "Hugo",
         "Vivian": "Vivian Banshee",
-        "Yixuan": "Yixuan"
+        "YiXuan": "Yi Xuan",
+        "PanYinhu": "Pan Yinhu",
+        "JuFufu": "Ju Fufu"
       },
       "nicknames": {
         "Unknown": "Unknown",
@@ -116,7 +120,9 @@
         "Trigger": "Trigger",
         "Hugo": "Hugo",
         "Vivian": "Vivian",
-        "Yixuan": "Yixuan"
+        "YiXuan": "Yi Xuan",
+        "PanYinhu": "Pan Yinhu",
+        "JuFufu": "Ju fufu"
       }
     },
     "zh": {
@@ -157,7 +163,9 @@
         "Trigger": "「 扳机 」",
         "Hugo": "雨果",
         "Vivian": "薇薇安·班希",
-        "Yixuan": "仪玄"
+        "YiXuan": "仪玄",
+        "PanYinhu": "潘引壶",
+        "JuFufu": "橘福福"
       },
       "nicknames": {
         "Unknown": "未知角色",
@@ -196,7 +204,9 @@
         "Trigger": "扳机",
         "Hugo": "雨果",
         "Vivian": "薇薇安",
-        "Yixuan": "仪玄"
+        "YiXuan": "仪玄",
+        "PanYinhu": "潘引壶",
+        "JuFufu": "橘福福"
       }
     }
   }
