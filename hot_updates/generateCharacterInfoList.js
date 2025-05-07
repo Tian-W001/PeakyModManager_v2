@@ -146,9 +146,17 @@ const CharacterInfo = {
     en: { fullname: "Vivian Banshee", nickname: "Vivian" },
     zh: { fullname: "薇薇安·班希", nickname: "薇薇安" },
   },
-  Yixuan: {
-    en: { fullname: "Yixuan", nickname: "Yixuan" },
+  YiXuan: {
+    en: { fullname: "Yi Xuan", nickname: "Yi Xuan" },
     zh: { fullname: "仪玄", nickname: "仪玄" },
+  },
+  PanYinhu: {
+    en: { fullname: "Pan Yinhu", nickname: "Pan Yinhu" },
+    zh: { fullname: "潘引壶", nickname: "潘引壶" },
+  },
+  JuFufu: {
+    en: { fullname: "Ju Fufu", nickname: "Ju fufu" },
+    zh: { fullname: "橘福福", nickname: "橘福福" },
   }
 };
 
