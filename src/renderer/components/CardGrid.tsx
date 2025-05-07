@@ -6,8 +6,9 @@ import ModCard from './ModCard';
 import ModEditModal from './ModEditModal';
 import CharacterBar from './CharacterBar';
 import { selectCurrentCharacter, selectCurrentModType } from '../redux/slices/menuSlice';
+import { Scrollbar } from 'react-scrollbars-custom';
 
-const CardGrid = () =>{
+const CardGrid: React.FC = () =>{
   const dispatch = useAppDispatch(); 
 
   const currentModType = useAppSelector(selectCurrentModType);
@@ -56,21 +57,52 @@ const CardGrid = () =>{
       {console.log('CardGrid rendererd')}
       <div className="CardGridContainer">
 
-          {currentModType === "Characters" && 
-            <div className="CardGridTopBar">
-              <CharacterBar />
-            </div>
-          }
-          <div className="CardGrid" onDrop={handleDrop} onDragOver={handleDragOver}>
-
+        {currentModType === "Characters" && 
+          <div className="CardGridTopBar">
+            <CharacterBar />
+          </div>
+        }
+        <Scrollbar
+          key={currentModType + '-' + currentCharacter} //force re-mount
+          className='Scrollbar'
+          noDefaultStyles 
+          noScrollX={true}
+          noScrollY={false}
+          wrapperProps={{
+            className: "Wrapper",
+          }}
+          trackYProps={{
+            className: 'Track',
+            renderer: ({ elementRef, children, ...restProps }) => (
+              <div
+                ref={elementRef}
+                {...restProps}
+              >
+                <span className="material-symbols-outlined TrackArrow Up">
+                  &#xe5c7;
+                </span>
+                {children}
+                <span className="material-symbols-outlined TrackArrow Down">
+                  &#xe5c5;
+                </span>
+              </div>
+            ),
+          }}
+          thumbYProps={{ className: 'Thumb' }}
+        >
+          <div 
+            className="CardGrid"
+            onDrop={handleDrop} 
+            onDragOver={handleDragOver}
+          >
             {
               filteredModNameList.map(modName => (
-                <ModCard key={modName} modName={modName} diff={modName in diffList ? diffList[modName] : null}/>
+                <ModCard key={modName} modName={modName} diff={diffList[modName] ?? null}/>
               ))
             }
-
           </div>
-          <ModEditModal />
+        </Scrollbar>
+        <ModEditModal />
         
       </div>
     </>
