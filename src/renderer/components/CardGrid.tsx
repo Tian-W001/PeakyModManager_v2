@@ -68,9 +68,7 @@ const CardGrid: React.FC = () =>{
           noDefaultStyles 
           noScrollX={true}
           noScrollY={false}
-          wrapperProps={{
-            className: "Wrapper",
-          }}
+          wrapperProps={{ className: "Wrapper" }}
           trackYProps={{
             className: 'Track',
             renderer: ({ elementRef, children, ...restProps }) => (
