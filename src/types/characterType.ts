@@ -35,7 +35,10 @@ export const Characters = [
   "Anby0", 
   "Trigger", 
   "Hugo", 
-  "Vivian", 
+  "Vivian",
+  "YiXuan",
+  "PanYinhu",
+  "JuFufu",
 ] as const;
 
 export type TCharacter = typeof Characters[number];
