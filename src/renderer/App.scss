@@ -27,7 +27,7 @@
   flex: 1;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded');
 
 
 :root {
@@ -262,7 +262,7 @@
 
   .Scrollbar {
     --trackWidth: 14px;
-    --arrowSize: 20px;
+    --arrowSize: 16px;
 
     position: relative;
     width: 100%;
@@ -294,17 +294,23 @@
       box-sizing: border-box;
       background-color: #00000088;
 
-      >.TrackArrow {
-        font-size: 20px;
+      &::before {
+        font-family: 'Material Symbols Rounded';
+        font-size: var(--arrowSize);
         color: #ccc;
         position: absolute;
-        transform: translateX(calc(-.5*var(--trackWidth)));
-        &.Up {
+        left: calc(.5*(var(--trackWidth) - var(--arrowSize)));
+        content: '\e5c7';
           top: 0;
-        }
-        &.Down {
-          bottom: 0;
-        }
+      }
+      &::after {
+        font-family: 'Material Symbols Rounded';
+        font-size: var(--arrowSize);
+        color: #ccc;
+        position: absolute;
+        left: calc(.5*(var(--trackWidth) - var(--arrowSize)));
+        content: '\e5c5';
+        bottom: 0;
       }
     }
     

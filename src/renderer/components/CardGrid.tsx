@@ -69,23 +69,7 @@ const CardGrid: React.FC = () =>{
           noScrollX={true}
           noScrollY={false}
           wrapperProps={{ className: "Wrapper" }}
-          trackYProps={{
-            className: 'Track',
-            renderer: ({ elementRef, children, ...restProps }) => (
-              <div
-                ref={elementRef}
-                {...restProps}
-              >
-                <span className="material-symbols-outlined TrackArrow Up">
-                  &#xe5c7;
-                </span>
-                {children}
-                <span className="material-symbols-outlined TrackArrow Down">
-                  &#xe5c5;
-                </span>
-              </div>
-            ),
-          }}
+          trackYProps={{ className: 'Track' }}
           thumbYProps={{ className: 'Thumb' }}
         >
           <div 
