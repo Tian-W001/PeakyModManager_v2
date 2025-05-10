@@ -186,10 +186,10 @@ function generateOutputInfoList(characterInfoList) {
 
 function createJSON(data) {
   fs.writeFileSync(METADATA_FILENAME, JSON.stringify(data, null, 2), 'utf-8');
-  console.log(`✅ metadata.json has been saved`);
+  console.log(`✅ charactersMetadata.json has been saved`);
 }
 
-const METADATA_FILENAME = "metadata.json";
+const METADATA_FILENAME = "charactersMetadata.json";
 const {characterList, translationList} = generateOutputInfoList(CharacterInfo);
 createJSON({characterList, translationList});
 
