@@ -189,7 +189,7 @@ function createJSON(data) {
   console.log(`✅ charactersMetadata.json has been saved`);
 }
 
-const METADATA_FILENAME = "charactersMetadata.json";
+const METADATA_FILENAME = "CharacterInfoList.json";
 const {characterList, translationList} = generateOutputInfoList(CharacterInfo);
 createJSON({characterList, translationList});
 
