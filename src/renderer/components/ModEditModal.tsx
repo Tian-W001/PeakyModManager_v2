@@ -218,6 +218,48 @@ const ModEditModal = () => {
     onRequestClose();
   };
 
+  function matchCharacterName(): TCharacter|null {
+    if (!modName) return null;
+    
+    const characterList: TCharacter[] = Characters.filter(name => name !== "Unknown");
+    const loweredModName = modName.toLowerCase();
+    for (const charName of characterList) {
+      if (loweredModName.includes(charName.toLowerCase())) {
+        return charName;
+      }
+    }
+    return null;
+  }
+  const handleAutoFillModData = async () => {
+    if (!newModData) return;
+
+    const autoFillData: Partial<TMetadata> = {};
+
+    if (newModData.modType === DEFAULT_METADATA.modType) {
+      const charName = matchCharacterName();
+      if (charName) {
+        autoFillData.modType = "Characters",
+        autoFillData.character = charName;
+      }
+    }
+
+    if (newModData.description === DEFAULT_METADATA.description) {
+      const readmeContent = await window.electron.getReadmeContent(modName);
+      if (readmeContent) {
+        autoFillData.description = readmeContent;
+      }
+    }
+
+    if (newModData.image === DEFAULT_METADATA.image) {
+      const firstImage = await window.electron.getFirstImage(modName);
+      if (firstImage) {
+        autoFillData.image = firstImage;
+      }
+    }
+
+    setNewModData({ ...newModData, ...autoFillData });
+  }
+
   const handleOpenModFolder = () => {
     if (modName) {
       window.electron.openFileExplorer(path.join(modResourcesPath, modName));
@@ -288,6 +330,7 @@ const ModEditModal = () => {
 
                 <CharacterSelector currentCharacter={newModData?.character} setCharacter={c=>setNewModData({...newModData, character: c})} />
                 <KeybindMenuList keybinds={newModData.keybinds} setKeybinds={(newKeybinds)=>setNewModData({...newModData, keybinds: newKeybinds})} />
+                <button onClick={handleAutoFillModData}>Auto Fill Mod Info</button>
               </>
             )}
           </div>

@@ -301,6 +301,33 @@ ipcMain.handle('update-mod-metadata', async (_event, modName: string, newMetadat
   }
 });
 
+ipcMain.handle('get-first-image', async (_event, modName: string) => {
+  //return the name of the first image in modResourcesPath/modName
+  const modResourcesPath = store.get('modResourcesPath');
+  const modPath = path.join(modResourcesPath, modName);
+  for (const file of await fs.readdir(modPath)) {
+    const ext = path.extname(file).toLowerCase();
+    if(IMG_TYPES.has(ext)) {
+      return file;
+    }
+  }
+  return null;
+});
+
+ipcMain.handle('get-readme-content', async (_event, modName: string) => {
+  //return readme or readme.txt content in modResourcesPath/modName
+  const readmeFilenames = ['readme', 'readme.txt'];
+  const modResourcesPath = store.get('modResourcesPath');
+  const modPath = path.join(modResourcesPath, modName);
+  for (const file of await fs.readdir(modPath)) {
+    if (readmeFilenames.includes(file.toLowerCase())) {
+      const content = await fs.readFile(path.join(modPath, file), 'utf-8');
+      return content;
+    }
+  }
+  return null;
+});
+
 ipcMain.handle("copy-cover-image", async (_event, modName, srcImagePath) => {
   const modResourcesPath = store.get('modResourcesPath');
   const modPath = path.join(modResourcesPath, modName);
