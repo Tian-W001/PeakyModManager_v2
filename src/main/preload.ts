@@ -3,6 +3,9 @@ import { TMetadata } from '../types/metadataType';
 import { TLanguage } from '../types/languageType';
 
 contextBridge.exposeInMainWorld('electron', {
+  //hot-updates
+  fetchCharacters: () => ipcRenderer.invoke('fetch-characters'),
+
   //settings
   getModResourcesPath: () => ipcRenderer.invoke('get-mod-resources-path'),
   setModResourcesPath: (path: string) => ipcRenderer.invoke('set-mod-resources-path', path),
