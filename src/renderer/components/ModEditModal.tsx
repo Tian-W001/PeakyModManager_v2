@@ -25,12 +25,12 @@ Modal.setAppElement('#root');
 
 
 const CharacterSelector = ({currentCharacter, setCharacter}: {currentCharacter: TCharacter | null, setCharacter: (c:TCharacter)=>void}) => {
-  if (currentCharacter === null) return;
-
+  
   const { t } = useTranslation();
   const charField = "characters" satisfies keyof TTranslations;
   const charFullnameField = "fullnames" satisfies keyof TTranslations[typeof charField];
-
+  
+  if (currentCharacter === null) return null;
   return (
     <>
       <span>Character: </span>
