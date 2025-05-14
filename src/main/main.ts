@@ -380,11 +380,11 @@ ipcMain.handle('delete-mod', async (_event, modName: string) => {
   const targetPath = store.get('targetPath');
 
   const modPath = path.join(modResourcesPath, modName);
-  const shortcutPath = path.join(targetPath, `${modName}.lnk`);
+  const linkPath = path.join(targetPath, modName);
 
   try {
     await fs.remove(modPath);
-    await fs.remove(shortcutPath);
+    await fs.remove(linkPath);
     return true;
   } catch (error) {
     console.error('Error deleting mod:', error);
