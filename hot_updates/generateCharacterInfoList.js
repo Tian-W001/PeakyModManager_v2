@@ -28,7 +28,7 @@ const CharacterInfo = {
   },
   Nekomata: {
     en: { fullname: "Nekomiya Mana", nickname: "Nekomata" },
-    zh: { fullname: "猫宫 又奈", nickname: "猫又" },
+    zh: { fullname: "猫宫又奈", nickname: "猫又" },
   },
   Koleda: {
     en: { fullname: "Koleda Belobog", nickname: "Koleda" },
@@ -59,7 +59,7 @@ const CharacterInfo = {
     zh: { fullname: "可琳·威克斯", nickname: "可琳" },
   },
   Soldier11: {
-    en: { fullname: "Soldier 11", nickname: "Soldier 11" },
+    en: { fullname: "Soldier 11", nickname: "Soldier11" },
     zh: { fullname: "「 11号 」", nickname: "11号" },
   },
   Soukaku: {
@@ -104,7 +104,7 @@ const CharacterInfo = {
   },
   Yanagi: {
     en: { fullname: "Tsukishiro Yanagi", nickname: "Yanagi" },
-    zh: { fullname: "月城 柳", nickname: "柳" },
+    zh: { fullname: "月城柳", nickname: "柳" },
   },
   Lighter: {
     en: { fullname: "Lighter", nickname: "Lighter" },
@@ -112,11 +112,11 @@ const CharacterInfo = {
   },
   Harumasa: {
     en: { fullname: "Asaba Harumasa", nickname: "Harumasa" },
-    zh: { fullname: "浅羽 悠真", nickname: "悠真" },
+    zh: { fullname: "浅羽悠真", nickname: "悠真" },
   },
   Miyabi: {
     en: { fullname: "Hoshimi Miyabi", nickname: "Miyabi" },
-    zh: { fullname: "星见 雅", nickname: "雅" },
+    zh: { fullname: "星见雅", nickname: "雅" },
   },
   Astra: {
     en: { fullname: "Astra Yao", nickname: "Astra" },
@@ -147,15 +147,15 @@ const CharacterInfo = {
     zh: { fullname: "薇薇安·班希", nickname: "薇薇安" },
   },
   YiXuan: {
-    en: { fullname: "Yi Xuan", nickname: "Yi Xuan" },
+    en: { fullname: "Yi Xuan", nickname: "YiXuan" },
     zh: { fullname: "仪玄", nickname: "仪玄" },
   },
   PanYinhu: {
-    en: { fullname: "Pan Yinhu", nickname: "Pan Yinhu" },
+    en: { fullname: "Pan Yinhu", nickname: "PanYinhu" },
     zh: { fullname: "潘引壶", nickname: "潘引壶" },
   },
   JuFufu: {
-    en: { fullname: "Ju Fufu", nickname: "Ju fufu" },
+    en: { fullname: "Ju Fufu", nickname: "Jufufu" },
     zh: { fullname: "橘福福", nickname: "橘福福" },
   }
 };
