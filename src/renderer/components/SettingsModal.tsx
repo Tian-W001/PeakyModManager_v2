@@ -57,6 +57,10 @@ const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onRequestC
     dispatch(updateLanguage(newLang));
   }
 
+  const handleFetchCharacters = async () => {
+    const data = await window.electron.fetchCharacters();
+  }
+
   return (
     <Modal
       isOpen={isOpen}
@@ -68,6 +72,7 @@ const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onRequestC
       <ExitButton onClick={onRequestClose} className="ModalExitButton"/>
       <div className="Modal flexCol ModalShape">
         <h1>Settings</h1>
+        <button onClick={handleFetchCharacters}>Fetch Characters</button>
         <label>ModResources Directory</label>
         <input 
           readOnly

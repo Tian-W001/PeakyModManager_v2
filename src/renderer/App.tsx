@@ -17,19 +17,17 @@ export default function App() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    const runOnLaunch = async () => {
+      await dispatch(fetchModResourcesPath());
+      await dispatch(fetchTargetPath());
+      await dispatch(fetchLauncherPath());
+      await dispatch(fetchGamePath());
+      await dispatch(fetchLanguage());
 
-    //dispatch(updateModResourcesPath('C:\\Users\\Tian\\Desktop\\testModResources'));
-    //dispatch(updateTargetPath('C:\\Users\\Tian\\Desktop\\testModFolder'));
-    //dispatch(updateLauncherPath('F:\\ZZMI\\Resources\\Bin\\XXMI Launcher.exe'));
-    //dispatch(updateGamePath('F:\\Program Files\\miHoYo Launcher\\games\\ZenlessZoneZero Game\\ZenlessZoneZero.exe'))
+      await dispatch(fetchModResourcesMetadata());
+    };
 
-    dispatch(fetchModResourcesPath());
-    dispatch(fetchTargetPath());
-    dispatch(fetchLauncherPath());
-    dispatch(fetchGamePath());
-    dispatch(fetchLanguage());
-
-    dispatch(fetchModResourcesMetadata());
+    runOnLaunch();
   }, []);
 
   const { i18n } = useTranslation();

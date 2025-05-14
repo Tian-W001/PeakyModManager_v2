@@ -3,6 +3,9 @@ import { TMetadata } from '../types/metadataType';
 import { TLanguage } from '../types/languageType';
 
 contextBridge.exposeInMainWorld('electron', {
+  //hot-updates
+  fetchCharacters: () => ipcRenderer.invoke('fetch-characters'),
+
   //settings
   getModResourcesPath: () => ipcRenderer.invoke('get-mod-resources-path'),
   setModResourcesPath: (path: string) => ipcRenderer.invoke('set-mod-resources-path', path),
@@ -22,6 +25,8 @@ contextBridge.exposeInMainWorld('electron', {
   addNewMod: (srcModPath: string) => ipcRenderer.invoke('add-new-mod', srcModPath),
   deleteMod: (modName: string) => ipcRenderer.invoke('delete-mod', modName),
   updateMod: (modName: string, newMetadata: TMetadata) => ipcRenderer.invoke('update-mod-metadata', modName, newMetadata),
+  getFirstImage: (modName: string) => ipcRenderer.invoke('get-first-image', modName),
+  getReadmeContent: (modName: string) => ipcRenderer.invoke('get-readme-content', modName),
   copyCoverImage: (modName: string, filePath: string) => ipcRenderer.invoke('copy-cover-image', modName, filePath),
   applyMods: (isActiveModList: Record<string,boolean>) => ipcRenderer.invoke('apply-mods', isActiveModList),
   disableAllMods: () => ipcRenderer.invoke('disable-all-mods'),

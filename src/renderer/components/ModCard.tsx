@@ -3,6 +3,7 @@ import '../App.scss';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { makeSelectModMetadataByName, updateDiffList } from '../redux/slices/modResourcesSlice';
 import { openModEditModal } from '../redux/slices/modEditModalSlice';
+import { useTranslation } from 'react-i18next';
 
 
 const DEFAULT_MOD_NAME = "name";
@@ -18,6 +19,7 @@ interface ModCardProps {
 const ModCard = ({ modName, diff }: ModCardProps) => {
   console.log(`ModCard rendered: ${modName}`);
 
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   
   const selectMetadata = useMemo(() => makeSelectModMetadataByName(modName), [modName]);
@@ -58,8 +60,17 @@ const ModCard = ({ modName, diff }: ModCardProps) => {
     <>
       <div className={`ModCardContainer ${cardActiveState}`} onClick={handleClick} onContextMenu={handleContextMenu}>
         <img src={modData?.image && `mod-image://local/${modName}/${modData.image}` || require('../assets/default_cover.webp')} alt="Mod Image" className="CoverImage"/>
-        <div className="ModCardTitle">{modName || DEFAULT_MOD_NAME}</div>
-        <div className="ModCardDesc">{modData?.description || DEFAULT_MOD_DESC}</div>
+
+        <div className={`InfoContainer ${modData?.modType === "Characters" ? "CharacterCardStyle" : ""}`}>
+          {modData?.modType === "Characters" &&
+            <>
+              <img className="AvatarImage" />
+              <span className="AvatarNameText">{t(`characters.nicknames.${modData.character}`)}</span>
+            </>
+          }
+          <div className="Title">{modName}</div>
+          <div className="Desc">{modData?.description}</div>
+        </div>
       </div>
     </>
   );
