@@ -17,7 +17,7 @@ import fs from 'fs-extra';
 import MenuBuilder from './menu';
 import { combineObjects, resolveHtmlPath } from './util';
 import { DEFAULT_METADATA, TMetadata } from '../types/metadataType';
-import { languageMap, TLanguage } from '../types/languageType';
+import { TLanguage } from '../types/languageType';
 import { exec } from 'child_process';
 import mime from 'mime-types';
 import axios from 'axios';
@@ -399,7 +399,7 @@ async function applyMods(diffList?: Record<string, boolean>) {
 
   const applyMod = async (modName: string, isActive: boolean) => {
     const modPath = path.join(modResourcesPath, modName);
-    const shortcutPath = path.join(targetPath, `${modName}.lnk`);
+    const linkPath = path.join(targetPath, modName);
     const metadataPath = path.join(modPath, METADATA_FILENAME);
     if (!await fs.pathExists(metadataPath)) {
       console.error(`Metadata file not found for mod ${modName}, skipping...`);
@@ -413,10 +413,12 @@ async function applyMods(diffList?: Record<string, boolean>) {
     metadata.active = isActive;
     await fs.writeJSON(metadataPath, metadata, { spaces: 2 });
 
-    if (isActive) { // Create a shortcut for the mod
-      shell.writeShortcutLink(shortcutPath, { target: modPath });
-    } else {        // Remove the shortcut
-      await fs.remove(shortcutPath);
+    if (isActive) { // Create a dir link for the mod
+      if (!await fs.pathExists(linkPath)) {
+        await fs.symlink(modPath, linkPath, 'junction');
+      }
+    } else {        // Remove the link
+      await fs.remove(linkPath);
     }
   };
 
