@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import '../App.scss';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { fetchModResourcesMetadata, applyMods, resetDiffList } from '../redux/slices/modResourcesSlice';
+import { fetchModResourcesMetadata, applyMods, resetDiffList, selectDiffList } from '../redux/slices/modResourcesSlice';
 import SettingsModal from './SettingsModal';
 import { selectModResourcesPath } from '../redux/slices/settingsSlice';
 import { Button } from './Button';
@@ -12,6 +12,8 @@ function BottomBar() {
   const modResourcesPath = useAppSelector(selectModResourcesPath);
 
   const [isSettingsModalOpen, setIsSettingsModalOpen] = React.useState(false);
+
+  const diffList = useAppSelector(selectDiffList);
 
   const refreshMods = useCallback(async () => {
     await dispatch(fetchModResourcesMetadata());
@@ -65,6 +67,7 @@ function BottomBar() {
             onClick={handleOpenModResourcesFolder}
           />
           <Button
+            className={Object.keys(diffList).length ? "highlight" : ""}
             title="Apply"
             onClick={handleApplyMods}
           />

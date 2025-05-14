@@ -430,6 +430,10 @@
   font-weight: bold;
   cursor: pointer;
   outline: 3px solid rgba(255, 255, 255, 0.2);
+
+  &.highlight {
+    color: #f9fc57;
+  }
 }
 
 .ExitButtonContainer {
