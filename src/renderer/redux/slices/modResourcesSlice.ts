@@ -4,7 +4,6 @@ import { TMetadata } from "../../../types/metadataType";
 import { createSelector } from "reselect";
 import { RootState } from "../store";
 import { TModType } from "../../../types/modType";
-import { useMemo } from "react";
 
 interface ModResourcesState {
   metadataList: Record<string, TMetadata>;
@@ -155,18 +154,6 @@ export default modResourcesSlice.reducer;
 */
 export const selectModMetadataList = (state: RootState) => state.modResources.metadataList;
 export const selectDiffList = (state: RootState) => state.modResources.diffList;
-export const selectModMetadataListByType = (modType: TModType | null | undefined) => 
-  useMemo(() => 
-    createSelector(
-      [selectModMetadataList], 
-      metadataList => {
-        return Object.fromEntries(
-          Object.entries(metadataList).filter(([__dirname, metadata]) => modType === metadata.modType)
-        )
-      }
-    ),
-    []
-  );
 
 export const makeSelectModMetadataByName = (modName: string) => 
   createSelector(
