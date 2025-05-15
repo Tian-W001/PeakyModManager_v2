@@ -403,11 +403,10 @@
     box-sizing: border-box;
     padding: var(--padding);
     padding-top: 5px;
-    background-color: #3b83a1;
 
     display: flex;
     flex-direction: column;
-
+    gap: 0.5em;
     &.CharacterCardStyle {
       --avatarRadius: 25px;
       padding-top: calc(var(--avatarRadius) + 5px);
@@ -432,9 +431,8 @@
           bottom: -2px;
           left: -10px;
           width: 200px;
-          height: 2px;
-          background-color: #fffa;
-          border-radius: 9999px;
+          height: 1px;
+          background-color: #fff5;
         }
       }
     }

@@ -5,10 +5,6 @@ import { makeSelectModMetadataByName, updateDiffList } from '../redux/slices/mod
 import { openModEditModal } from '../redux/slices/modEditModalSlice';
 import { useTranslation } from 'react-i18next';
 
-
-const DEFAULT_MOD_NAME = "name";
-const DEFAULT_MOD_DESC = "no description";
-
 type TActiveState = "active" | "inactive" | "preActive" | "preInactive";
 
 interface ModCardProps {
@@ -59,7 +55,11 @@ const ModCard = ({ modName, diff }: ModCardProps) => {
   return (
     <>
       <div className={`ModCardContainer ${cardActiveState}`} onClick={handleClick} onContextMenu={handleContextMenu}>
-        <img src={modData?.image && `mod-image://local/${modName}/${modData.image}` || require('../assets/default_cover.webp')} alt="Mod Image" className="CoverImage"/>
+        <img 
+          src={modData?.image && `mod-image://local/${modName}/${modData.image}` || require('../assets/default_cover.webp')} 
+          alt="Mod Image" 
+          className="CoverImage"
+        />
 
         <div className={`InfoContainer ${modData?.modType === "Characters" ? "CharacterCardStyle" : ""}`}>
           {modData?.modType === "Characters" &&

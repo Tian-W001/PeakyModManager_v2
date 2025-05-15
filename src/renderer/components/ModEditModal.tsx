@@ -286,7 +286,7 @@ const ModEditModal = () => {
         const file = item.getAsFile() as File;
         const srcPath = await window.electron.getModPath(file);
         if (srcPath) {
-          if (window.electron.copyCoverImage(modName, srcPath)) {
+          if (await window.electron.copyCoverImage(modName, srcPath)) {
             const imgName = path.basename(srcPath.replace(/\\/g, '/')); // use posix '/' for path-browserify
             if (!modName || !newModData) return;
             setNewModData({ ...newModData, image: imgName });
