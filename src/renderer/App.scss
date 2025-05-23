@@ -430,7 +430,7 @@
           position: absolute;
           bottom: -2px;
           left: -10px;
-          width: 200px;
+          width: calc(12em - 2 * var(--avatarRadius) - 2 * var(--padding));
           height: 1px;
           background-color: #fff5;
         }
@@ -449,6 +449,7 @@
       overflow: hidden;
       font-size: x-small;
       text-overflow:clip;
+      color: #ccc;
     }
   }
 }
