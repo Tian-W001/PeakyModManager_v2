@@ -164,12 +164,12 @@ function generateOutputInfoList(characterInfoList) {
   const characterList = [];
   const translationList = {
     en: {
-      fullnames: {},
-      nicknames: {},
+      Fullnames: {},
+      Nicknames: {},
     },
     zh: {
-      fullnames: {},
-      nicknames: {},
+      Fullnames: {},
+      Nicknames: {},
     },
   };
   
