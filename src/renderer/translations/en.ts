@@ -1,8 +1,8 @@
 import { TTranslations } from "./translations";
 
 const en: TTranslations = {
-  characters: {
-    fullnames: {
+  Characters: {
+    Fullnames: {
       Belle: "Belle",
       Wise: "Wise",
       Anby: "Anby Demara",
@@ -43,7 +43,7 @@ const en: TTranslations = {
       JuFufu: "Ju Fufu",
       Unknown: "Unknown",
     },
-    nicknames: {
+    Nicknames: {
       Belle: "Belle",
       Wise: "Wise",
       Anby: "Anby",
@@ -85,7 +85,7 @@ const en: TTranslations = {
       Unknown: "Unknown",
     },
   },
-  menuItems: {
+  MenuItems: {
     All: "All",
     Characters: "Characters",
     NPCs: "NPCs",
@@ -94,6 +94,33 @@ const en: TTranslations = {
     ScriptsTools: "Scripts/Tools",
     Misc: "Misc",
     Unknown: "Unknown",
+  },
+  BottomBar: {
+    Settings: "Settings",
+    Refresh: "Refresh",
+    Launcher: "Launcher",
+    Resources: "Resources",
+    Apply: "Apply",
+  },
+  ModEditModal: {
+    Description: "Description",
+    Source: "Source",
+    ModType: "Mod Type",
+    Character: "Character",
+    AddNewKeybind: "Add New Keybind",
+    AutoFillModInfo: "Auto Fill Mod Info",
+    SelectImage: "Select Image",
+    Delete: "Delete",
+    Save: "Save",
+    OpenFolder: "Open Folder",
+  },
+  SettingsModal: {
+    Settings: "Settings",
+    UpdateCharacters: "Update Character List",
+    ResourcesDir: "Resources Directory",
+    TargetDir: "Target Directory",
+    LauncherDir: "Launcher Directory",
+    Language: "Language",
   },
 };
 

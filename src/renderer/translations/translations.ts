@@ -2,10 +2,13 @@ import { TCharacter } from "../../types/characterType"
 import { TModType } from "../../types/modType";
 
 export type TTranslations = {
-  characters: {
-    fullnames: Record<TCharacter, string>,
-    nicknames: Record<TCharacter, string>,
+  Characters: {
+    Fullnames: Record<TCharacter, string>,
+    Nicknames: Record<TCharacter, string>,
   },
-  menuItems: Record<TModType|"All", string>,
+  MenuItems: Record<TModType|"All", string>,
+  BottomBar: Record<string, string>,
+  ModEditModal: Record<string, string>,
+  SettingsModal: Record<string, string>,
 };
 

@@ -24,6 +24,8 @@ const ModCard = ({ modName, diff }: ModCardProps) => {
     console.error("ModCard: modData not found for modName:", modName);
   }
 
+  const avatarName = modData?.modType === "Characters" ? t(`Characters.Nicknames.${modData.character}`) : t(`MenuItems.${modData.modType}`);
+
   const [isActive, setIsActive] = useState(diff!==null ? diff : modData?.active);
 
   const cardActiveState = useMemo(() => {
@@ -61,13 +63,14 @@ const ModCard = ({ modName, diff }: ModCardProps) => {
           className="CoverImage"
         />
 
-        <div className={`InfoContainer ${modData?.modType === "Characters" ? "CharacterCardStyle" : ""}`}>
-          {modData?.modType === "Characters" &&
-            <>
-              <img className="AvatarImage" />
-              <span className="AvatarNameText">{t(`characters.nicknames.${modData.character}`)}</span>
-            </>
-          }
+        <div className={`InfoContainer CharacterCardStyle`}>
+          <img 
+            className="AvatarImage" 
+            src={modData?.modType === "Characters" ? `character-image://local/${modData?.character}`:undefined}
+            alt="Avatar Image"
+          />
+          <span className="AvatarNameText">{avatarName}</span>
+
           <div className="Title">{modName}</div>
           <div className="Desc">{modData?.description}</div>
         </div>

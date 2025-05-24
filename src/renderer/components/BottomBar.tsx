@@ -1,13 +1,15 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useTransition } from 'react';
 import '../App.scss';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchModResourcesMetadata, applyMods, resetDiffList, selectDiffList } from '../redux/slices/modResourcesSlice';
 import SettingsModal from './SettingsModal';
 import { selectModResourcesPath } from '../redux/slices/settingsSlice';
 import { Button } from './Button';
+import { useTranslation } from 'react-i18next';
 
 function BottomBar() {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const modResourcesPath = useAppSelector(selectModResourcesPath);
 
@@ -46,29 +48,29 @@ function BottomBar() {
       <div className="BottomBarContainer">
         <div className="ButtonGroup flexStart">
           <Button
-            title="Settings"
+            title={t("BottomBar.Settings")}
             onClick={() => {
               setIsSettingsModalOpen(true);
             }}
           />
           <Button
-            title="Refresh"
+            title={t("BottomBar.Refresh")}
             onClick={refreshMods}
           />
         </div>
         
         <div className="ButtonGroup flexEnd">
           <Button
-            title="Launcher"
+            title={t("BottomBar.Launcher")}
             onClick={openModLauncher}
           />
           <Button
-            title="mod resources"
+            title={t("BottomBar.Resources")}
             onClick={handleOpenModResourcesFolder}
           />
           <Button
             className={Object.keys(diffList).length ? "highlight" : ""}
-            title="Apply"
+            title={t("BottomBar.Apply")}
             onClick={handleApplyMods}
           />
         </div>

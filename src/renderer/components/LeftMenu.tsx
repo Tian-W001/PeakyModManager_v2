@@ -31,8 +31,7 @@ interface MenuListProps {
 const MenuList = ({ menuListItems, currentModType }: MenuListProps) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const menuField = "menuItems" satisfies keyof TTranslations;
-
+  
   const handleSelectModType = (newModType: TModType|"All") => {
     dispatch(updateSelectedModType(newModType));
   }
@@ -45,7 +44,7 @@ const MenuList = ({ menuListItems, currentModType }: MenuListProps) => {
           onClick={()=>handleSelectModType(modType)}
         >
           <span>
-            {t(`${menuField}.${modType}`)}
+            {t(`MenuItems.${modType}`)}
           </span>
         </MenuItem>
       ))}

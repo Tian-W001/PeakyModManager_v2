@@ -27,9 +27,6 @@ Modal.setAppElement('#root');
 const CharacterSelector = ({currentCharacter, setCharacter}: {currentCharacter: TCharacter | null, setCharacter: (c:TCharacter)=>void}) => {
   
   const { t } = useTranslation();
-  const charField = "characters" satisfies keyof TTranslations;
-  const charFullnameField = "fullnames" satisfies keyof TTranslations[typeof charField];
-  
   if (currentCharacter === null) return null;
   return (
     <>
@@ -37,7 +34,7 @@ const CharacterSelector = ({currentCharacter, setCharacter}: {currentCharacter: 
       <select value={currentCharacter || undefined} onChange={e=>setCharacter(e.target.value as TCharacter)}>
         {Characters.map((c) => (
           <option key={c} value={c}>
-            {t(`${charField}.${charFullnameField}.${c}`)}
+            {t(`Characters.Fullnames.${c}`)}
           </option>
         ))}
       </select>
@@ -48,11 +45,11 @@ const CharacterSelector = ({currentCharacter, setCharacter}: {currentCharacter: 
 const ModTypeSelector = ({currentType, setModType}: {currentType: TModType, setModType: (t:TModType)=>void}) => {
   return (
     <>
-      <span>modType: </span>
+      <span>{t("ModEditModal.ModType")}</span>
         <select value={currentType} onChange={e=>setModType(e.target.value as TModType)}>
           {modTypeList.map((modType) => (
             <option key={modType} value={modType}>
-              {t(`menuItems.${modType}`)}
+              {t(`MenuItems.${modType}`)}
             </option>
           ))}
         </select>
@@ -161,7 +158,9 @@ const KeybindMenuList = ({ keybinds, setKeybinds }: KeybindMenuListProps) => {
           setDesc={(newDesc)=>handleSetDesc(key, newDesc)}
         />
       ))}
-      <button onClick={handleAddKeybind}>Add new Keybind</button>
+      <button onClick={handleAddKeybind}>
+        { t("ModEditModal.AddNewKeybind") }
+      </button>
     </div>
   );
 };
@@ -315,12 +314,12 @@ const ModEditModal = () => {
           <div className="ModEditModalLeftContainer">
             {newModData && (
               <>
-                <EditableTextBox title="Description" text={newModData?.description} 
+                <EditableTextBox title={t("ModEditModal.Description")} text={newModData?.description} 
                   handleChange={(e) => {
                     setNewModData({ ...newModData, description: e.target.value });
                   }}
                 />
-                <EditableTextBox title="Source" text={newModData?.sourceUrl}
+                <EditableTextBox title={t("ModEditModal.Source")} text={newModData?.sourceUrl}
                   handleChange={(e) => {
                     setNewModData({ ...newModData, sourceUrl: e.target.value });
                   }}
@@ -330,7 +329,7 @@ const ModEditModal = () => {
 
                 <CharacterSelector currentCharacter={newModData?.character} setCharacter={c=>setNewModData({...newModData, character: c})} />
                 <KeybindMenuList keybinds={newModData.keybinds} setKeybinds={(newKeybinds)=>setNewModData({...newModData, keybinds: newKeybinds})} />
-                <button onClick={handleAutoFillModData}>Auto Fill Mod Info</button>
+                <button onClick={handleAutoFillModData}>{t("ModEditModal.AutoFillModInfo")}</button>
               </>
             )}
           </div>
@@ -342,15 +341,15 @@ const ModEditModal = () => {
                   <MdDeleteForever size={"90%"}/>
                 </button>
                 <button className="SelectImageButtonContainer" onClick={handleSelectCover}>
-                  Select Image
+                  {t("ModEditModal.SelectImage")}
                 </button>
               </div>
               <img src={modName && newModData?.image && `mod-image://local/${modName}/${newModData.image}` || require('../assets/default_cover.webp')} alt="Mod Image" />
             </div>
             <div className="ButtonGroup">
-              <Button title="Delete" onClick={handleDelete} />
-              <Button title="Save" onClick={handleSave} />
-              <Button title="Open Folder" onClick={handleOpenModFolder} />
+              <Button title={t("ModEditModal.Delete")} onClick={handleDelete} />
+              <Button title={t("ModEditModal.Save")} onClick={handleSave} />
+              <Button title={t("ModEditModal.OpenFolder")} onClick={handleOpenModFolder} />
             </div>
           </div>
 
