@@ -7,6 +7,7 @@ import ModEditModal from './ModEditModal';
 import CharacterBar from './CharacterBar';
 import { selectCurrentCharacter, selectCurrentModType } from '../redux/slices/menuSlice';
 import { Scrollbar } from 'react-scrollbars-custom';
+import { openModEditModal } from '../redux/slices/modEditModalSlice';
 
 const CardGrid: React.FC = () =>{
   const dispatch = useAppDispatch(); 
@@ -40,7 +41,8 @@ const CardGrid: React.FC = () =>{
       if (item.kind === 'file' && (item.webkitGetAsEntry())?.isDirectory) {
         const file = item.getAsFile() as File;
         const srcPath = await window.electron.getModPath(file);
-        dispatch(addNewMod({ modName: file.name, srcModPath: srcPath }));
+        await dispatch(addNewMod({ modName: file.name, srcModPath: srcPath }));
+        dispatch(openModEditModal(file.name));
       } else {
         console.log('Invalid mod directory');
       }

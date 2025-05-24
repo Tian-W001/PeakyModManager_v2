@@ -8,27 +8,28 @@
  * When running `npm run build` or `npm run build:main`, this file is compiled to
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
-import path, { dirname } from 'path';
+import path from 'path';
 import { app, BrowserWindow, shell, ipcMain, dialog, protocol } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import Store from 'electron-store';
+import store from './store';
 import fs from 'fs-extra';
 import MenuBuilder from './menu';
 import { combineObjects, resolveHtmlPath } from './util';
 import { DEFAULT_METADATA, TMetadata } from '../types/metadataType';
 import { TLanguage } from '../types/languageType';
 import { exec } from 'child_process';
-import mime from 'mime-types';
-import axios from 'axios';
 import { installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from "electron-devtools-installer";
+import { registerCharacterHandlers } from './hotUpdateHandler';
+import { modImageScheme, registerImageProtocol } from './Protocols/modImageProtocol';
+import { characterImageScheme, registerCharacterImageProtocol } from './Protocols/characterImageProtocol';
 
 
 const HARD_RESET_METADATA = false;
 const UPDATE_METADATA_STRUCTURE = false;
 
 const METADATA_FILENAME = 'metadata.json';
-const IMG_TYPES = new Set(['.png', '.jpg', '.jpeg', '.webp']);
+export const IMG_TYPES = new Set(['.png', '.jpg', '.jpeg', '.webp']);
 
 class AppUpdater {
   constructor() {
@@ -66,7 +67,8 @@ const installExtensions = async () => {
 };
 
 protocol.registerSchemesAsPrivileged([
-  { scheme: 'mod-image', privileges: { secure: true, standard: true } },
+  modImageScheme,
+  characterImageScheme,
 ]);
 
 const createWindow = async () => {
@@ -148,8 +150,9 @@ app.whenReady()
     .catch((err) => console.log('An error occurred: ', err));
   })
   .then(() => {
-    
     registerImageProtocol();
+    registerCharacterImageProtocol();
+    registerCharacterHandlers();
   })
   .then(() => {
     createWindow();
@@ -212,73 +215,6 @@ const updateModMetadata = async (modPath: string): Promise<TMetadata|null> => {
   }
 };
 
-
-const store = new Store<{ 
-  modResourcesPath: string,
-  targetPath: string,
-  launcherPath: string,
-  gamePath: string,
-  language: TLanguage,
-}>();
-
-const BASE_URL = 'https://raw.githubusercontent.com/Tian-W001/PeakyModManager_v2/hot-updates/hot_updates/';
-const CHARACTERS_METADATA_NAME = "CharacterInfoList.json";
-const IMAGE_FOLDER_NAME = "character_images";
-const IMAGE_FOLDER_URL = BASE_URL + `${IMAGE_FOLDER_NAME}/`;
-const APP_DIR = app.isPackaged ? path.dirname(app.getPath('exe')) : path.join(__dirname, '../../');
-//const HOT_UPDATES_CACHE_PATH = path.join(APP_DIR, 'hot-updates');
-const HOT_UPDATES_CACHE_PATH = path.join(app.getPath('userData'), 'hot-updates');
-
-ipcMain.handle('get-characters', async () => {
-  const localPath = path.join(HOT_UPDATES_CACHE_PATH, CHARACTERS_METADATA_NAME);
-  if (await fs.pathExists(localPath)) {
-    const data = await fs.readJSON(localPath);
-    return data;
-  } else {
-    console.error('Character metadata not found locally, please fetch it first.');
-    return null;
-  }
-});
-
-ipcMain.handle('fetch-characters', async () => {
-  console.log('Fetching character list...');
-  await fs.mkdir(HOT_UPDATES_CACHE_PATH, { recursive: true });
-  const remoteUrl = BASE_URL + CHARACTERS_METADATA_NAME;
-  console.log("Fetching from", remoteUrl);
-  const response = await axios.get(remoteUrl);
-  const data = response.data;
-  await fs.writeJSON(path.join(HOT_UPDATES_CACHE_PATH, CHARACTERS_METADATA_NAME), data, { spaces: 2 });
-
-  await downloadCharacterImages(data.characterList, )
-  return data;
-});
-
-async function downloadCharacterImages(characterList: string[]) {
-  const imageDir = path.join(HOT_UPDATES_CACHE_PATH, IMAGE_FOLDER_NAME);
-  await fs.mkdir(imageDir, { recursive: true });
-
-  for (const character of characterList) {
-    const imageName = `${character}.png`;
-    const imagePath = path.join(imageDir, imageName);
-    const imageUrl = `${IMAGE_FOLDER_URL}${imageName}`;
-
-    console.log('Checking in', imagePath);
-    if (await fs.pathExists(imagePath)) {
-      console.log(`${imageName} exists - skipping`);
-      continue;
-    }
-
-    try {
-      console.log(`Downloading ${imageName}...`);
-      const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
-      await fs.writeFile(imagePath, response.data);
-      console.log(`Saved ${imageName}`);
-    } catch (error) {
-      console.error(`Failed to download ${imageName}:`, error);
-      throw error;
-    }
-  }
-}
 
 ipcMain.handle('fetch-mod-resources-metadata', async () => {
   const modResourcesPath = store.get('modResourcesPath');
@@ -588,35 +524,3 @@ ipcMain.handle('select-file', async (_event, path: string, extnames:string[] = [
   else
     return result.filePaths[0];
 });
-
-export function registerImageProtocol() {
-  protocol.handle('mod-image', async (request) => {
-    try {
-      const url = new URL(request.url);
-      const imagePath = decodeURIComponent(url.pathname).replace(/^\//, '');
-      const ext = path.extname(imagePath).toLowerCase();
-      if (!IMG_TYPES.has(ext)) {
-        console.error(`Invalid image type: ${ext}`);
-        return new Response(null, { status: 400 });
-      }
-
-      const modResourcesPath = store.get('modResourcesPath');
-      const absPath = path.resolve(modResourcesPath, imagePath);
-      if (!absPath.startsWith(modResourcesPath)) {
-        //safety check (prevent ../path/to/file)
-        console.error(`Invalid image path: ${absPath}`);
-        return new Response(null, { status: 400 });
-      }
-
-      const buffer = await fs.readFile(absPath);
-      const mimeType = mime.lookup(ext);
-      return new Response(buffer, {
-        status: 200,
-        headers: mimeType ? { 'Content-Type': mimeType } : undefined
-      });
-    } catch (error) {
-      console.error('Error handling image protocol:', error);
-      return new Response(null, { status: 404 });
-    }
-  });
-}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import Modal from "react-modal";
 
 import "../App.scss";
@@ -7,9 +7,12 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectGamePath, selectLanguage, selectLauncherPath, selectModResourcesPath, selectTargetPath, updateLanguage, updateLauncherPath, updateModResourcesPath, updateTargetPath } from "../redux/slices/settingsSlice";
 import { languageMap, TLanguage } from "../../types/languageType";
 import { clearDiffList, disableAllMods, fetchModResourcesMetadata, resetDiffList } from "../redux/slices/modResourcesSlice";
+import { useTranslation } from "react-i18next";
+import { updateCharacterTranslations } from "../i18n";
 
 const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onRequestClose: ()=>void }) => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const modResourcesPath = useAppSelector(selectModResourcesPath);
   const targetPath = useAppSelector(selectTargetPath);
@@ -58,7 +61,8 @@ const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onRequestC
   }
 
   const handleFetchCharacters = async () => {
-    const data = await window.electron.fetchCharacters();
+    await window.electron.fetchCharacters();
+    updateCharacterTranslations();
   }
 
   return (
@@ -71,9 +75,9 @@ const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onRequestC
     >
       <ExitButton onClick={onRequestClose} className="ModalExitButton"/>
       <div className="Modal flexCol ModalShape">
-        <h1>Settings</h1>
+        <h1>{t("SettingsModal.Settings")}</h1>
         <button onClick={handleFetchCharacters}>Fetch Characters</button>
-        <label>ModResources Directory</label>
+        <label>{t("SettingsModal.ResourcesDir")}</label>
         <input 
           readOnly
           type="text"
@@ -82,7 +86,7 @@ const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onRequestC
           onClick={handleSelectModResourcesPath}
         />
 
-        <label>Target Directory</label>
+        <label>{t("SettingsModal.TargetDir")}</label>
         <input 
           readOnly
           type="text"
@@ -91,7 +95,7 @@ const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onRequestC
           onClick={handleSelectTargetPath}
         />
 
-        <label>Launcher Directory</label>
+        <label>{t("SettingsModal.LauncherDir")}</label>
         <input
           readOnly
           type="text"
@@ -100,7 +104,7 @@ const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onRequestC
           onClick={handleSelectLauncherPath}
         />
 
-        <label>Language</label>
+        <label>{t("SettingsModal.Language")}</label>
         <select value={language} onChange={(e)=>handleSetLanguage(e.target.value as TLanguage)}>
           {Object.entries(languageMap).map(([languageKey, languageString]) => (
             <option key={languageKey} value={languageKey}>{languageString}</option>
