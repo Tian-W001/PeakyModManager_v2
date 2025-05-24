@@ -42,7 +42,7 @@
   ],
   "translationList": {
     "en": {
-      "fullnames": {
+      "Fullnames": {
         "Unknown": "Unknown",
         "Belle": "Belle",
         "Wise": "Wise",
@@ -83,7 +83,7 @@
         "PanYinhu": "Pan Yinhu",
         "JuFufu": "Ju Fufu"
       },
-      "nicknames": {
+      "Nicknames": {
         "Unknown": "Unknown",
         "Belle": "Belle",
         "Wise": "Wise",
@@ -126,7 +126,7 @@
       }
     },
     "zh": {
-      "fullnames": {
+      "Fullnames": {
         "Unknown": "未知角色",
         "Belle": "玲",
         "Wise": "哲",
@@ -167,7 +167,7 @@
         "PanYinhu": "潘引壶",
         "JuFufu": "橘福福"
       },
-      "nicknames": {
+      "Nicknames": {
         "Unknown": "未知角色",
         "Belle": "玲",
         "Wise": "哲",
