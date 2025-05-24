@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { Characters, TCharacter } from "../../types/characterType";
 import activeMask from "./../assets/character_images/character_active_mask.png";
@@ -33,21 +33,31 @@ interface CharacterItemProps {
   c: TCharacter|"All",
   onClick: () => void,
 }
-const CharacterItem = ({active, c, onClick}: CharacterItemProps) => (
-  <div className="CharacterBarImageContainer" key={c} onClick={onClick}>
-    <img 
-      src={require(`./../assets/character_images/${c}.png`)} 
-      alt='Character'
-    />
-    <div 
-      className={`CharacterActiveMask ${active?"active":""}`}
-      style={{
-        // opacity: active ? 1 : 0,
-        background: `url(${activeMask}) no-repeat 0 0 / 101% 101%`
-      }}  
-    />
-  </div>
-);
+const CharacterItem = ({active, c, onClick}: CharacterItemProps) => {
+
+  const imageSrc = useMemo(() => {
+    if (c === "All" || c === "Unknown")
+      return require(`./../assets/character_images/${c}.png`);
+    else
+      return `character-image://local/${c}`;
+    
+  }, [c]);
+
+  return (
+    <div className="CharacterBarImageContainer" key={c} onClick={onClick}>
+      <img 
+        src={imageSrc}
+        alt={require(`./../assets/character_images/Unknown.png`)}
+      />
+      <div 
+        className={`CharacterActiveMask ${active?"active":""}`}
+        style={{
+          background: `url(${activeMask}) no-repeat 0 0 / 101% 101%`
+        }}  
+      />
+    </div>
+  );
+};
 
 const CharacterBar = () => {
   const dispatch = useAppDispatch();
