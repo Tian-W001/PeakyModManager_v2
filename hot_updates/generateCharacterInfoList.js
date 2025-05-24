@@ -175,10 +175,10 @@ function generateOutputInfoList(characterInfoList) {
   
   for (const [nameKey, translations] of Object.entries(characterInfoList)) {
     characterList.push(nameKey);
-    translationList.en.fullnames[nameKey] = translations.en.fullname;
-    translationList.en.nicknames[nameKey] = translations.en.nickname;
-    translationList.zh.fullnames[nameKey] = translations.zh.fullname;
-    translationList.zh.nicknames[nameKey] = translations.zh.nickname;
+    translationList.en.Fullnames[nameKey] = translations.en.fullname;
+    translationList.en.Nicknames[nameKey] = translations.en.nickname;
+    translationList.zh.Fullnames[nameKey] = translations.zh.fullname;
+    translationList.zh.Nicknames[nameKey] = translations.zh.nickname;
   }
 
   return {characterList, translationList};
