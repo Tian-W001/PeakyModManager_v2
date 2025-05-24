@@ -5,6 +5,7 @@ import { TLanguage } from '../types/languageType';
 contextBridge.exposeInMainWorld('electron', {
   //hot-updates
   fetchCharacters: () => ipcRenderer.invoke('fetch-characters'),
+  getCharacters: () => ipcRenderer.invoke('get-characters'),
 
   //settings
   getModResourcesPath: () => ipcRenderer.invoke('get-mod-resources-path'),

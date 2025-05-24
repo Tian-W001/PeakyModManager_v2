@@ -20,22 +20,15 @@ i18n.use(initReactI18next).init({
   }
 });
 
-export function updateCharacterTranslations(
-  charactersTranslations: Record<string, {
-    fullnames: Record<string, string>,
-    nicknames: Record<string, string>,
-}>) {
+export async function updateCharacterTranslations() {
 
-  Object.entries(charactersTranslations).forEach(([lang, translations]) => {
+  const { translationList } = await window.electron.getCharacters();
+
+  Object.entries(translationList).forEach(([lang, translations]) => {
     i18n.addResourceBundle(
       lang, 
-      'characters', 
-      {
-        fullnames: translations.fullnames,
-        nicknames: translations.nicknames,
-      },
-      true, //override existing
-      true  //silent
+      "translation",
+      { Characters: translations }
     );
   });
 }

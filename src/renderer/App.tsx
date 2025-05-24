@@ -11,6 +11,7 @@ import { fetchGamePath, fetchLanguage, fetchLauncherPath, fetchModResourcesPath,
 
 import wallpaper from './assets/zzz_wallpaper.png';
 import { useTranslation } from 'react-i18next';
+import { updateCharacterTranslations } from './i18n';
 
 export default function App() {
 
@@ -22,6 +23,8 @@ export default function App() {
       await dispatch(fetchTargetPath());
       await dispatch(fetchLauncherPath());
       await dispatch(fetchGamePath());
+
+      await updateCharacterTranslations();
       await dispatch(fetchLanguage());
 
       await dispatch(fetchModResourcesMetadata());
