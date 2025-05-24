@@ -48,15 +48,15 @@ export function registerCharacterHandlers() {
       const imagePath = path.join(imageFolderPath, imageName);
       const imageUrl = `${REMOTE_URL}${IMAGE_FOLDER_NAME}/${imageName}`;
       if (await fs.pathExists(imagePath)) {
-        console.log(`${imageName} exists - skipping`);
+        //console.log(`${imageName} exists - skipping`);
         continue;
       }
 
       try {
-        console.log(`Downloading ${imageName}...`);
+        //console.log(`Downloading ${imageName}...`);
         const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
         await fs.writeFile(imagePath, response.data);
-        console.log(`Saved ${imageName}`);
+        //console.log(`Saved ${imageName}`);
       } catch (error) {
         console.log(`Failed to download ${imageName}:`, error);
       }

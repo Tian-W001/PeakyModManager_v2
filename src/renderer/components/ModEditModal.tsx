@@ -10,7 +10,6 @@ import { deleteMod, updateMod } from "../redux/slices/modResourcesSlice";
 import ExitButton from "./ExitButton";
 import EditableTextBox from "./EditableTextBox";
 import { DEFAULT_METADATA, TMetadata } from "../../types/metadataType";
-import { Characters, TCharacter } from "../../types/characterType";
 import { DEFAULT_KEYBIND_KEY, DEFAULT_KEYBIND_DESC, TKeybinds } from "../../types/KeybindType";
 import { selectModResourcesPath } from "../redux/slices/settingsSlice";
 import path from "path-browserify";
@@ -20,19 +19,21 @@ import { Button } from "./Button";
 import { TTranslations } from "../translations/translations";
 import { MdDeleteForever } from "react-icons/md";
 import { t } from "i18next";
+import { selectCharacters } from "../redux/slices/hotUpdatesSlice";
 
 Modal.setAppElement('#root');
 
 
-const CharacterSelector = ({currentCharacter, setCharacter}: {currentCharacter: TCharacter | null, setCharacter: (c:TCharacter)=>void}) => {
+const CharacterSelector = ({currentCharacter, setCharacter}: {currentCharacter: string | null, setCharacter: (c:string)=>void}) => {
   
   const { t } = useTranslation();
+  const characters = useAppSelector(selectCharacters);
   if (currentCharacter === null) return null;
   return (
     <>
-      <span>Character: </span>
-      <select value={currentCharacter || undefined} onChange={e=>setCharacter(e.target.value as TCharacter)}>
-        {Characters.map((c) => (
+      <span>{t("ModEditModal.Character")}</span>
+      <select value={currentCharacter || undefined} onChange={e=>setCharacter(e.target.value)}>
+        {characters?.map((c) => (
           <option key={c} value={c}>
             {t(`Characters.Fullnames.${c}`)}
           </option>
@@ -169,6 +170,7 @@ const KeybindMenuList = ({ keybinds, setKeybinds }: KeybindMenuListProps) => {
 const ModEditModal = () => {
   const dispatch = useAppDispatch();
 
+  const characters = useAppSelector(selectCharacters);
   const isOpen = useAppSelector(selectModEditModalIsOpen);
 
   const modResourcesPath = useAppSelector(selectModResourcesPath);
@@ -217,10 +219,10 @@ const ModEditModal = () => {
     onRequestClose();
   };
 
-  function matchCharacterName(): TCharacter|null {
-    if (!modName) return null;
+  function matchCharacterName(): string|null {
+    if (!modName || !characters) return null;
     
-    const characterList: TCharacter[] = Characters.filter(name => name !== "Unknown");
+    const characterList = characters.filter(name => name !== "Unknown");
     const loweredModName = modName.toLowerCase();
     for (const charName of characterList) {
       if (loweredModName.includes(charName.toLowerCase())) {

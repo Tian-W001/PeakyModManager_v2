@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
-import { Characters, TCharacter } from "../../types/characterType";
 import activeMask from "./../assets/character_images/character_active_mask.png";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentCharacter, updateSelectedCharacter } from "../redux/slices/menuSlice";
+import { selectCharacters } from "../redux/slices/hotUpdatesSlice";
 
 function useHorizontalScroll(): React.RefObject<HTMLDivElement | null> {
   const elRef = useRef<HTMLDivElement>(null);
@@ -30,7 +30,7 @@ function useHorizontalScroll(): React.RefObject<HTMLDivElement | null> {
 
 interface CharacterItemProps {
   active: boolean
-  c: TCharacter|"All",
+  c: string,
   onClick: () => void,
 }
 const CharacterItem = ({active, c, onClick}: CharacterItemProps) => {
@@ -61,10 +61,11 @@ const CharacterItem = ({active, c, onClick}: CharacterItemProps) => {
 
 const CharacterBar = () => {
   const dispatch = useAppDispatch();
+  const characters = useAppSelector(selectCharacters);
   const selectedCharacter = useAppSelector(selectCurrentCharacter);
   const scrollRef = useHorizontalScroll();
 
-  const handleOnClickImage = (c: TCharacter|"All") => {
+  const handleOnClickImage = (c: string) => {
     console.log("Clicked", c);
     dispatch(updateSelectedCharacter(c));
   }
@@ -76,7 +77,7 @@ const CharacterBar = () => {
       </div>
       <div className="CharacterBarImageList" ref={scrollRef}>
         <CharacterItem key={"All"} active={selectedCharacter==="All"} c={"All"} onClick={()=>handleOnClickImage("All")} />
-        {Characters.slice().reverse().map((c: TCharacter) => 
+        {characters?.slice().reverse().map((c: string) => 
           <CharacterItem key={c} active={selectedCharacter===c} c={c} onClick={()=>handleOnClickImage(c)} />
         )}
       </div>

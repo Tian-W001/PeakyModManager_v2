@@ -8,7 +8,9 @@ import { selectGamePath, selectLanguage, selectLauncherPath, selectModResourcesP
 import { languageMap, TLanguage } from "../../types/languageType";
 import { clearDiffList, disableAllMods, fetchModResourcesMetadata, resetDiffList } from "../redux/slices/modResourcesSlice";
 import { useTranslation } from "react-i18next";
-import { updateCharacterTranslations } from "../i18n";
+import i18n, { updateCharacterTranslations } from "../i18n";
+import { getCharacters } from "../redux/slices/hotUpdatesSlice";
+
 
 const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onRequestClose: ()=>void }) => {
   const dispatch = useAppDispatch();
@@ -58,11 +60,11 @@ const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onRequestC
 
   const handleSetLanguage = (newLang: TLanguage) => {
     dispatch(updateLanguage(newLang));
+    i18n.changeLanguage(newLang);
   }
 
   const handleFetchCharacters = async () => {
-    await window.electron.fetchCharacters();
-    updateCharacterTranslations();
+    await dispatch(getCharacters());
   }
 
   return (

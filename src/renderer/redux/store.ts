@@ -3,6 +3,7 @@ import modResourcesReducer from './slices/modResourcesSlice';
 import modEditModalReducer from './slices/modEditModalSlice';
 import settingsReducer from './slices/settingsSlice';
 import menuSlice from './slices/menuSlice';
+import hotUpdatesSlice from './slices/hotUpdatesSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     modResources: modResourcesReducer,
     ModEditModal: modEditModalReducer,
     menu: menuSlice,
+    hotUpdates: hotUpdatesSlice,
   },
 });
 

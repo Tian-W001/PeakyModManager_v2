@@ -13,7 +13,7 @@ interface ModCardProps {
 }
 
 const ModCard = ({ modName, diff }: ModCardProps) => {
-  console.log(`ModCard rendered: ${modName}`);
+  //console.log(`ModCard rendered: ${modName}`);
 
   const { t } = useTranslation();
   const dispatch = useAppDispatch();

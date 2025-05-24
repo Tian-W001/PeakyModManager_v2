@@ -1,11 +1,10 @@
 import { RootState } from "../store";
 import { createSlice } from "@reduxjs/toolkit";
 import { TModType } from "../../../types/modType";
-import { TCharacter } from "../../../types/characterType";
 
 interface MenuState {
   selectedModType: TModType | "All",
-  selectedCharacter: TCharacter | "All",
+  selectedCharacter: string,
 };
 
 const initialState: MenuState = {
