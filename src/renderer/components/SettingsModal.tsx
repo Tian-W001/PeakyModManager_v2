@@ -8,8 +8,8 @@ import { selectGamePath, selectLanguage, selectLauncherPath, selectModResourcesP
 import { languageMap, TLanguage } from "../../types/languageType";
 import { clearDiffList, disableAllMods, fetchModResourcesMetadata, resetDiffList } from "../redux/slices/modResourcesSlice";
 import { useTranslation } from "react-i18next";
-import i18n, { updateCharacterTranslations } from "../i18n";
-import { getCharacters } from "../redux/slices/hotUpdatesSlice";
+import i18n from "../i18n";
+import { fetchCharacters } from "../redux/slices/hotUpdatesSlice";
 
 
 const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onRequestClose: ()=>void }) => {
@@ -64,7 +64,7 @@ const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onRequestC
   }
 
   const handleFetchCharacters = async () => {
-    await dispatch(getCharacters());
+    await dispatch(fetchCharacters());
   }
 
   return (

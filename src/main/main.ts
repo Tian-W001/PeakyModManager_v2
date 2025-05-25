@@ -23,6 +23,7 @@ import { installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from "electro
 import { registerCharacterHandlers } from './hotUpdateHandler';
 import { modImageScheme, registerImageProtocol } from './Protocols/modImageProtocol';
 import { characterImageScheme, registerCharacterImageProtocol } from './Protocols/characterImageProtocol';
+import { avatarImageScheme, registerAvatarImageProtocol } from './Protocols/avatarImageProtocol';
 
 
 const HARD_RESET_METADATA = false;
@@ -69,6 +70,7 @@ const installExtensions = async () => {
 protocol.registerSchemesAsPrivileged([
   modImageScheme,
   characterImageScheme,
+  avatarImageScheme,
 ]);
 
 const createWindow = async () => {
@@ -152,6 +154,7 @@ app.whenReady()
   .then(() => {
     registerImageProtocol();
     registerCharacterImageProtocol();
+    registerAvatarImageProtocol();
     registerCharacterHandlers();
   })
   .then(() => {

@@ -417,7 +417,8 @@
         width: calc(2 * var(--avatarRadius));
         height:calc(2 * var(--avatarRadius));
         border-radius: 50%;
-        background-color: #ffffff;
+        outline: 2px solid #000;
+        background-color: #000;
       }
       &>.AvatarNameText {
         position: absolute;

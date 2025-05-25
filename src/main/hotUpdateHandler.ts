@@ -5,7 +5,8 @@ import { app, ipcMain } from "electron";
 
 const REMOTE_URL = 'https://raw.githubusercontent.com/Tian-W001/PeakyModManager_v2/hot-updates/hot_updates/';
 const INFOLIST_NAME = 'CharacterInfoList.json';
-const IMAGE_FOLDER_NAME = "character_images";
+const CHARACTER_IMAGE_FOLDER_NAME = "character_images";
+const AVATAR_IMAGE_FOLDER_NAME = "avatar_images";
 const CACHE_PATH = path.join(app.getPath('userData'), 'hot-updates');
 
 
@@ -19,7 +20,7 @@ export function registerCharacterHandlers() {
     const data = response.data;
     await fs.writeJSON(path.join(CACHE_PATH, INFOLIST_NAME), data, { spaces: 2 });
     
-    await downloadCharacterImages(data.characterList);
+    await downloadImages(data.characterList);
     return data;
   }
 
@@ -36,36 +37,52 @@ export function registerCharacterHandlers() {
   });
 
   ipcMain.handle('fetch-characters', async () => {
+    console.log('Fetching characters from remote...');
     return await fetchCharacters();
   });
 
-  async function downloadCharacterImages(characterList: string[]) {
-    const imageFolderPath = path.join(CACHE_PATH, IMAGE_FOLDER_NAME);
-    await fs.mkdir(imageFolderPath, { recursive: true });
+
+  async function downloadImages(characterList: string[]) {
+    const characterImageFolderPath = path.join(CACHE_PATH, CHARACTER_IMAGE_FOLDER_NAME);
+    const avatarImageFolderPath = path.join(CACHE_PATH, AVATAR_IMAGE_FOLDER_NAME);
+    await fs.mkdir(characterImageFolderPath, { recursive: true });
+    await fs.mkdir(avatarImageFolderPath, { recursive: true });
 
     for (const character of characterList) {
-      const imageName = `${character}.png`;
-      const imagePath = path.join(imageFolderPath, imageName);
-      const imageUrl = `${REMOTE_URL}${IMAGE_FOLDER_NAME}/${imageName}`;
-      if (await fs.pathExists(imagePath)) {
-        //console.log(`${imageName} exists - skipping`);
-        continue;
+      const characterName = `${character}.png`;
+      const characterImagePath = path.join(characterImageFolderPath, characterName);
+      const characterImageUrl = `${REMOTE_URL}${CHARACTER_IMAGE_FOLDER_NAME}/${characterName}`;
+      if (!await fs.pathExists(characterImagePath)) {
+        try {
+          //console.log(`Downloading ${characterName}...`);
+          const response = await axios.get(characterImageUrl, { responseType: 'arraybuffer' });
+          await fs.writeFile(characterImagePath, response.data);
+          //console.log(`Saved ${imageName}`);
+        } catch (error) {
+          console.log(`Failed to download ${characterName}:`);
+        }
       }
 
-      try {
-        //console.log(`Downloading ${imageName}...`);
-        const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
-        await fs.writeFile(imagePath, response.data);
-        //console.log(`Saved ${imageName}`);
-      } catch (error) {
-        console.log(`Failed to download ${imageName}:`, error);
+      const avatarImagePath = path.join(avatarImageFolderPath, characterName);
+      const avatarImageUrl = `${REMOTE_URL}${AVATAR_IMAGE_FOLDER_NAME}/${characterName}`;
+      if (!await fs.pathExists(avatarImagePath)) {
+        try {
+          console.log(`Downloading ${characterName}...`);
+          const response = await axios.get(avatarImageUrl, { responseType: 'arraybuffer' });
+          await fs.writeFile(avatarImagePath, response.data);
+          console.log(`Saved ${characterName}`);
+        } catch (error) {
+          console.log(`Failed to download ${characterName}:`);
+        }
       }
     }
-
   }
 
 }
 
 export function getCharacterImagePath(characterName: string) {
-  return path.join(CACHE_PATH, IMAGE_FOLDER_NAME, `${characterName}.png`);
+  return path.join(CACHE_PATH, CHARACTER_IMAGE_FOLDER_NAME, `${characterName}.png`);
+}
+export function getAvatarImagePath(avatarName: string) {
+  return path.join(CACHE_PATH, AVATAR_IMAGE_FOLDER_NAME, `${avatarName}.png`);
 }

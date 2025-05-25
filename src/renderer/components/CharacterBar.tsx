@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
-import activeMask from "./../assets/character_images/character_active_mask.png";
+import activeMask from "./../assets/character_active_mask.png";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentCharacter, updateSelectedCharacter } from "../redux/slices/menuSlice";
 import { selectCharacters } from "../redux/slices/hotUpdatesSlice";
@@ -36,24 +36,25 @@ interface CharacterItemProps {
 const CharacterItem = ({active, c, onClick}: CharacterItemProps) => {
 
   const imageSrc = useMemo(() => {
-    if (c === "All" || c === "Unknown")
-      return require(`./../assets/character_images/${c}.png`);
+    if (c === "All")
+      return require(`./../assets/character_all.png`);
+    else if (c === "Unknown")
+      return require(`./../assets/character_unknown.png`);
     else
-      return `character-image://local/${c}`;
-    
+      return `character-image://local/${c}?now=${Date.now()}`;
   }, [c]);
 
   return (
     <div className="CharacterBarImageContainer" key={c} onClick={onClick}>
       <img 
         src={imageSrc}
-        alt={require(`./../assets/character_images/Unknown.png`)}
+        alt={require(`./../assets/character_unknown.png`)}
       />
       <div 
         className={`CharacterActiveMask ${active?"active":""}`}
         style={{
           background: `url(${activeMask}) no-repeat 0 0 / 101% 101%`
-        }}  
+        }}
       />
     </div>
   );
@@ -66,10 +67,10 @@ const CharacterBar = () => {
   const scrollRef = useHorizontalScroll();
 
   const handleOnClickImage = (c: string) => {
-    console.log("Clicked", c);
     dispatch(updateSelectedCharacter(c));
   }
 
+  console.log("CharacterBar rendered");
   return (
     <div className="CharacterBarContainer">
       <div className="CharacterBarButtonContainer">
