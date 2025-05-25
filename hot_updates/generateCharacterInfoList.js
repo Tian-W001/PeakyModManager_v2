@@ -79,7 +79,7 @@ const CharacterInfo = {
     zh: { fullname: "艾莲·乔", nickname: "艾莲" },
   },
   ZhuYuan: {
-    en: { fullname: "Zhu Yuan", nickname: "Zhu Yuan" },
+    en: { fullname: "Zhu Yuan", nickname: "ZhuYuan" },
     zh: { fullname: "朱鸢", nickname: "朱鸢" },
   },
   Qingyi: {
@@ -155,7 +155,7 @@ const CharacterInfo = {
     zh: { fullname: "潘引壶", nickname: "潘引壶" },
   },
   JuFufu: {
-    en: { fullname: "Ju Fufu", nickname: "Jufufu" },
+    en: { fullname: "Ju Fufu", nickname: "JuFufu" },
     zh: { fullname: "橘福福", nickname: "橘福福" },
   }
 };
