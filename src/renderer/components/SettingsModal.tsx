@@ -76,7 +76,7 @@ const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onRequestC
       shouldCloseOnOverlayClick={false}
     >
       <ExitButton onClick={onRequestClose} className="ModalExitButton"/>
-      <div className="Modal flexCol ModalShape">
+      <div className="Modal">
         <h1>{t("SettingsModal.Settings")}</h1>
         <button onClick={handleFetchCharacters}>Fetch Characters</button>
         <label>{t("SettingsModal.ResourcesDir")}</label>

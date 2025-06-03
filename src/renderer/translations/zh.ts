@@ -20,7 +20,9 @@ const zh: TTranslations = {
   },
   ModEditModal: {
     Description: "简介",
+    DescriptionPlaceholder: "点击此处修改简介...",
     Source: "来源",
+    SourcePlaceholder: "点击此处修改来源...",
     ModType: "Mod类型",
     Character: "角色",
     AddNewKeybind: "添加按键",

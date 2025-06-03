@@ -20,7 +20,9 @@ const en: TTranslations = {
   },
   ModEditModal: {
     Description: "Description",
+    DescriptionPlaceholder: "Click to edit the description...",
     Source: "Source",
+    SourcePlaceholder: "Click to edit the source...",
     ModType: "Mod Type",
     Character: "Character",
     AddNewKeybind: "Add New Keybind",

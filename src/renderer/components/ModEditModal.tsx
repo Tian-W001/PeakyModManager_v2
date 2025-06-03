@@ -16,7 +16,6 @@ import path from "path-browserify";
 import { modTypeList, TModType } from "../../types/modType";
 import { useTranslation } from "react-i18next";
 import { Button } from "./Button";
-import { TTranslations } from "../translations/translations";
 import { MdDeleteForever } from "react-icons/md";
 import { t } from "i18next";
 import { selectCharacters } from "../redux/slices/hotUpdatesSlice";
@@ -30,8 +29,8 @@ const CharacterSelector = ({currentCharacter, setCharacter}: {currentCharacter: 
   const characters = useAppSelector(selectCharacters);
   if (currentCharacter === null) return null;
   return (
-    <>
-      <span>{t("ModEditModal.Character")}</span>
+    <div className="SelectorContainer">
+      <span>{t("ModEditModal.Character")}:</span>
       <select value={currentCharacter || undefined} onChange={e=>setCharacter(e.target.value)}>
         {characters?.map((c) => (
           <option key={c} value={c}>
@@ -39,14 +38,14 @@ const CharacterSelector = ({currentCharacter, setCharacter}: {currentCharacter: 
           </option>
         ))}
       </select>
-    </>
+    </div>
   );
 };
 
 const ModTypeSelector = ({currentType, setModType}: {currentType: TModType, setModType: (t:TModType)=>void}) => {
   return (
-    <>
-      <span>{t("ModEditModal.ModType")}</span>
+    <div className="SelectorContainer">
+      <div>{t("ModEditModal.ModType")}:</div>
         <select value={currentType} onChange={e=>setModType(e.target.value as TModType)}>
           {modTypeList.map((modType) => (
             <option key={modType} value={modType}>
@@ -54,7 +53,7 @@ const ModTypeSelector = ({currentType, setModType}: {currentType: TModType, setM
             </option>
           ))}
         </select>
-    </>
+    </div>
   );
 };
 
@@ -316,21 +315,30 @@ const ModEditModal = () => {
           <div className="ModEditModalLeftContainer">
             {newModData && (
               <>
-                <EditableTextBox title={t("ModEditModal.Description")} text={newModData?.description} 
+                <EditableTextBox
+                  title={t("ModEditModal.Description")} 
+                  text={newModData.description} 
+                  rows={10} 
+                  placeholder={t("ModEditModal.DescriptionPlaceholder")}
                   handleChange={(e) => {
                     setNewModData({ ...newModData, description: e.target.value });
                   }}
                 />
-                <EditableTextBox title={t("ModEditModal.Source")} text={newModData?.sourceUrl}
+                <EditableTextBox 
+                  title={t("ModEditModal.Source")} 
+                  text={newModData.sourceUrl} 
+                  rows={1}
+                  placeholder={t("ModEditModal.SourcePlaceholder")}
                   handleChange={(e) => {
                     setNewModData({ ...newModData, sourceUrl: e.target.value });
                   }}
                 />
                 <ModTypeSelector currentType={newModData?.modType} setModType={t=>setNewModData({...newModData, modType: t, character: t==="Characters"?"Unknown":null})} />
 
-
-                <CharacterSelector currentCharacter={newModData?.character} setCharacter={c=>setNewModData({...newModData, character: c})} />
+                <CharacterSelector currentCharacter={newModData.character} setCharacter={c=>setNewModData({...newModData, character: c})} />
+                
                 <KeybindMenuList keybinds={newModData.keybinds} setKeybinds={(newKeybinds)=>setNewModData({...newModData, keybinds: newKeybinds})} />
+                
                 <button onClick={handleAutoFillModData}>{t("ModEditModal.AutoFillModInfo")}</button>
               </>
             )}
@@ -339,9 +347,9 @@ const ModEditModal = () => {
           <div className="ModEditModalRightContainer" >
             <div className="ModEditModalImageContainer" onDragOver={handleDragOverImage} onDrop={handleDropImage}>
               <div className="ButtonGroup">
-                <button className="DeleteButtonContainer" onClick={handleRemoveCover}>
+                {newModData?.image && <button className="DeleteButtonContainer" onClick={handleRemoveCover}>
                   <MdDeleteForever size={"90%"}/>
-                </button>
+                </button>}
                 <button className="SelectImageButtonContainer" onClick={handleSelectCover}>
                   {t("ModEditModal.SelectImage")}
                 </button>
