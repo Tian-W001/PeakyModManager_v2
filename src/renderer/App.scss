@@ -587,6 +587,16 @@
   border: 3px solid #888888;
 }
 
+.SettingsModal {
+  padding-left: 2em;
+  padding-right: 2em;
+  gap: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
 .ModEditModalTitleBar {
   min-height: 50px;
   width: 100%;
@@ -603,7 +613,6 @@
 .ModEditModalMainContainer {
   display: flex;
   flex-direction: row;
-
   overflow: hidden;
   flex: 1;
   width: 100%;
@@ -754,21 +763,22 @@
   gap: 0.5em;
   box-sizing: border-box;
   &>.TextBox {
+    font-family: HanYiQiHei;
     box-sizing: border-box;
     width: 100%;
     padding: 5px;
+    padding-left: 15px;
     border: 1px solid #707070;
     outline: none;
-    border-radius: 12px;
+    border-radius: 15px;
     color: white;
     background-color: #474747;
     resize: none;
     text-align: start;
     overflow: scroll;
     scrollbar-width: none;
-    
-    
-    /* text-align-last: center; */
+    user-select: none;
+    cursor: pointer;
   }
   &>.TextBox:focus {
     //background-color: #000000;

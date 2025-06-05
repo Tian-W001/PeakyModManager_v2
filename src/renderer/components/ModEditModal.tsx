@@ -323,7 +323,7 @@ const ModEditModal = () => {
                   text={newModData.description} 
                   rows={10} 
                   placeholder={t("ModEditModal.DescriptionPlaceholder")}
-                  handleChange={(e) => {
+                  onChange={(e) => {
                     setNewModData({ ...newModData, description: e.target.value });
                   }}
                 />
@@ -332,7 +332,7 @@ const ModEditModal = () => {
                   text={newModData.sourceUrl} 
                   rows={1}
                   placeholder={t("ModEditModal.SourcePlaceholder")}
-                  handleChange={(e) => {
+                  onChange={(e) => {
                     setNewModData({ ...newModData, sourceUrl: e.target.value });
                   }}
                 />

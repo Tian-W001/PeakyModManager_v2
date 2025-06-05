@@ -1,28 +1,23 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../App.scss";
 
-type EditableTextBoxProps = {
+type EditableTextBoxProps = React.ComponentProps<'textarea'> & {
   title?: string;
   text: string;
-  rows: number;
-  placeholder: string;
-  handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 };
 
-const EditableTextBox = ({ title, text, rows, placeholder, handleChange }: EditableTextBoxProps) => {
+const EditableTextBox = ({ title, text, ...props }: EditableTextBoxProps) => {
   
   return (
     <div className="EditableTextBoxContainer">
-      {title && <div>{title}: </div>}
-      <textarea 
+      {title && <label>{title}: </label>}
+      <textarea
+        value={text} 
         className="TextBox" 
-        rows={rows}
         autoComplete="off"
         autoCorrect="off"
         autoCapitalize="off"
-        placeholder={placeholder}
-        value={text} 
-        onChange={handleChange}
+        {...props}
       />
     </div>
   );
