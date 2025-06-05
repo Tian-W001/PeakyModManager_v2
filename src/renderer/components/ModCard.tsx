@@ -31,11 +31,20 @@ const ModCard = ({ modName, diff }: ModCardProps) => {
     if (modData?.modType === "Characters" && modData?.character !== "Unknown") {
       return `avatar-image://local/${modData.character}?now=${Date.now()}`;
     }
-    else if (modData?.modType !== "Characters") {
-      return require(`../assets/avatar_unknown.png`);
+    else if (modData?.modType === "Environment") {
+      return require(`../assets/avatars/Environment.jpg`);
+    }
+    else if (modData?.modType === "NPCs") {
+      return require(`../assets/avatars/NPC.jpg`);
+    }
+    else if (modData?.modType === "UI") {
+      return require(`../assets/avatars/UI.png`);
+    }
+    else if (modData?.modType === "ScriptsTools") {
+      return require(`../assets/avatars/Tools.jpg`);
     }
     else {
-      return require(`../assets/avatar_unknown.png`);
+      return require(`../assets/avatars/Unknown.png`);
     }
   }, [modData?.modType, modData?.character, characters]);
 
