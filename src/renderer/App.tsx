@@ -7,16 +7,14 @@ import React, { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { fetchModResourcesMetadata } from './redux/slices/modResourcesSlice';
-import { fetchGamePath, fetchLanguage, fetchLauncherPath, fetchModResourcesPath, fetchTargetPath, selectLanguage, updateGamePath, updateLauncherPath, updateModResourcesPath, updateTargetPath } from './redux/slices/settingsSlice';
+import { fetchGamePath, fetchLauncherPath, fetchModResourcesPath, fetchTargetPath } from './redux/slices/settingsSlice';
 
 import wallpaper from './assets/zzz_wallpaper.png';
-import i18n from './i18n';
-import { getCharacters, selectCharacters } from './redux/slices/hotUpdatesSlice';
+import { getCharacters } from './redux/slices/hotUpdatesSlice';
 
 function App() {
 
   const dispatch = useAppDispatch();
-  const language = useAppSelector(selectLanguage);
 
   useEffect(() => {
     const runOnLaunch = async () => {
@@ -27,17 +25,15 @@ function App() {
 
       await dispatch(getCharacters());
 
-      await dispatch(fetchLanguage());
-
       await dispatch(fetchModResourcesMetadata());
     };
 
     runOnLaunch();
   }, []);
 
-  useEffect(() => {
-    i18n.changeLanguage(language);
-  }, [language]);
+  // useEffect(() => {
+  //   i18n.changeLanguage(language);
+  // }, [language]);
 
   return (
     <>

@@ -73,19 +73,7 @@ export const fetchGamePath = createAsyncThunk(
     return await window.electron.getGamePath();
   }
 );
-export const updateLanguage = createAsyncThunk(
-  'settings/updateLanguage',
-  async (lang: TLanguage) => {
-    await window.electron.setLanguage(lang);
-    return lang;
-  }
-);
-export const fetchLanguage = createAsyncThunk(
-  'settings/fetchLanguage',
-  async () => {
-    return await window.electron.getLanguage();
-  }
-);
+
 
 
 export const settingsSlice = createSlice({
@@ -117,13 +105,6 @@ export const settingsSlice = createSlice({
       })
       .addCase(fetchGamePath.fulfilled, (state, action) => {
         state.gamePath = action.payload;
-      })
-      .addCase(updateLanguage.fulfilled, (state, action) => {
-        console.log("returned lang:", action.payload);
-        state.language = action.payload;
-      })
-      .addCase(fetchLanguage.fulfilled, (state, action) => {
-        state.language = action.payload;
       });
   },
 });
@@ -134,4 +115,3 @@ export const selectModResourcesPath = (state: RootState) => state.settings.modRe
 export const selectTargetPath = (state: RootState) => state.settings.targetPath;
 export const selectLauncherPath = (state: RootState) => state.settings.launcherPath;
 export const selectGamePath = (state: RootState) => state.settings.gamePath;
-export const selectLanguage = (state: RootState) => state.settings.language;

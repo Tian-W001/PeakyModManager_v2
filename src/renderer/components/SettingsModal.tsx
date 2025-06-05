@@ -4,23 +4,21 @@ import Modal from "react-modal";
 import "../App.scss";
 import ExitButton from "./ExitButton";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { selectGamePath, selectLanguage, selectLauncherPath, selectModResourcesPath, selectTargetPath, updateLanguage, updateLauncherPath, updateModResourcesPath, updateTargetPath } from "../redux/slices/settingsSlice";
+import { selectGamePath, selectLauncherPath, selectModResourcesPath, selectTargetPath, updateLauncherPath, updateModResourcesPath, updateTargetPath } from "../redux/slices/settingsSlice";
 import { languageMap, TLanguage } from "../../types/languageType";
 import { clearDiffList, disableAllMods, fetchModResourcesMetadata, resetDiffList } from "../redux/slices/modResourcesSlice";
 import { useTranslation } from "react-i18next";
-import i18n from "../i18n";
 import { fetchCharacters } from "../redux/slices/hotUpdatesSlice";
 
 
 const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onRequestClose: ()=>void }) => {
   const dispatch = useAppDispatch();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const modResourcesPath = useAppSelector(selectModResourcesPath);
   const targetPath = useAppSelector(selectTargetPath);
   const launcherPath = useAppSelector(selectLauncherPath);
   //const gamePath = useAppSelector(selectGamePath);
-  const language = useAppSelector(selectLanguage);
 
 
   const handleSelectModResourcesPath = async () => {
@@ -59,7 +57,6 @@ const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onRequestC
   };
 
   const handleSetLanguage = (newLang: TLanguage) => {
-    dispatch(updateLanguage(newLang));
     i18n.changeLanguage(newLang);
   }
 
@@ -107,7 +104,7 @@ const SettingsModal = ({ isOpen, onRequestClose }: { isOpen: boolean, onRequestC
         />
 
         <label>{t("SettingsModal.Language")}</label>
-        <select value={language} onChange={(e)=>handleSetLanguage(e.target.value as TLanguage)}>
+        <select value={i18n.language} onChange={(e)=>handleSetLanguage(e.target.value as TLanguage)}>
           {Object.entries(languageMap).map(([languageKey, languageString]) => (
             <option key={languageKey} value={languageKey}>{languageString}</option>
           ))}

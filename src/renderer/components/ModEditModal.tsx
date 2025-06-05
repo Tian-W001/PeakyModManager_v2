@@ -17,7 +17,6 @@ import { modTypeList, TModType } from "../../types/modType";
 import { useTranslation } from "react-i18next";
 import { Button } from "./Button";
 import { MdDeleteForever } from "react-icons/md";
-import { t } from "i18next";
 import { selectCharacters } from "../redux/slices/hotUpdatesSlice";
 
 Modal.setAppElement('#root');
@@ -43,6 +42,7 @@ const CharacterSelector = ({currentCharacter, setCharacter}: {currentCharacter: 
 };
 
 const ModTypeSelector = ({currentType, setModType}: {currentType: TModType, setModType: (t:TModType)=>void}) => {
+  const { t } = useTranslation();
   return (
     <div className="SelectorContainer">
       <div>{t("ModEditModal.ModType")}:</div>
@@ -131,6 +131,7 @@ interface KeybindMenuListProps {
   setKeybinds: (newKeybinds: TKeybinds) => void,
 };
 const KeybindMenuList = ({ keybinds, setKeybinds }: KeybindMenuListProps) => {
+  const { t } = useTranslation();
 
   const handleSetKey = (oldKey: string, newKey: string) => {
     if (oldKey === newKey) {
@@ -168,6 +169,8 @@ const KeybindMenuList = ({ keybinds, setKeybinds }: KeybindMenuListProps) => {
 
 const ModEditModal = () => {
   const dispatch = useAppDispatch();
+
+  const { t } = useTranslation();
 
   const characters = useAppSelector(selectCharacters);
   const isOpen = useAppSelector(selectModEditModalIsOpen);
