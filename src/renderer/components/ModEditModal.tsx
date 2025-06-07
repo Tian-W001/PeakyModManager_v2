@@ -10,42 +10,42 @@ import { deleteMod, updateMod } from "../redux/slices/modResourcesSlice";
 import ExitButton from "./ExitButton";
 import EditableTextBox from "./EditableTextBox";
 import { DEFAULT_METADATA, TMetadata } from "../../types/metadataType";
-import { Characters, TCharacter } from "../../types/characterType";
 import { DEFAULT_KEYBIND_KEY, DEFAULT_KEYBIND_DESC, TKeybinds } from "../../types/KeybindType";
 import { selectModResourcesPath } from "../redux/slices/settingsSlice";
 import path from "path-browserify";
 import { modTypeList, TModType } from "../../types/modType";
 import { useTranslation } from "react-i18next";
 import { Button } from "./Button";
-import { TTranslations } from "../translations/translations";
 import { MdDeleteForever } from "react-icons/md";
-import { t } from "i18next";
+import { selectCharacters } from "../redux/slices/hotUpdatesSlice";
 
 Modal.setAppElement('#root');
 
 
-const CharacterSelector = ({currentCharacter, setCharacter}: {currentCharacter: TCharacter | null, setCharacter: (c:TCharacter)=>void}) => {
+const CharacterSelector = ({currentCharacter, setCharacter}: {currentCharacter: string | null, setCharacter: (c:string)=>void}) => {
   
   const { t } = useTranslation();
+  const characters = useAppSelector(selectCharacters);
   if (currentCharacter === null) return null;
   return (
-    <>
-      <span>Character: </span>
-      <select value={currentCharacter || undefined} onChange={e=>setCharacter(e.target.value as TCharacter)}>
-        {Characters.map((c) => (
+    <div className="SelectorContainer">
+      <span>{t("ModEditModal.Character")}:</span>
+      <select value={currentCharacter || undefined} onChange={e=>setCharacter(e.target.value)}>
+        {characters?.map((c) => (
           <option key={c} value={c}>
             {t(`Characters.Fullnames.${c}`)}
           </option>
         ))}
       </select>
-    </>
+    </div>
   );
 };
 
 const ModTypeSelector = ({currentType, setModType}: {currentType: TModType, setModType: (t:TModType)=>void}) => {
+  const { t } = useTranslation();
   return (
-    <>
-      <span>{t("ModEditModal.ModType")}</span>
+    <div className="SelectorContainer">
+      <div>{t("ModEditModal.ModType")}:</div>
         <select value={currentType} onChange={e=>setModType(e.target.value as TModType)}>
           {modTypeList.map((modType) => (
             <option key={modType} value={modType}>
@@ -53,7 +53,7 @@ const ModTypeSelector = ({currentType, setModType}: {currentType: TModType, setM
             </option>
           ))}
         </select>
-    </>
+    </div>
   );
 };
 
@@ -131,6 +131,7 @@ interface KeybindMenuListProps {
   setKeybinds: (newKeybinds: TKeybinds) => void,
 };
 const KeybindMenuList = ({ keybinds, setKeybinds }: KeybindMenuListProps) => {
+  const { t } = useTranslation();
 
   const handleSetKey = (oldKey: string, newKey: string) => {
     if (oldKey === newKey) {
@@ -169,6 +170,9 @@ const KeybindMenuList = ({ keybinds, setKeybinds }: KeybindMenuListProps) => {
 const ModEditModal = () => {
   const dispatch = useAppDispatch();
 
+  const { t } = useTranslation();
+
+  const characters = useAppSelector(selectCharacters);
   const isOpen = useAppSelector(selectModEditModalIsOpen);
 
   const modResourcesPath = useAppSelector(selectModResourcesPath);
@@ -217,10 +221,10 @@ const ModEditModal = () => {
     onRequestClose();
   };
 
-  function matchCharacterName(): TCharacter|null {
-    if (!modName) return null;
+  function matchCharacterName(): string|null {
+    if (!modName || !characters) return null;
     
-    const characterList: TCharacter[] = Characters.filter(name => name !== "Unknown");
+    const characterList = characters.filter(name => name !== "Unknown");
     const loweredModName = modName.toLowerCase();
     for (const charName of characterList) {
       if (loweredModName.includes(charName.toLowerCase())) {
@@ -314,21 +318,30 @@ const ModEditModal = () => {
           <div className="ModEditModalLeftContainer">
             {newModData && (
               <>
-                <EditableTextBox title={t("ModEditModal.Description")} text={newModData?.description} 
-                  handleChange={(e) => {
+                <EditableTextBox
+                  title={t("ModEditModal.Description")} 
+                  text={newModData.description} 
+                  rows={10} 
+                  placeholder={t("ModEditModal.DescriptionPlaceholder")}
+                  onChange={(e) => {
                     setNewModData({ ...newModData, description: e.target.value });
                   }}
                 />
-                <EditableTextBox title={t("ModEditModal.Source")} text={newModData?.sourceUrl}
-                  handleChange={(e) => {
+                <EditableTextBox 
+                  title={t("ModEditModal.Source")} 
+                  text={newModData.sourceUrl} 
+                  rows={1}
+                  placeholder={t("ModEditModal.SourcePlaceholder")}
+                  onChange={(e) => {
                     setNewModData({ ...newModData, sourceUrl: e.target.value });
                   }}
                 />
                 <ModTypeSelector currentType={newModData?.modType} setModType={t=>setNewModData({...newModData, modType: t, character: t==="Characters"?"Unknown":null})} />
 
-
-                <CharacterSelector currentCharacter={newModData?.character} setCharacter={c=>setNewModData({...newModData, character: c})} />
+                <CharacterSelector currentCharacter={newModData.character} setCharacter={c=>setNewModData({...newModData, character: c})} />
+                
                 <KeybindMenuList keybinds={newModData.keybinds} setKeybinds={(newKeybinds)=>setNewModData({...newModData, keybinds: newKeybinds})} />
+                
                 <button onClick={handleAutoFillModData}>{t("ModEditModal.AutoFillModInfo")}</button>
               </>
             )}
@@ -337,9 +350,9 @@ const ModEditModal = () => {
           <div className="ModEditModalRightContainer" >
             <div className="ModEditModalImageContainer" onDragOver={handleDragOverImage} onDrop={handleDropImage}>
               <div className="ButtonGroup">
-                <button className="DeleteButtonContainer" onClick={handleRemoveCover}>
+                {newModData?.image && <button className="DeleteButtonContainer" onClick={handleRemoveCover}>
                   <MdDeleteForever size={"90%"}/>
-                </button>
+                </button>}
                 <button className="SelectImageButtonContainer" onClick={handleSelectCover}>
                   {t("ModEditModal.SelectImage")}
                 </button>

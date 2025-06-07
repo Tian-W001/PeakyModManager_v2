@@ -1,4 +1,3 @@
-import { TCharacter } from "../../types/characterType"
 import { TModType } from "../../types/modType";
 
 export type TTranslations = {

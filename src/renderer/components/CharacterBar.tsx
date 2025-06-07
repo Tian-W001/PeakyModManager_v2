@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
-import { Characters, TCharacter } from "../../types/characterType";
-import activeMask from "./../assets/character_images/character_active_mask.png";
+import activeMask from "./../assets/character_active_mask.png";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentCharacter, updateSelectedCharacter } from "../redux/slices/menuSlice";
+import { selectCharacters } from "../redux/slices/hotUpdatesSlice";
 
 function useHorizontalScroll(): React.RefObject<HTMLDivElement | null> {
   const elRef = useRef<HTMLDivElement>(null);
@@ -30,35 +30,47 @@ function useHorizontalScroll(): React.RefObject<HTMLDivElement | null> {
 
 interface CharacterItemProps {
   active: boolean
-  c: TCharacter|"All",
+  c: string,
   onClick: () => void,
 }
-const CharacterItem = ({active, c, onClick}: CharacterItemProps) => (
-  <div className="CharacterBarImageContainer" key={c} onClick={onClick}>
-    <img 
-      src={require(`./../assets/character_images/${c}.png`)} 
-      alt='Character'
-    />
-    <div 
-      className={`CharacterActiveMask ${active?"active":""}`}
-      style={{
-        // opacity: active ? 1 : 0,
-        background: `url(${activeMask}) no-repeat 0 0 / 101% 101%`
-      }}  
-    />
-  </div>
-);
+const CharacterItem = ({active, c, onClick}: CharacterItemProps) => {
+
+  const imageSrc = useMemo(() => {
+    if (c === "All")
+      return require(`./../assets/character_all.png`);
+    else if (c === "Unknown")
+      return require(`./../assets/character_unknown.png`);
+    else
+      return `character-image://local/${c}?now=${Date.now()}`;
+  }, [c]);
+
+  return (
+    <div className="CharacterBarImageContainer" key={c} onClick={onClick}>
+      <img 
+        src={imageSrc}
+        alt={require(`./../assets/character_unknown.png`)}
+      />
+      <div 
+        className={`CharacterActiveMask ${active?"active":""}`}
+        style={{
+          background: `url(${activeMask}) no-repeat 0 0 / 101% 101%`
+        }}
+      />
+    </div>
+  );
+};
 
 const CharacterBar = () => {
   const dispatch = useAppDispatch();
+  const characters = useAppSelector(selectCharacters);
   const selectedCharacter = useAppSelector(selectCurrentCharacter);
   const scrollRef = useHorizontalScroll();
 
-  const handleOnClickImage = (c: TCharacter|"All") => {
-    console.log("Clicked", c);
+  const handleOnClickImage = (c: string) => {
     dispatch(updateSelectedCharacter(c));
   }
 
+  console.log("CharacterBar rendered");
   return (
     <div className="CharacterBarContainer">
       <div className="CharacterBarButtonContainer">
@@ -66,7 +78,7 @@ const CharacterBar = () => {
       </div>
       <div className="CharacterBarImageList" ref={scrollRef}>
         <CharacterItem key={"All"} active={selectedCharacter==="All"} c={"All"} onClick={()=>handleOnClickImage("All")} />
-        {Characters.slice().reverse().map((c: TCharacter) => 
+        {characters?.slice().reverse().map((c: string) => 
           <CharacterItem key={c} active={selectedCharacter===c} c={c} onClick={()=>handleOnClickImage(c)} />
         )}
       </div>

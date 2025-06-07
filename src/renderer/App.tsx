@@ -3,17 +3,16 @@ import './App.scss';
 import BottomBar from './components/BottomBar';
 import CardGrid from './components/CardGrid';
 import LeftMenu from './components/LeftMenu';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { fetchModResourcesMetadata } from './redux/slices/modResourcesSlice';
-import { fetchGamePath, fetchLanguage, fetchLauncherPath, fetchModResourcesPath, fetchTargetPath, selectLanguage, updateGamePath, updateLauncherPath, updateModResourcesPath, updateTargetPath } from './redux/slices/settingsSlice';
+import { fetchGamePath, fetchLauncherPath, fetchModResourcesPath, fetchTargetPath } from './redux/slices/settingsSlice';
 
 import wallpaper from './assets/zzz_wallpaper.png';
-import { useTranslation } from 'react-i18next';
-import { updateCharacterTranslations } from './i18n';
+import { getCharacters } from './redux/slices/hotUpdatesSlice';
 
-export default function App() {
+function App() {
 
   const dispatch = useAppDispatch();
 
@@ -24,8 +23,7 @@ export default function App() {
       await dispatch(fetchLauncherPath());
       await dispatch(fetchGamePath());
 
-      await updateCharacterTranslations();
-      await dispatch(fetchLanguage());
+      await dispatch(getCharacters());
 
       await dispatch(fetchModResourcesMetadata());
     };
@@ -33,11 +31,9 @@ export default function App() {
     runOnLaunch();
   }, []);
 
-  const { i18n } = useTranslation();
-  const language = useAppSelector(selectLanguage);
-  useEffect(() => {
-    i18n.changeLanguage(language);
-  }, [language, i18n]);
+  // useEffect(() => {
+  //   i18n.changeLanguage(language);
+  // }, [language]);
 
   return (
     <>
@@ -59,3 +55,5 @@ export default function App() {
     </>
   );
 };
+
+export default React.memo(App);

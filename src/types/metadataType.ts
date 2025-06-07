@@ -1,10 +1,9 @@
-import { TCharacter } from "./characterType"
 import { TKeybinds } from "./KeybindType";
 import { DEFAULT_MOD_TYPE, TModType } from "./modType"
 
 export type TMetadata = {
   modType: TModType,
-  character: TCharacter | null, 
+  character: string | null, 
   description: string,
   image: string,
   sourceUrl: string,

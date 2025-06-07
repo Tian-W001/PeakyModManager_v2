@@ -1,9 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import '../App.scss';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { makeSelectModMetadataByName, updateDiffList } from '../redux/slices/modResourcesSlice';
 import { openModEditModal } from '../redux/slices/modEditModalSlice';
 import { useTranslation } from 'react-i18next';
+import { selectCharacters } from '../redux/slices/hotUpdatesSlice';
 
 type TActiveState = "active" | "inactive" | "preActive" | "preInactive";
 
@@ -13,7 +14,7 @@ interface ModCardProps {
 }
 
 const ModCard = ({ modName, diff }: ModCardProps) => {
-  console.log(`ModCard rendered: ${modName}`);
+  //console.log(`ModCard rendered: ${modName}`);
 
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
@@ -24,7 +25,30 @@ const ModCard = ({ modName, diff }: ModCardProps) => {
     console.error("ModCard: modData not found for modName:", modName);
   }
 
+  const characters = useAppSelector(selectCharacters); //Force re-render after remote fetch
   const avatarName = modData?.modType === "Characters" ? t(`Characters.Nicknames.${modData.character}`) : t(`MenuItems.${modData.modType}`);
+  const avatarImageSrc = useMemo(() => {
+    if (modData?.modType === "Characters" && modData?.character !== "Unknown") {
+      return `avatar-image://local/${modData.character}?now=${Date.now()}`;
+    }
+    else if (modData?.modType === "Environment") {
+      return require(`../assets/avatars/Environment.jpg`);
+    }
+    else if (modData?.modType === "NPCs") {
+      return require(`../assets/avatars/NPC.jpg`);
+    }
+    else if (modData?.modType === "UI") {
+      return require(`../assets/avatars/UI.png`);
+    }
+    else if (modData?.modType === "ScriptsTools") {
+      return require(`../assets/avatars/Tools.jpg`);
+    }
+    else {
+      return require(`../assets/avatars/Unknown.png`);
+    }
+  }, [modData?.modType, modData?.character, characters]);
+
+  
 
   const [isActive, setIsActive] = useState(diff!==null ? diff : modData?.active);
 
@@ -66,8 +90,8 @@ const ModCard = ({ modName, diff }: ModCardProps) => {
         <div className={`InfoContainer CharacterCardStyle`}>
           <img 
             className="AvatarImage" 
-            src={modData?.modType === "Characters" ? `character-image://local/${modData?.character}`:undefined}
-            alt="Avatar Image"
+            src={avatarImageSrc}
+            alt={`${modData?.modType}`}
           />
           <span className="AvatarNameText">{avatarName}</span>
 
