@@ -6,6 +6,14 @@ import { openModEditModal } from '../redux/slices/modEditModalSlice';
 import { useTranslation } from 'react-i18next';
 import { selectCharacters } from '../redux/slices/hotUpdatesSlice';
 
+import unknownAvatar from '../assets/avatars/Unknown.png';
+import environmentAvatar from '../assets/avatars/Environment.jpg';
+import npcAvatar from '../assets/avatars/NPC.jpg';
+import uiAvatar from '../assets/avatars/UI.png';
+import toolsAvatar from '../assets/avatars/Tools.jpg';
+
+import defaultCoverImage from '../assets/default_cover.jpg';
+
 type TActiveState = "active" | "inactive" | "preActive" | "preInactive";
 
 interface ModCardProps {
@@ -32,19 +40,19 @@ const ModCard = ({ modName, diff }: ModCardProps) => {
       return `avatar-image://local/${modData.character}?now=${Date.now()}`;
     }
     else if (modData?.modType === "Environment") {
-      return require(`../assets/avatars/Environment.jpg`);
+      return environmentAvatar;
     }
     else if (modData?.modType === "NPCs") {
-      return require(`../assets/avatars/NPC.jpg`);
+      return npcAvatar;
     }
     else if (modData?.modType === "UI") {
-      return require(`../assets/avatars/UI.png`);
+      return uiAvatar;
     }
     else if (modData?.modType === "ScriptsTools") {
-      return require(`../assets/avatars/Tools.jpg`);
+      return toolsAvatar;
     }
     else {
-      return require(`../assets/avatars/Unknown.png`);
+      return unknownAvatar;
     }
   }, [modData?.modType, modData?.character, characters]);
 
@@ -82,7 +90,7 @@ const ModCard = ({ modName, diff }: ModCardProps) => {
     <>
       <div className={`ModCardContainer ${cardActiveState}`} onClick={handleClick} onContextMenu={handleContextMenu}>
         <img 
-          src={modData?.image && `mod-image://local/${modName}/${modData.image}` || require('../assets/default_cover.webp')} 
+          src={ modData?.image && `mod-image://local/${modName}/${modData.image}` || defaultCoverImage } 
           alt="Mod Image" 
           className="CoverImage"
         />
@@ -92,6 +100,9 @@ const ModCard = ({ modName, diff }: ModCardProps) => {
             className="AvatarImage" 
             src={avatarImageSrc}
             alt={`${modData?.modType}`}
+            onError={(e) => {
+              e.currentTarget.src = unknownAvatar;
+            }}
           />
           <span className="AvatarNameText">{avatarName}</span>
 

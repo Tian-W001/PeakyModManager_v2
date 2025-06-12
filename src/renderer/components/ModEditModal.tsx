@@ -19,6 +19,8 @@ import { Button } from "./Button";
 import { MdDeleteForever } from "react-icons/md";
 import { selectCharacters } from "../redux/slices/hotUpdatesSlice";
 
+import defaultCoverImage from '../assets/default_cover.jpg';
+
 Modal.setAppElement('#root');
 
 
@@ -357,7 +359,7 @@ const ModEditModal = () => {
                   {t("ModEditModal.SelectImage")}
                 </button>
               </div>
-              <img src={modName && newModData?.image && `mod-image://local/${modName}/${newModData.image}` || require('../assets/default_cover.webp')} alt="Mod Image" />
+              <img src={modName && newModData?.image && `mod-image://local/${modName}/${newModData.image}` || defaultCoverImage} alt="Mod Image" />
             </div>
             <div className="ButtonGroup">
               <Button title={t("ModEditModal.Delete")} onClick={handleDelete} />

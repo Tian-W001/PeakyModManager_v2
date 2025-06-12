@@ -5,6 +5,10 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentCharacter, updateSelectedCharacter } from "../redux/slices/menuSlice";
 import { selectCharacters } from "../redux/slices/hotUpdatesSlice";
 
+import allCharactersImage from '../assets/character_all.png';
+import unknownCharacterImage from '../assets/character_unknown.png';
+
+
 function useHorizontalScroll(): React.RefObject<HTMLDivElement | null> {
   const elRef = useRef<HTMLDivElement>(null);
 
@@ -30,25 +34,28 @@ function useHorizontalScroll(): React.RefObject<HTMLDivElement | null> {
 
 interface CharacterItemProps {
   active: boolean
-  c: string,
+  char: string,
   onClick: () => void,
 }
-const CharacterItem = ({active, c, onClick}: CharacterItemProps) => {
+const CharacterItem = ({active, char, onClick}: CharacterItemProps) => {
 
   const imageSrc = useMemo(() => {
-    if (c === "All")
-      return require(`./../assets/character_all.png`);
-    else if (c === "Unknown")
-      return require(`./../assets/character_unknown.png`);
+    if (char === "All")
+      return allCharactersImage;
+    else if (char === "Unknown")
+      return unknownCharacterImage;
     else
-      return `character-image://local/${c}?now=${Date.now()}`;
-  }, [c]);
+      return `character-image://local/${char}?now=${Date.now()}`;
+  }, [char]);
 
   return (
-    <div className="CharacterBarImageContainer" key={c} onClick={onClick}>
+    <div className="CharacterBarImageContainer" key={char} onClick={onClick}>
       <img 
         src={imageSrc}
-        alt={require(`./../assets/character_unknown.png`)}
+        alt={char}
+        onError={(e) => {
+          e.currentTarget.src = unknownCharacterImage; // Fallback to unknown image
+        }}
       />
       <div 
         className={`CharacterActiveMask ${active?"active":""}`}
@@ -77,9 +84,9 @@ const CharacterBar = () => {
         <FaAngleLeft size={'20px'} color="#ffffff" />
       </div>
       <div className="CharacterBarImageList" ref={scrollRef}>
-        <CharacterItem key={"All"} active={selectedCharacter==="All"} c={"All"} onClick={()=>handleOnClickImage("All")} />
+        <CharacterItem key={"All"} active={selectedCharacter==="All"} char={"All"} onClick={()=>handleOnClickImage("All")} />
         {characters?.slice().reverse().map((c: string) => 
-          <CharacterItem key={c} active={selectedCharacter===c} c={c} onClick={()=>handleOnClickImage(c)} />
+          <CharacterItem key={c} active={selectedCharacter===c} char={c} onClick={()=>handleOnClickImage(c)} />
         )}
       </div>
       <div className="CharacterBarButtonContainer">
