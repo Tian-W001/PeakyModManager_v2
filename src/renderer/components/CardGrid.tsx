@@ -37,16 +37,18 @@ const CardGrid: React.FC = () =>{
 
   const handleDrop = useCallback(async (e: React.DragEvent) => {
     e.preventDefault();
-    for (const item of e.dataTransfer.items) {
-      if (item.kind === 'file' && (item.webkitGetAsEntry())?.isDirectory) {
-        const file = item.getAsFile() as File;
-        const srcPath = await window.electron.getModPath(file);
-        await dispatch(addNewMod({ modName: file.name, srcModPath: srcPath }));
-        dispatch(openModEditModal(file.name));
-      } else {
-        console.log('Invalid mod directory');
-      }
-    }
+    const items = e.dataTransfer.items;
+    if (items.length !== 1) return;
+    const item = items[0];
+    const entry = item.webkitGetAsEntry();
+    
+    if (item.kind !== 'file' || !entry?.isDirectory) return;
+    
+    const file = item.getAsFile() as File;
+    const srcPath = await window.electron.getModPath(file);
+    await dispatch(addNewMod({ modName: file.name, srcModPath: srcPath }));
+    dispatch(openModEditModal(file.name));
+
   }, []);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
