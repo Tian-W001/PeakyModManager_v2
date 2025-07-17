@@ -157,6 +157,14 @@ const CharacterInfo = {
   JuFufu: {
     en: { fullname: "Ju Fufu", nickname: "JuFufu" },
     zh: { fullname: "橘福福", nickname: "橘福福" },
+  },
+  Yuzuha: {
+    en: { fullname: "Ukinami Yuzuha", nickname: "Yuzuha" },
+    zh: { fullname: "浮波柚叶", nickname: "柚叶" },
+  },
+  Alice: {
+    en: { fullname: "Alice Thymefield", nickname: "Alice" },
+    zh: { fullname: "爱丽丝·泰姆菲尔德", nickname: "爱丽丝" },
   }
 };
 
