@@ -38,7 +38,9 @@
     "Vivian",
     "YiXuan",
     "PanYinhu",
-    "JuFufu"
+    "JuFufu",
+    "Yuzuha",
+    "Alice"
   ],
   "translationList": {
     "en": {
@@ -81,7 +83,9 @@
         "Vivian": "Vivian Banshee",
         "YiXuan": "Yi Xuan",
         "PanYinhu": "Pan Yinhu",
-        "JuFufu": "Ju Fufu"
+        "JuFufu": "Ju Fufu",
+        "Yuzuha": "Ukinami Yuzuha",
+        "Alice": "Alice Thymefield"
       },
       "Nicknames": {
         "Unknown": "Unknown",
@@ -122,7 +126,9 @@
         "Vivian": "Vivian",
         "YiXuan": "YiXuan",
         "PanYinhu": "PanYinhu",
-        "JuFufu": "JuFufu"
+        "JuFufu": "JuFufu",
+        "Yuzuha": "Yuzuha",
+        "Alice": "Alice"
       }
     },
     "zh": {
@@ -165,7 +171,9 @@
         "Vivian": "薇薇安·班希",
         "YiXuan": "仪玄",
         "PanYinhu": "潘引壶",
-        "JuFufu": "橘福福"
+        "JuFufu": "橘福福",
+        "Yuzuha": "浮波柚叶",
+        "Alice": "爱丽丝·泰姆菲尔德"
       },
       "Nicknames": {
         "Unknown": "未知角色",
@@ -206,7 +214,9 @@
         "Vivian": "薇薇安",
         "YiXuan": "仪玄",
         "PanYinhu": "潘引壶",
-        "JuFufu": "橘福福"
+        "JuFufu": "橘福福",
+        "Yuzuha": "柚叶",
+        "Alice": "爱丽丝"
       }
     }
   }
